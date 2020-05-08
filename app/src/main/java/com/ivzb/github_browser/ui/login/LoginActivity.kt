@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -11,6 +12,7 @@ import com.ivzb.github_browser.BuildConfig
 import com.ivzb.github_browser.R
 import com.ivzb.github_browser.databinding.ActivityLoginBinding
 import com.ivzb.github_browser.domain.EventObserver
+import com.ivzb.github_browser.domain.login.AccessTokenParameters
 import com.ivzb.github_browser.ui.main.MainActivity
 import com.ivzb.github_browser.util.provideViewModel
 import dagger.android.support.DaggerAppCompatActivity
@@ -38,7 +40,13 @@ class LoginActivity : DaggerAppCompatActivity() {
         })
 
         loginViewModel.accessToken.observe(this, Observer {
-            openMainScreen()
+            it?.let {
+                openMainScreen()
+            }
+        })
+
+        loginViewModel.errorMessage.observe(this, Observer {
+            showErrorMessage(it.peekContent())
         })
     }
 
@@ -46,7 +54,9 @@ class LoginActivity : DaggerAppCompatActivity() {
         super.onNewIntent(intent)
 
         intent?.data?.getQueryParameter(CODE)?.let { code ->
-            loginViewModel.getAccessToken(BuildConfig.client_id, BuildConfig.client_secret, code)
+            loginViewModel.getAccessToken(
+                AccessTokenParameters(BuildConfig.client_id, BuildConfig.client_secret, code)
+            )
         }
     }
 
@@ -67,6 +77,10 @@ class LoginActivity : DaggerAppCompatActivity() {
         MainActivity.start(this)
         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
         finish()
+    }
+
+    private fun showErrorMessage(message: String) {
+        Toast.makeText(this, message, Toast.LENGTH_LONG).show()
     }
 
     companion object {

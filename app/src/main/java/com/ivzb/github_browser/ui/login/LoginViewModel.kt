@@ -20,7 +20,8 @@ class LoginViewModel @Inject constructor(
 
     val loading = MutableLiveData<Event<Boolean>>()
     val loginClick = MutableLiveData<Event<Boolean>>()
-    val accessToken: LiveData<Event<AccessToken?>>
+    val accessToken: LiveData<AccessToken?>
+    val errorMessage = MutableLiveData<Event<String>>()
 
     private val getAccessTokenResult = MutableLiveData<Result<AccessToken?>>()
 
@@ -28,11 +29,14 @@ class LoginViewModel @Inject constructor(
         accessToken = getAccessTokenResult.map {
             loading.postValue(Event(false))
 
-            val accessToken = it.successOr(null)?.also { accessToken ->
-                saveAccessTokenUseCase(accessToken)
+            val accessToken = it.successOr(null)
+
+            when (accessToken) {
+                null -> errorMessage.postValue(Event("Couldn't login. Please try again."))
+                else -> saveAccessTokenUseCase(accessToken)
             }
 
-            Event(accessToken)
+            accessToken
         }
     }
 
@@ -41,8 +45,7 @@ class LoginViewModel @Inject constructor(
         loginClick.postValue(Event(true))
     }
 
-    fun getAccessToken(clientId: String, clientSecret: String, code: String) {
-        val parameters = AccessTokenParameters(clientId, clientSecret, code)
+    fun getAccessToken(parameters: AccessTokenParameters) {
         getAccessTokenUseCase(parameters, getAccessTokenResult)
     }
 }
