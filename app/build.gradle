@@ -10,7 +10,7 @@ android {
 
     defaultConfig {
         applicationId "com.ivzb.github_browser"
-        minSdkVersion 29
+        minSdkVersion 28
         targetSdkVersion 29
         versionCode 1
         versionName "1.0"
@@ -19,9 +19,23 @@ android {
     }
 
     buildTypes {
+        debug {
+            buildConfigField("String", "client_id", '"d03c9206aecf87f7478f"')
+            buildConfigField("String", "client_secret", '"8ef0eb5b36e4f07c14c206afa87c1f6dbf17a100"')
+            buildConfigField("String", "redirect_uri", '"github-browser://callback"')
+            buildConfigField("String", "authorization_scheme", '"https"')
+            buildConfigField("String", "authorization_path", '"github.com/login/oauth/authorize"')
+        }
+
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+
+            buildConfigField("String", "client_id", '"d03c9206aecf87f7478f"')
+            buildConfigField("String", "client_secret", '"8ef0eb5b36e4f07c14c206afa87c1f6dbf17a100"')
+            buildConfigField("String", "redirect_uri", '"github-browser://callback"')
+            buildConfigField("String", "authorization_scheme", '"https"')
+            buildConfigField("String", "authorization_path", '"github.com/login/oauth/authorize"')
         }
     }
 
