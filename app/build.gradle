@@ -90,6 +90,10 @@ dependencies {
 
     // Unit tests
     testImplementation "junit:junit:$junitVersion"
+    testImplementation "org.mockito:mockito-core:$rootProject.mockitoVersion"
+    testImplementation "com.nhaarman:mockito-kotlin:$rootProject.mockitoKotlinVersion"
+    testImplementation "org.hamcrest:hamcrest-library:$rootProject.hamcrestVersion"
+    testImplementation "androidx.arch.core:core-testing:$rootProject.archTestingVersion"
 
     // Instrumentation tests
     androidTestImplementation "androidx.test.ext:junit:$extJunitVersion"
