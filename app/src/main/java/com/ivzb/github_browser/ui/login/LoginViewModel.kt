@@ -7,13 +7,15 @@ import com.ivzb.github_browser.domain.Event
 import com.ivzb.github_browser.domain.Result
 import com.ivzb.github_browser.domain.login.AccessTokenParameters
 import com.ivzb.github_browser.domain.login.GetAccessTokenUseCase
+import com.ivzb.github_browser.domain.login.SaveAccessTokenUseCase
 import com.ivzb.github_browser.domain.successOr
 import com.ivzb.github_browser.model.ui.AccessToken
 import com.ivzb.github_browser.util.map
 import javax.inject.Inject
 
 class LoginViewModel @Inject constructor(
-    private val getAccessTokenUseCase: GetAccessTokenUseCase
+    private val getAccessTokenUseCase: GetAccessTokenUseCase,
+    private val saveAccessTokenUseCase: SaveAccessTokenUseCase
 ) : ViewModel() {
 
     val loading = MutableLiveData<Event<Boolean>>()
@@ -26,7 +28,11 @@ class LoginViewModel @Inject constructor(
         accessToken = getAccessTokenResult.map {
             loading.postValue(Event(false))
 
-            Event(it.successOr(null))
+            val accessToken = it.successOr(null)?.also { accessToken ->
+                saveAccessTokenUseCase(accessToken)
+            }
+
+            Event(accessToken)
         }
     }
 

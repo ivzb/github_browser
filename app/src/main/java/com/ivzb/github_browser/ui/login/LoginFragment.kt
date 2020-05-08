@@ -41,7 +41,7 @@ class LoginFragment : DaggerFragment() {
         })
 
         loginViewModel.accessToken.observe(viewLifecycleOwner, Observer {
-            Toast.makeText(requireContext(), "access token loaded", Toast.LENGTH_LONG).show()
+            openUserScreen()
         })
 
         mainViewModel.code.observe(viewLifecycleOwner, Observer { code ->
@@ -62,6 +62,10 @@ class LoginFragment : DaggerFragment() {
         }
         val intent = Intent(Intent.ACTION_VIEW, uri)
         startActivity(intent)
+    }
+
+    private fun openUserScreen() {
+        Toast.makeText(requireContext(), "open user screen", Toast.LENGTH_LONG).show()
     }
 
     companion object {
