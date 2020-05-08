@@ -1,5 +1,7 @@
 package com.ivzb.github_browser.di
 
+import com.ivzb.github_browser.ui.launcher.LauncherActivity
+import com.ivzb.github_browser.ui.launcher.LauncherModule
 import com.ivzb.github_browser.ui.main.MainActivity
 import com.ivzb.github_browser.ui.main.MainActivityModule
 import dagger.Module
@@ -16,6 +18,10 @@ import dagger.android.ContributesAndroidInjector
  */
 @Module
 abstract class ActivityBindingModule {
+
+    @ActivityScoped
+    @ContributesAndroidInjector(modules = [LauncherModule::class])
+    internal abstract fun launcherActivity(): LauncherActivity
 
     @ActivityScoped
     @ContributesAndroidInjector(
