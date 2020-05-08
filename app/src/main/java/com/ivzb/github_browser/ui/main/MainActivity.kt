@@ -14,27 +14,15 @@ class MainActivity : DaggerAppCompatActivity() {
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
 
-    private lateinit var viewModel: MainViewModel
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        viewModel = provideViewModel(viewModelFactory)
+        val viewModel: MainViewModel = provideViewModel(viewModelFactory)
 
         setContentView(R.layout.activity_main)
     }
 
-    override fun onNewIntent(intent: Intent?) {
-        super.onNewIntent(intent)
-
-        intent?.data?.getQueryParameter(CODE)?.let {
-            viewModel.sendCode(it)
-        }
-    }
-
     companion object {
-
-        private const val CODE = "code"
 
         fun start(context: Context) {
             context.startActivity(Intent(context, MainActivity::class.java))

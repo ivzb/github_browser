@@ -2,6 +2,7 @@ package com.ivzb.github_browser.di
 
 import com.ivzb.github_browser.ui.launcher.LauncherActivity
 import com.ivzb.github_browser.ui.launcher.LauncherModule
+import com.ivzb.github_browser.ui.login.LoginActivity
 import com.ivzb.github_browser.ui.login.LoginModule
 import com.ivzb.github_browser.ui.main.MainActivity
 import com.ivzb.github_browser.ui.main.MainModule
@@ -26,10 +27,13 @@ abstract class ActivityBindingModule {
     internal abstract fun launcherActivity(): LauncherActivity
 
     @ActivityScoped
+    @ContributesAndroidInjector(modules = [LoginModule::class])
+    internal abstract fun loginActivity(): LoginActivity
+
+    @ActivityScoped
     @ContributesAndroidInjector(
         modules = [
             MainModule::class,
-            LoginModule::class,
             UserProfileModule::class
         ]
     )

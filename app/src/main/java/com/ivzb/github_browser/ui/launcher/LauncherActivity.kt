@@ -2,6 +2,7 @@ package com.ivzb.github_browser.ui.launcher
 
 import android.os.Bundle
 import androidx.lifecycle.ViewModelProvider
+import com.ivzb.github_browser.ui.login.LoginActivity
 import com.ivzb.github_browser.ui.main.MainActivity
 import com.ivzb.github_browser.util.provideViewModel
 import dagger.android.support.DaggerAppCompatActivity
@@ -20,7 +21,7 @@ class LauncherActivity : DaggerAppCompatActivity() {
 
         val viewModel: LauncherViewModel = provideViewModel(viewModelFactory)
 
-        MainActivity.start(this)
+        LoginActivity.start(this)
         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
         finish()
     }
