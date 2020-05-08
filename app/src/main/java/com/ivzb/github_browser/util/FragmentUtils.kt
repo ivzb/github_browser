@@ -11,4 +11,4 @@ inline fun <reified VM : ViewModel> FragmentActivity.provideViewModel(
 
 inline fun <reified VM : ViewModel> Fragment.provideViewModel(
     viewModelFactory: ViewModelProvider.Factory
-): VM = ViewModelProvider(this, viewModelFactory).get(VM::class.java)
+): VM = ViewModelProvider(requireActivity(), viewModelFactory).get(VM::class.java)

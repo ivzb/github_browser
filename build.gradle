@@ -14,7 +14,7 @@ buildscript {
         navigationVersion = '2.2.2'
         okhttpVersion = '4.3.1'
         retrofitVersion = '2.7.0'
-        retrofitConverterSimpleXmlVersion = '2.8.1'
+        retrofitConverterGsonVersion = '2.5.0'
         junitVersion = '4.12'
         extJunitVersion = '1.1.0'
         espressoVersion = '3.1.1'

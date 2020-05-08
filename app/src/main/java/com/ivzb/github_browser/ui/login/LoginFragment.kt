@@ -2,16 +2,17 @@ package com.ivzb.github_browser.ui.login
 
 import android.content.Intent
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.ivzb.github_browser.BuildConfig
 import com.ivzb.github_browser.databinding.FragmentLoginBinding
 import com.ivzb.github_browser.domain.EventObserver
+import com.ivzb.github_browser.ui.main.MainViewModel
 import com.ivzb.github_browser.util.provideViewModel
 import dagger.android.support.DaggerFragment
 import javax.inject.Inject
@@ -28,6 +29,7 @@ class LoginFragment : DaggerFragment() {
     ): View? {
 
         val loginViewModel: LoginViewModel = provideViewModel(viewModelFactory)
+        val mainViewModel: MainViewModel = provideViewModel(viewModelFactory)
 
         val binding: FragmentLoginBinding = FragmentLoginBinding.inflate(inflater, container, false).apply {
             viewModel = loginViewModel
@@ -36,6 +38,14 @@ class LoginFragment : DaggerFragment() {
 
         loginViewModel.loginClick.observe(viewLifecycleOwner, EventObserver {
             openGithubAuthorization()
+        })
+
+        loginViewModel.accessToken.observe(viewLifecycleOwner, Observer {
+            Toast.makeText(requireContext(), "access token loaded", Toast.LENGTH_LONG).show()
+        })
+
+        mainViewModel.code.observe(viewLifecycleOwner, Observer { code ->
+            loginViewModel.getAccessToken(BuildConfig.client_id, BuildConfig.client_secret, code)
         })
 
         return binding.root

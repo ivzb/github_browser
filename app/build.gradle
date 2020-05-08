@@ -25,6 +25,7 @@ android {
             buildConfigField("String", "redirect_uri", '"github-browser://callback"')
             buildConfigField("String", "authorization_scheme", '"https"')
             buildConfigField("String", "authorization_path", '"github.com/login/oauth/authorize"')
+            buildConfigField("String", "base_url", '"https://github.com/"')
         }
 
         release {
@@ -36,6 +37,7 @@ android {
             buildConfigField("String", "redirect_uri", '"github-browser://callback"')
             buildConfigField("String", "authorization_scheme", '"https"')
             buildConfigField("String", "authorization_path", '"github.com/login/oauth/authorize"')
+            buildConfigField("String", "base_url", '"https://github.com/"')
         }
     }
 
@@ -81,7 +83,7 @@ dependencies {
     implementation "com.squareup.okhttp3:okhttp:$rootProject.okhttpVersion"
     implementation "com.squareup.okhttp3:logging-interceptor:$rootProject.okhttpVersion"
     implementation "com.squareup.retrofit2:retrofit:$rootProject.retrofitVersion"
-    implementation "com.squareup.retrofit2:converter-simplexml:$retrofitConverterSimpleXmlVersion"
+    implementation "com.squareup.retrofit2:converter-gson:$retrofitConverterGsonVersion"
 
     // Unit tests
     testImplementation "junit:junit:$junitVersion"
