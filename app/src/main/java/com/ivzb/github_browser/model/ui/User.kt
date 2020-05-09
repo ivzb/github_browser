@@ -7,5 +7,6 @@ data class User(
     val avatarUrl: String,
     val repos: Int,
     val followers: Int,
-    val following: Int
+    val following: Int,
+    val contributions: Int
 )

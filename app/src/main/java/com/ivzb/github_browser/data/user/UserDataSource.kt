@@ -11,4 +11,6 @@ interface UserDataSource {
     fun getFollowing(user: String): List<User>?
 
     fun getFollowers(user: String): List<User>?
+
+    fun getContributors(repo: String): List<User>?
 }

@@ -24,7 +24,10 @@ data class UserResponse(
     val followers: Int,
 
     @SerializedName("following")
-    val following: Int
+    val following: Int,
+
+    @SerializedName("contributions")
+    val contributions: Int
 ) {
 
     fun asUser() = User(
@@ -34,6 +37,7 @@ data class UserResponse(
         avatarUrl = this.avatarUrl,
         repos = this.repos,
         followers = this.followers,
-        following = this.following
+        following = this.following,
+        contributions = this.contributions
     )
 }

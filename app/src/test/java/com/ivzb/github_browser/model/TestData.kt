@@ -27,7 +27,8 @@ object TestData {
         avatarUrl = "https://avatars1.githubusercontent.com/u/7501124?v=4",
         repos = 41,
         followers = 12,
-        following = 79
+        following = 79,
+        contributions = 5
     )
 
     val users = listOf(user)

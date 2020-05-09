@@ -21,4 +21,8 @@ interface UserAPI {
     @Headers("Accept: application/json")
     @GET("users/{user}/followers")
     fun getFollowers(@Path("user") user: String): Call<List<UserResponse>>
+
+    @Headers("Accept: application/json")
+    @GET("repos/{repo}/contributors")
+    fun getContributors(@Path("repo", encoded = true) repo: String): Call<List<UserResponse>>
 }

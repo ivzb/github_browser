@@ -11,6 +11,7 @@ import com.ivzb.github_browser.domain.successOr
 import com.ivzb.github_browser.model.ui.Repo
 import com.ivzb.github_browser.ui.Empty
 import com.ivzb.github_browser.ui.NoConnection
+import com.ivzb.github_browser.util.checkAllMatched
 import com.ivzb.github_browser.util.map
 import javax.inject.Inject
 
@@ -44,8 +45,7 @@ class ReposViewModel @Inject constructor(
         when (type) {
             ReposType.Own -> getOwnReposUseCase(user, getReposResult)
             ReposType.Starred -> getStarredReposUseCase(user, getReposResult)
-        }
-
+        }.checkAllMatched
     }
 
     fun click(repo: Repo) {

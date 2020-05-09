@@ -7,9 +7,12 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import com.ivzb.github_browser.R
 import com.ivzb.github_browser.databinding.FragmentRepoProfileBinding
 import com.ivzb.github_browser.domain.EventObserver
+import com.ivzb.github_browser.ui.user_profile.UserProfileFragmentDirections.Companion.toUsers
+import com.ivzb.github_browser.ui.users.UsersType
 import com.ivzb.github_browser.util.provideViewModel
 import com.ivzb.github_browser.util.showErrorMessage
 import com.ivzb.github_browser.util.updateTitle
@@ -57,5 +60,5 @@ class RepoProfileFragment : DaggerFragment() {
     }
 
     private fun openContributors(repo: String) =
-        Toast.makeText(requireContext(), getString(R.string.contributors), Toast.LENGTH_SHORT).show()
+        findNavController().navigate(toUsers(repo, UsersType.Contributors))
 }

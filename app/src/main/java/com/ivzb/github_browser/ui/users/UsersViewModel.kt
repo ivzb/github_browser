@@ -6,17 +6,20 @@ import androidx.lifecycle.ViewModel
 import com.ivzb.github_browser.domain.Event
 import com.ivzb.github_browser.domain.Result
 import com.ivzb.github_browser.domain.successOr
+import com.ivzb.github_browser.domain.user.GetContributorsUseCase
 import com.ivzb.github_browser.domain.user.GetFollowersUseCase
 import com.ivzb.github_browser.domain.user.GetFollowingUseCase
 import com.ivzb.github_browser.model.ui.User
 import com.ivzb.github_browser.ui.Empty
 import com.ivzb.github_browser.ui.NoConnection
+import com.ivzb.github_browser.util.checkAllMatched
 import com.ivzb.github_browser.util.map
 import javax.inject.Inject
 
 class UsersViewModel @Inject constructor(
     private val getFollowingUseCase: GetFollowingUseCase,
-    private val getFollowersUseCase: GetFollowersUseCase
+    private val getFollowersUseCase: GetFollowersUseCase,
+    private val getContributorsUseCase: GetContributorsUseCase
 ) : ViewModel() {
 
     val loading = MutableLiveData<Event<Boolean>>()
@@ -44,7 +47,8 @@ class UsersViewModel @Inject constructor(
         when (type) {
             UsersType.Following -> getFollowingUseCase(user, getUsersResult)
             UsersType.Followers -> getFollowersUseCase(user, getUsersResult)
-        }
+            UsersType.Contributors -> getContributorsUseCase(user, getUsersResult)
+        }.checkAllMatched
     }
 
     fun click(user: User) {

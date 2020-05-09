@@ -15,6 +15,7 @@ import com.ivzb.github_browser.ui.repos.ReposType
 import com.ivzb.github_browser.ui.user_profile.UserProfileFragmentDirections.Companion.toRepos
 import com.ivzb.github_browser.ui.user_profile.UserProfileFragmentDirections.Companion.toUsers
 import com.ivzb.github_browser.ui.users.UsersType
+import com.ivzb.github_browser.util.checkAllMatched
 import com.ivzb.github_browser.util.provideViewModel
 import com.ivzb.github_browser.util.showErrorMessage
 import com.ivzb.github_browser.util.updateTitle
@@ -56,7 +57,7 @@ class UserProfileFragment : DaggerFragment() {
                 UserProfileEvent.Starred -> openStarred(user)
                 UserProfileEvent.Following -> openFollowing(user)
                 UserProfileEvent.Followers -> openFollowers(user)
-            }
+            }.checkAllMatched
         })
 
         requireArguments().apply {

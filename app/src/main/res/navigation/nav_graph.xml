@@ -55,6 +55,9 @@
             android:name="repo"
             app:argType="string" />
 
+        <action
+            android:id="@+id/to_users"
+            app:destination="@id/navigation_users" />
     </fragment>
 
     <fragment
