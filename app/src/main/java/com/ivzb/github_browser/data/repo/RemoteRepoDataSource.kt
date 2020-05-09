@@ -10,12 +10,22 @@ class RemoteRepoDataSource @Inject constructor(
     private val retrofit: Retrofit
 ) : RepoDataSource {
 
-    override fun getRepos(user: String): List<Repo>? {
+    override fun getOwnRepos(user: String): List<Repo>? {
         if (!networkUtils.hasNetworkConnection()) {
             return null
         }
 
-        val response = retrofit.create<RepoAPI>(RepoAPI::class.java).getRepos(user).execute()
+        val response = retrofit.create<RepoAPI>(RepoAPI::class.java).getOwnRepos(user).execute()
+
+        return response.body()?.map { it.asRepo() }
+    }
+
+    override fun getStarredRepos(user: String): List<Repo>? {
+        if (!networkUtils.hasNetworkConnection()) {
+            return null
+        }
+
+        val response = retrofit.create<RepoAPI>(RepoAPI::class.java).getStarredRepos(user).execute()
 
         return response.body()?.map { it.asRepo() }
     }

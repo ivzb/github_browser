@@ -8,6 +8,7 @@
     <string name="repositories_count">Repositories (%d)</string>
     <string name="stars">Stars</string>
     <string name="stars_count">%d stars</string>
+    <string name="starred">Starred</string>
     <string name="following">Following</string>
     <string name="following_count">Following (%d)</string>
     <string name="followers">Followers</string>

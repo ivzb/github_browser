@@ -68,7 +68,7 @@
                 android:textAppearance="?textAppearanceListItem"
                 app:goneUnless="@{!repo.description.empty}"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/ic_star"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tv_name"
                 tools:text="Type-safe HTTP client for Android and Java by Square, Inc." />

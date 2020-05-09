@@ -5,7 +5,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.ivzb.github_browser.domain.Event
 import com.ivzb.github_browser.domain.Result
-import com.ivzb.github_browser.domain.repo.GetReposUseCase
+import com.ivzb.github_browser.domain.repo.GetOwnReposUseCase
+import com.ivzb.github_browser.domain.repo.GetStarredReposUseCase
 import com.ivzb.github_browser.domain.successOr
 import com.ivzb.github_browser.model.ui.Repo
 import com.ivzb.github_browser.ui.Empty
@@ -14,7 +15,8 @@ import com.ivzb.github_browser.util.map
 import javax.inject.Inject
 
 class ReposViewModel @Inject constructor(
-    private val getReposUseCase: GetReposUseCase
+    private val getOwnReposUseCase: GetOwnReposUseCase,
+    private val getStarredReposUseCase: GetStarredReposUseCase
 ) : ViewModel() {
 
     val loading = MutableLiveData<Event<Boolean>>()
@@ -36,9 +38,14 @@ class ReposViewModel @Inject constructor(
         }
     }
 
-    fun getRepos(user: String) {
+    fun getRepos(user: String, type: ReposType) {
         loading.postValue(Event(true))
-        getReposUseCase(user, getReposResult)
+
+        when (type) {
+            ReposType.Own -> getOwnReposUseCase(user, getReposResult)
+            ReposType.Starred -> getStarredReposUseCase(user, getReposResult)
+        }
+
     }
 
     fun click(repo: Repo) {

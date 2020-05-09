@@ -11,6 +11,7 @@ import androidx.navigation.fragment.findNavController
 import com.ivzb.github_browser.R
 import com.ivzb.github_browser.databinding.FragmentUserProfileBinding
 import com.ivzb.github_browser.domain.EventObserver
+import com.ivzb.github_browser.ui.repos.ReposType
 import com.ivzb.github_browser.ui.user_profile.UserProfileFragmentDirections.Companion.toRepos
 import com.ivzb.github_browser.ui.user_profile.UserProfileFragmentDirections.Companion.toUsers
 import com.ivzb.github_browser.ui.users.UsersType
@@ -52,7 +53,7 @@ class UserProfileFragment : DaggerFragment() {
 
             when (event) {
                 UserProfileEvent.Repositories -> openRepositories(user)
-                UserProfileEvent.Stars -> openStars(user)
+                UserProfileEvent.Starred -> openStarred(user)
                 UserProfileEvent.Following -> openFollowing(user)
                 UserProfileEvent.Followers -> openFollowers(user)
             }
@@ -68,10 +69,10 @@ class UserProfileFragment : DaggerFragment() {
     }
 
     private fun openRepositories(user: String) =
-        findNavController().navigate(toRepos(user))
+        findNavController().navigate(toRepos(user, ReposType.Own))
 
-    private fun openStars(user: String) =
-        Toast.makeText(requireContext(), getString(R.string.stars), Toast.LENGTH_SHORT).show()
+    private fun openStarred(user: String) =
+        findNavController().navigate(toRepos(user, ReposType.Starred))
 
     private fun openFollowing(user: String) =
         findNavController().navigate(toUsers(user, UsersType.Following))

@@ -48,8 +48,8 @@ class UserProfileViewModel @Inject constructor(
     fun repositoriesClick(user: String) =
         userProfileEvent.postValue(Event(Pair(UserProfileEvent.Repositories, user)))
 
-    fun starsClick(user: String) =
-        userProfileEvent.postValue(Event(Pair(UserProfileEvent.Stars, user)))
+    fun starredClick(user: String) =
+        userProfileEvent.postValue(Event(Pair(UserProfileEvent.Starred, user)))
 
     fun followingClick(user: String) =
         userProfileEvent.postValue(Event(Pair(UserProfileEvent.Following, user)))
@@ -64,7 +64,7 @@ class UserProfileViewModel @Inject constructor(
 
 enum class UserProfileEvent {
     Repositories,
-    Stars,
+    Starred,
     Following,
     Followers
 }

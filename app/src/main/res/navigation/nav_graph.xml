@@ -67,6 +67,10 @@
             android:name="user"
             app:argType="string" />
 
+        <argument
+            android:name="type"
+            app:argType="com.ivzb.github_browser.ui.repos.ReposType" />
+
         <action
             android:id="@+id/to_repo_profile"
             app:destination="@id/navigation_repo_profile" />

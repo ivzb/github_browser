@@ -168,11 +168,11 @@ class UserProfileViewModelTest {
         val viewModel = UserProfileViewModel(getCurrentUserUseCase, getUserUseCase)
 
         // When login is clicked
-        viewModel.starsClick(TestData.user.login)
+        viewModel.starredClick(TestData.user.login)
 
         // Then event should be emitted
         val userProfileEvent = LiveDataTestUtil.getValue(viewModel.userProfileEvent)
-        assertThat(userProfileEvent?.getContentIfNotHandled(), `is`(CoreMatchers.equalTo(Pair(UserProfileEvent.Stars, TestData.user.login))))
+        assertThat(userProfileEvent?.getContentIfNotHandled(), `is`(CoreMatchers.equalTo(Pair(UserProfileEvent.Starred, TestData.user.login))))
     }
 
     @Test

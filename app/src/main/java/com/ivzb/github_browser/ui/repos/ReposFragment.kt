@@ -49,11 +49,12 @@ class ReposFragment : DaggerFragment() {
         })
 
         requireArguments().apply {
-            val user = ReposFragmentArgs.fromBundle(this).user
+            val (user, type) = ReposFragmentArgs.fromBundle(this)
             binding.user = user
-            reposViewModel.getRepos(user)
+            binding.type = type
+            reposViewModel.getRepos(user, type)
 
-            updateTitle("$user repos")
+            updateTitle("$user ${type.toString().toLowerCase()} repos")
         }
 
         return binding.root
