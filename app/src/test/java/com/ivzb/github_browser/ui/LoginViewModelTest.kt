@@ -7,6 +7,7 @@ import com.ivzb.github_browser.domain.login.GetAccessTokenUseCase
 import com.ivzb.github_browser.domain.login.SaveAccessTokenUseCase
 import com.ivzb.github_browser.model.TestData
 import com.ivzb.github_browser.ui.login.LoginViewModel
+import com.ivzb.github_browser.ui.login.LoginViewModel.Companion.COULD_NOT_LOGIN
 import com.ivzb.github_browser.util.LiveDataTestUtil
 import com.ivzb.github_browser.util.SyncTaskExecutorRule
 import com.nhaarman.mockito_kotlin.*
@@ -47,22 +48,19 @@ class LoginViewModelTest {
         // Then loading and login event should be emitted
         val loadingEvent = LiveDataTestUtil.getValue(viewModel.loginClick)
         assertThat(loadingEvent?.getContentIfNotHandled(), `is`(CoreMatchers.equalTo(true)))
-
-        val loginClickEvent = LiveDataTestUtil.getValue(viewModel.loginClick)
-        assertThat(loginClickEvent?.peekContent(), `is`(CoreMatchers.equalTo(true)))
     }
 
     @Test
     fun getAccessToken_succeedsAndUpdatesPrefs() {
         // Given a ViewModel
-        val parameters = TestData.accessTokenParameters
+        val (clientId, clientSecret, code) = TestData.accessTokenParameters
 
         val loginRepository = mock<LoginRepository> {
             on {
                 getAccessToken(
-                    eq(parameters.clientId),
-                    eq(parameters.clientSecret),
-                    eq(parameters.code)
+                    eq(clientId),
+                    eq(clientSecret),
+                    eq(code)
                 )
             }.thenReturn(TestData.accessToken)
         }
@@ -74,7 +72,7 @@ class LoginViewModelTest {
         val viewModel = LoginViewModel(getAccessTokenUseCase, saveAccessTokenUseCase)
 
         // When access token is requested
-        viewModel.getAccessToken(parameters)
+        viewModel.getAccessToken(clientId, clientSecret, code)
 
         // Check that data was loaded correctly and prefs were updated
         val accessToken = LiveDataTestUtil.getValue(viewModel.accessToken)
@@ -89,14 +87,14 @@ class LoginViewModelTest {
     @Test
     fun getAccessToken_failsAndSendsErrorMessage() {
         // Given a ViewModel
-        val parameters = TestData.accessTokenParameters
+        val (clientId, clientSecret, code) = TestData.accessTokenParameters
 
         val loginRepository = mock<LoginRepository> {
             on {
                 getAccessToken(
-                    eq(parameters.clientId),
-                    eq(parameters.clientSecret),
-                    eq(parameters.code)
+                    eq(clientId),
+                    eq(clientSecret),
+                    eq(code)
                 )
             }.thenReturn(null)
         }
@@ -108,7 +106,7 @@ class LoginViewModelTest {
         val viewModel = LoginViewModel(getAccessTokenUseCase, saveAccessTokenUseCase)
 
         // When access token is requested and fails
-        viewModel.getAccessToken(parameters)
+        viewModel.getAccessToken(clientId, clientSecret, code)
 
         // Check that data was loaded correctly and error was sent
         val accessToken = LiveDataTestUtil.getValue(viewModel.accessToken)
@@ -118,7 +116,36 @@ class LoginViewModelTest {
         assertThat(loadingEvent?.getContentIfNotHandled(), `is`(CoreMatchers.equalTo(false)))
 
         val errorMessage = LiveDataTestUtil.getValue(viewModel.errorMessage)
-        assertThat(errorMessage?.getContentIfNotHandled(), `is`(CoreMatchers.equalTo("Couldn't login. Please try again.")))
+        assertThat(errorMessage?.getContentIfNotHandled(), `is`(CoreMatchers.equalTo(COULD_NOT_LOGIN)))
+
+        verifyZeroInteractions(prefs)
+    }
+
+    @Test
+    fun getAccessToken_emptyCodeSendsErrorMessage() {
+        // Given a ViewModel
+        val (clientId, clientSecret, _) = TestData.accessTokenParameters
+
+        val loginRepository = mock<LoginRepository>()
+        val getAccessTokenUseCase = GetAccessTokenUseCase(loginRepository)
+
+        val prefs = mock<PreferenceStorage>()
+        val saveAccessTokenUseCase = SaveAccessTokenUseCase(prefs)
+
+        val viewModel = LoginViewModel(getAccessTokenUseCase, saveAccessTokenUseCase)
+
+        // When access token is requested with code null
+        viewModel.getAccessToken(clientId, clientSecret, null)
+
+        // Check that error was sent
+        val accessToken = LiveDataTestUtil.getValue(viewModel.accessToken)
+        assertTrue(accessToken == null)
+
+        val loadingEvent = LiveDataTestUtil.getValue(viewModel.loading)
+        assertTrue(loadingEvent == null)
+
+        val errorMessage = LiveDataTestUtil.getValue(viewModel.errorMessage)
+        assertThat(errorMessage?.getContentIfNotHandled(), `is`(CoreMatchers.equalTo(COULD_NOT_LOGIN)))
 
         verifyZeroInteractions(prefs)
     }

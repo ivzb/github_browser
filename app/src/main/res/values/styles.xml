@@ -9,7 +9,7 @@
     </style>
 
     <!-- Launcher screen theme. -->
-    <style name="AppTheme.Launcher">
+    <style name="AppTheme.Launcher" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:windowBackground">@drawable/launcher</item>
     </style>
 

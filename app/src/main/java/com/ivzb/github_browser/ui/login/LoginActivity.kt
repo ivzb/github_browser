@@ -53,11 +53,8 @@ class LoginActivity : DaggerAppCompatActivity() {
     override fun onNewIntent(intent: Intent?) {
         super.onNewIntent(intent)
 
-        intent?.data?.getQueryParameter(CODE)?.let { code ->
-            loginViewModel.getAccessToken(
-                AccessTokenParameters(BuildConfig.client_id, BuildConfig.client_secret, code)
-            )
-        }
+        val code = intent?.data?.getQueryParameter(CODE)
+        loginViewModel.getAccessToken(BuildConfig.client_id, BuildConfig.client_secret, code)
     }
 
     private fun openGithubAuthorization() {

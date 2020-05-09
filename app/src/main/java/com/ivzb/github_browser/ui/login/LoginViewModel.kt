@@ -39,11 +39,22 @@ class LoginViewModel @Inject constructor(
     }
 
     fun doLogin() {
-        loading.postValue(Event(true))
         loginClick.postValue(Event(true))
     }
 
-    fun getAccessToken(parameters: AccessTokenParameters) {
-        getAccessTokenUseCase(parameters, getAccessTokenResult)
+    fun getAccessToken(clientId: String, clientSecret: String, code: String?) =
+        when (code) {
+            null -> errorMessage.postValue(Event(COULD_NOT_LOGIN))
+
+            else -> {
+                loading.postValue(Event(true))
+                val parameters = AccessTokenParameters(clientId, clientSecret, code)
+                getAccessTokenUseCase(parameters, getAccessTokenResult)
+            }
+        }
+
+    companion object {
+
+        const val COULD_NOT_LOGIN = "Couldn't login. Please try again."
     }
 }
