@@ -9,5 +9,22 @@
         android:id="@+id/navigation_user_profile"
         android:name="com.ivzb.github_browser.ui.user_profile.UserProfileFragment"
         android:label="@string/user_profile"
-        tools:layout="@layout/fragment_user_profile" />
+        tools:layout="@layout/fragment_user_profile">
+
+        <action
+            android:id="@+id/to_repos"
+            app:destination="@id/navigation_repos" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_repos"
+        android:name="com.ivzb.github_browser.ui.repos.ReposFragment"
+        android:label="@string/repositories"
+        tools:layout="@layout/fragment_repos">
+
+        <argument
+            android:name="user"
+            app:argType="string" />
+
+    </fragment>
 </navigation>

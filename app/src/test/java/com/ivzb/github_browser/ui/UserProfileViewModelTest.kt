@@ -1,14 +1,9 @@
 package com.ivzb.github_browser.ui
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import com.ivzb.github_browser.data.login.LoginRepository
-import com.ivzb.github_browser.data.preference.PreferenceStorage
 import com.ivzb.github_browser.data.user.UserRepository
-import com.ivzb.github_browser.domain.login.GetAccessTokenUseCase
-import com.ivzb.github_browser.domain.login.SaveAccessTokenUseCase
 import com.ivzb.github_browser.domain.user.GetCurrentUserUseCase
 import com.ivzb.github_browser.model.TestData
-import com.ivzb.github_browser.ui.login.LoginViewModel
 import com.ivzb.github_browser.ui.user_profile.UserProfileEvent
 import com.ivzb.github_browser.ui.user_profile.UserProfileViewModel
 import com.ivzb.github_browser.ui.user_profile.UserProfileViewModel.Companion.COULD_NOT_GET_USER
@@ -95,11 +90,11 @@ class UserProfileViewModelTest {
         val viewModel = UserProfileViewModel(getCurrentUserUseCase)
 
         // When login is clicked
-        viewModel.repositoriesClick()
+        viewModel.repositoriesClick(TestData.user.login)
 
         // Then event should be emitted
         val userProfileEvent = LiveDataTestUtil.getValue(viewModel.userProfileEvent)
-        assertThat(userProfileEvent?.getContentIfNotHandled(), `is`(CoreMatchers.equalTo(UserProfileEvent.Repositories)))
+        assertThat(userProfileEvent?.getContentIfNotHandled(), `is`(CoreMatchers.equalTo(Pair(UserProfileEvent.Repositories, TestData.user.login))))
     }
 
     @Test
@@ -111,11 +106,11 @@ class UserProfileViewModelTest {
         val viewModel = UserProfileViewModel(getCurrentUserUseCase)
 
         // When login is clicked
-        viewModel.starsClick()
+        viewModel.starsClick(TestData.user.login)
 
         // Then event should be emitted
         val userProfileEvent = LiveDataTestUtil.getValue(viewModel.userProfileEvent)
-        assertThat(userProfileEvent?.getContentIfNotHandled(), `is`(CoreMatchers.equalTo(UserProfileEvent.Stars)))
+        assertThat(userProfileEvent?.getContentIfNotHandled(), `is`(CoreMatchers.equalTo(Pair(UserProfileEvent.Stars, TestData.user.login))))
     }
 
     @Test
@@ -127,11 +122,11 @@ class UserProfileViewModelTest {
         val viewModel = UserProfileViewModel(getCurrentUserUseCase)
 
         // When login is clicked
-        viewModel.followingClick()
+        viewModel.followingClick(TestData.user.login)
 
         // Then event should be emitted
         val userProfileEvent = LiveDataTestUtil.getValue(viewModel.userProfileEvent)
-        assertThat(userProfileEvent?.getContentIfNotHandled(), `is`(CoreMatchers.equalTo(UserProfileEvent.Following)))
+        assertThat(userProfileEvent?.getContentIfNotHandled(), `is`(CoreMatchers.equalTo(Pair(UserProfileEvent.Following, TestData.user.login))))
     }
 
     @Test
@@ -143,10 +138,10 @@ class UserProfileViewModelTest {
         val viewModel = UserProfileViewModel(getCurrentUserUseCase)
 
         // When login is clicked
-        viewModel.followersClick()
+        viewModel.followersClick(TestData.user.login)
 
         // Then event should be emitted
         val userProfileEvent = LiveDataTestUtil.getValue(viewModel.userProfileEvent)
-        assertThat(userProfileEvent?.getContentIfNotHandled(), `is`(CoreMatchers.equalTo(UserProfileEvent.Followers)))
+        assertThat(userProfileEvent?.getContentIfNotHandled(), `is`(CoreMatchers.equalTo(Pair(UserProfileEvent.Followers, TestData.user.login))))
     }
 }

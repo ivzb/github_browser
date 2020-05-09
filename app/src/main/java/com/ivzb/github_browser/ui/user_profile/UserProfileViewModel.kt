@@ -19,7 +19,7 @@ class UserProfileViewModel @Inject constructor(
     val error = MutableLiveData<Event<String>>()
     val user: LiveData<User?>
 
-    val userProfileEvent: MutableLiveData<Event<UserProfileEvent>> = MutableLiveData()
+    val userProfileEvent: MutableLiveData<Event<Pair<UserProfileEvent, String>>> = MutableLiveData()
 
     private val getCurrentUserResult = MutableLiveData<Result<User?>>()
 
@@ -51,13 +51,17 @@ class UserProfileViewModel @Inject constructor(
         }
     }
 
-    fun repositoriesClick() = userProfileEvent.postValue(Event(UserProfileEvent.Repositories))
+    fun repositoriesClick(user: String) =
+        userProfileEvent.postValue(Event(Pair(UserProfileEvent.Repositories, user)))
 
-    fun starsClick() = userProfileEvent.postValue(Event(UserProfileEvent.Stars))
+    fun starsClick(user: String) =
+        userProfileEvent.postValue(Event(Pair(UserProfileEvent.Stars, user)))
 
-    fun followingClick() = userProfileEvent.postValue(Event(UserProfileEvent.Following))
+    fun followingClick(user: String) =
+        userProfileEvent.postValue(Event(Pair(UserProfileEvent.Following, user)))
 
-    fun followersClick() = userProfileEvent.postValue(Event(UserProfileEvent.Followers))
+    fun followersClick(user: String) =
+        userProfileEvent.postValue(Event(Pair(UserProfileEvent.Followers, user)))
 
     companion object {
         const val COULD_NOT_GET_USER = "Couldn't get user. Please try again."

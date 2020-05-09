@@ -6,6 +6,7 @@ import com.ivzb.github_browser.ui.login.LoginActivity
 import com.ivzb.github_browser.ui.login.LoginModule
 import com.ivzb.github_browser.ui.main.MainActivity
 import com.ivzb.github_browser.ui.main.MainModule
+import com.ivzb.github_browser.ui.repos.ReposModule
 import com.ivzb.github_browser.ui.user_profile.UserProfileModule
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
@@ -34,7 +35,8 @@ abstract class ActivityBindingModule {
     @ContributesAndroidInjector(
         modules = [
             MainModule::class,
-            UserProfileModule::class
+            UserProfileModule::class,
+            ReposModule::class
         ]
     )
     internal abstract fun mainActivity(): MainActivity

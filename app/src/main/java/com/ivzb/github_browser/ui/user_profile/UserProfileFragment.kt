@@ -7,10 +7,13 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import com.ivzb.github_browser.R
 import com.ivzb.github_browser.databinding.FragmentUserProfileBinding
 import com.ivzb.github_browser.domain.EventObserver
+import com.ivzb.github_browser.ui.user_profile.UserProfileFragmentDirections.Companion.toRepos
 import com.ivzb.github_browser.util.provideViewModel
+import com.ivzb.github_browser.util.updateTitle
 import dagger.android.support.DaggerFragment
 import javax.inject.Inject
 
@@ -32,22 +35,22 @@ class UserProfileFragment : DaggerFragment() {
             lifecycleOwner = viewLifecycleOwner
         }
 
-        userProfileViewModel.user.observe(viewLifecycleOwner, Observer {
-            it?.let {
-                Toast.makeText(requireContext(), "User loaded", Toast.LENGTH_SHORT).show()
-            }
+        userProfileViewModel.user.observe(viewLifecycleOwner, Observer { user ->
+            user?.let { updateTitle("${user.login} profile") }
         })
 
         userProfileViewModel.error.observe(viewLifecycleOwner, Observer {
             showErrorMessage(it.peekContent())
         })
 
-        userProfileViewModel.userProfileEvent.observe(viewLifecycleOwner, EventObserver { event ->
+        userProfileViewModel.userProfileEvent.observe(viewLifecycleOwner, EventObserver {
+            val (event, user) = it
+
             when (event) {
-                UserProfileEvent.Repositories -> openRepositories()
-                UserProfileEvent.Stars -> openStars()
-                UserProfileEvent.Following -> openFollowing()
-                UserProfileEvent.Followers -> openFollowers()
+                UserProfileEvent.Repositories -> openRepositories(user)
+                UserProfileEvent.Stars -> openStars(user)
+                UserProfileEvent.Following -> openFollowing(user)
+                UserProfileEvent.Followers -> openFollowers(user)
             }
         })
 
@@ -60,19 +63,19 @@ class UserProfileFragment : DaggerFragment() {
         Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
     }
 
-    private fun openRepositories() {
-        Toast.makeText(requireContext(), getString(R.string.repositories), Toast.LENGTH_SHORT).show()
+    private fun openRepositories(user: String) {
+        findNavController().navigate(toRepos(user))
     }
 
-    private fun openStars() {
+    private fun openStars(user: String) {
         Toast.makeText(requireContext(), getString(R.string.stars), Toast.LENGTH_SHORT).show()
     }
 
-    private fun openFollowing() {
+    private fun openFollowing(user: String) {
         Toast.makeText(requireContext(), getString(R.string.following), Toast.LENGTH_SHORT).show()
     }
 
-    private fun openFollowers() {
+    private fun openFollowers(user: String) {
         Toast.makeText(requireContext(), getString(R.string.followers), Toast.LENGTH_SHORT).show()
     }
 }
