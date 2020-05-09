@@ -2,7 +2,9 @@ package com.ivzb.github_browser.model
 
 import com.ivzb.github_browser.domain.login.AccessTokenParameters
 import com.ivzb.github_browser.model.ui.AccessToken
+import com.ivzb.github_browser.model.ui.Repo
 import com.ivzb.github_browser.model.ui.User
+import com.ivzb.github_browser.ui.NoConnection
 
 object TestData {
 
@@ -26,4 +28,18 @@ object TestData {
         followers = 12,
         following = 79
     )
+
+    val repo = Repo(
+        id = 262550983,
+        name = "retrofit",
+        description = "",
+        isFork = true,
+        starsCount = 20,
+        watchersCount = 13,
+        language = "Java"
+    )
+
+    val repos = listOf(repo)
+
+    val noConnection = listOf(NoConnection)
 }

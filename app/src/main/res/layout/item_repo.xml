@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="repo"
+            type="com.ivzb.github_browser.model.ui.Repo" />
+    </data>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cv_repo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/item_margin"
+        android:clickable="true"
+        android:focusable="true"
+        android:foreground="?android:attr/selectableItemBackground">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="@dimen/item_min_height"
+            android:padding="@dimen/item_padding">
+
+            <TextView
+                android:id="@+id/tv_name"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@{ repo.name }"
+                android:textAlignment="viewStart"
+                android:textAppearance="?textAppearanceListItem"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toStartOf="@+id/ic_star"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="retrofit" />
+
+            <ImageView
+                android:id="@+id/ic_star"
+                android:layout_width="22dp"
+                android:layout_height="22dp"
+                android:contentDescription="@string/stars"
+                android:tint="@color/colorOrange"
+                android:src="@drawable/ic_star"
+                app:layout_constraintEnd_toStartOf="@+id/tv_stars"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tv_stars"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@{ String.valueOf(repo.starsCount) }"
+                android:textAlignment="viewStart"
+                android:textAppearance="?textAppearanceListItem"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="5" />
+
+            <TextView
+                android:id="@+id/tv_description"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@{ repo.description }"
+                android:textAlignment="viewStart"
+                android:textAppearance="?textAppearanceListItem"
+                app:goneUnless="@{!repo.description.empty}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/ic_star"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_name"
+                tools:text="Type-safe HTTP client for Android and Java by Square, Inc." />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
+</layout>

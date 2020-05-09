@@ -4,4 +4,6 @@
     <dimen name="loading_size">50dp</dimen>
     <dimen name="card_margin">16dp</dimen>
     <dimen name="item_margin">8dp</dimen>
+    <dimen name="item_padding">16dp</dimen>
+    <dimen name="item_min_height">80dp</dimen>
 </resources>
