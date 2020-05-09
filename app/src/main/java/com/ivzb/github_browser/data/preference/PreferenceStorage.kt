@@ -16,7 +16,6 @@ import kotlin.reflect.KProperty
  */
 interface PreferenceStorage {
     var accessToken: String?
-    var tokenType: String?
 }
 
 /**
@@ -37,12 +36,9 @@ class SharedPreferenceStorage @Inject constructor(context: Context) : Preference
 
     override var accessToken by StringPreference(prefs, PREF_ACCESS_TOKEN)
 
-    override var tokenType by StringPreference(prefs, PREF_TOKEN_TYPE)
-
     companion object {
         const val PREFS_FILE_NAME = "secure_github_browser_store"
         const val PREF_ACCESS_TOKEN = "pref_access_token"
-        const val PREF_TOKEN_TYPE = "pref_token_type"
     }
 }
 

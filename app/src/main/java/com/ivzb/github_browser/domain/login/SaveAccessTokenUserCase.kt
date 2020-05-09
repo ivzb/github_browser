@@ -10,7 +10,6 @@ class SaveAccessTokenUseCase @Inject constructor(
 ) : UseCase<AccessToken, Unit>() {
 
     override fun execute(parameters: AccessToken) {
-        preferenceStorage.accessToken = parameters.accessToken
-        preferenceStorage.tokenType = parameters.tokenType
+        preferenceStorage.accessToken = "$parameters.tokenType $parameters.accessToken"
     }
 }
