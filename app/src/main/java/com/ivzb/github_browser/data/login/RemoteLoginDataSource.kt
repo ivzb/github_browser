@@ -1,6 +1,5 @@
 package com.ivzb.github_browser.data.login
 
-import com.ivzb.github_browser.data.GithubAPI
 import com.ivzb.github_browser.model.ui.AccessToken
 import com.ivzb.github_browser.util.NetworkUtils
 import retrofit2.Retrofit
@@ -20,7 +19,7 @@ class RemoteLoginDataSource @Inject constructor(
             return null
         }
 
-        val response = retrofit.create<GithubAPI>(GithubAPI::class.java)
+        val response = retrofit.create<LoginAPI>(LoginAPI::class.java)
             .getAccessToken(clientId, clientSecret, code).execute()
 
         return response.body()?.asAccessToken()

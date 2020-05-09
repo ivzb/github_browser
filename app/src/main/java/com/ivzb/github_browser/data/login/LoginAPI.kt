@@ -1,13 +1,14 @@
-package com.ivzb.github_browser.data
+package com.ivzb.github_browser.data.login
 
+import com.ivzb.github_browser.BuildConfig
 import com.ivzb.github_browser.model.network.AccessTokenResponse
 import retrofit2.Call
 import retrofit2.http.*
 
-interface GithubAPI {
+interface LoginAPI {
 
     @Headers("Accept: application/json")
-    @POST("login/oauth/access_token")
+    @POST("${BuildConfig.oauth_url}login/oauth/access_token")
     @FormUrlEncoded
     fun getAccessToken(
         @Field("client_id") clientId: String,

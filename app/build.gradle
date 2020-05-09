@@ -25,7 +25,8 @@ android {
             buildConfigField("String", "redirect_uri", '"github-browser://callback"')
             buildConfigField("String", "authorization_scheme", '"https"')
             buildConfigField("String", "authorization_path", '"github.com/login/oauth/authorize"')
-            buildConfigField("String", "base_url", '"https://github.com/"')
+            buildConfigField("String", "oauth_url", '"https://github.com/"')
+            buildConfigField("String", "api_url", '"https://api.github.com/"')
         }
 
         release {
@@ -37,7 +38,8 @@ android {
             buildConfigField("String", "redirect_uri", '"github-browser://callback"')
             buildConfigField("String", "authorization_scheme", '"https"')
             buildConfigField("String", "authorization_path", '"github.com/login/oauth/authorize"')
-            buildConfigField("String", "base_url", '"https://github.com/"')
+            buildConfigField("String", "oauth_url", '"https://github.com/"')
+            buildConfigField("String", "api_url", '"https://api.github.com/"')
         }
     }
 
