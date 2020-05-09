@@ -4,10 +4,12 @@ import com.ivzb.github_browser.ui.launcher.LauncherActivity
 import com.ivzb.github_browser.ui.launcher.LauncherModule
 import com.ivzb.github_browser.ui.login.LoginActivity
 import com.ivzb.github_browser.ui.login.LoginModule
+import com.ivzb.github_browser.ui.logout.LogoutModule
 import com.ivzb.github_browser.ui.main.MainActivity
 import com.ivzb.github_browser.ui.main.MainModule
 import com.ivzb.github_browser.ui.repo_profile.RepoProfileModule
 import com.ivzb.github_browser.ui.repos.ReposModule
+import com.ivzb.github_browser.ui.search.SearchModule
 import com.ivzb.github_browser.ui.user_profile.UserProfileModule
 import com.ivzb.github_browser.ui.users.UsersModule
 import dagger.Module
@@ -40,7 +42,9 @@ abstract class ActivityBindingModule {
             UserProfileModule::class,
             UsersModule::class,
             RepoProfileModule::class,
-            ReposModule::class
+            ReposModule::class,
+            SearchModule::class,
+            LogoutModule::class
         ]
     )
     internal abstract fun mainActivity(): MainActivity

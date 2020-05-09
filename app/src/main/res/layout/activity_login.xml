@@ -16,6 +16,7 @@
 
         <Button
             android:id="@+id/btn_login"
+            style="@style/Widget.AppCompat.Button.Colored"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/login_margin"

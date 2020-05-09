@@ -78,4 +78,16 @@
             android:id="@+id/to_repo_profile"
             app:destination="@id/navigation_repo_profile" />
     </fragment>
+
+    <fragment
+        android:id="@+id/navigation_search"
+        android:name="com.ivzb.github_browser.ui.search.SearchFragment"
+        android:label="@string/search"
+        tools:layout="@layout/fragment_search" />
+
+    <fragment
+        android:id="@+id/navigation_logout"
+        android:name="com.ivzb.github_browser.ui.logout.LogoutFragment"
+        android:label="@string/logout"
+        tools:layout="@layout/fragment_logout" />
 </navigation>

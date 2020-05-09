@@ -146,11 +146,12 @@
 
         <Button
             android:id="@+id/btn_star"
+            style="@style/Widget.AppCompat.Button.Colored"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/card_margin"
-            android:text="@string/star"
             android:onClick="@{ () -> viewModel.star(viewModel.repo) }"
+            android:text="@string/star"
             app:goneUnless="@{ viewModel.repo != null }"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -158,39 +159,27 @@
 
         <Button
             android:id="@+id/btn_unstar"
+            style="@style/Widget.AppCompat.Button.Colored"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/card_margin"
-            android:text="@string/unstar"
             android:onClick="@{ () -> viewModel.unstar(viewModel.repo) }"
+            android:text="@string/unstar"
             app:goneUnless="@{ viewModel.repo != null }"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/btn_star" />
 
-        <androidx.cardview.widget.CardView
-            android:id="@+id/cv_contributors"
+        <Button
+            style="@style/Widget.AppCompat.Button.Colored"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/card_margin"
-            android:clickable="true"
-            android:foreground="?android:attr/selectableItemBackground"
-            android:minHeight="@dimen/profile_min_height"
             android:onClick="@{ () -> viewModel.contributorsClick(viewModel.repo.fullName) }"
+            android:text="@string/contributors"
             app:goneUnless="@{viewModel.repo != null}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/btn_unstar">
-
-            <TextView
-                android:id="@+id/tv_contributors"
-                style="@style/TextAppearance.AppCompat.Headline"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/card_margin"
-                android:text="@string/contributors"
-                tools:text="Contributors" />
-        </androidx.cardview.widget.CardView>
-
+            app:layout_constraintTop_toBottomOf="@+id/btn_unstar" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

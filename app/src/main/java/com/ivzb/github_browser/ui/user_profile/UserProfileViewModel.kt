@@ -45,10 +45,10 @@ class UserProfileViewModel @Inject constructor(
         }
     }
 
-    fun repositoriesClick(user: String) =
+    fun ownReposClick(user: String) =
         emitEvent(UserProfileEvent.Repositories, user)
 
-    fun starredClick(user: String) =
+    fun starredReposClick(user: String) =
         emitEvent(UserProfileEvent.Starred, user)
 
     fun followingClick(user: String) =

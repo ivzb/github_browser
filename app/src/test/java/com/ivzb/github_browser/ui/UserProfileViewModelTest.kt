@@ -142,7 +142,7 @@ class UserProfileViewModelTest {
     }
 
     @Test
-    fun repositoriesClick_emitsEvent() {
+    fun ownReposClick_emitsEvent() {
         // Given a ViewModel
         val userRepository = mock<UserRepository>()
         val getCurrentUserUseCase = GetCurrentUserUseCase(userRepository)
@@ -151,7 +151,7 @@ class UserProfileViewModelTest {
         val viewModel = UserProfileViewModel(getCurrentUserUseCase, getUserUseCase)
 
         // When login is clicked
-        viewModel.repositoriesClick(TestData.user.login)
+        viewModel.ownReposClick(TestData.user.login)
 
         // Then event should be emitted
         val userProfileEvent = LiveDataTestUtil.getValue(viewModel.userProfileEvent)
@@ -159,7 +159,7 @@ class UserProfileViewModelTest {
     }
 
     @Test
-    fun starsClick_emitsEvent() {
+    fun starredReposClick_emitsEvent() {
         // Given a ViewModel
         val userRepository = mock<UserRepository>()
         val getCurrentUserUseCase = GetCurrentUserUseCase(userRepository)
@@ -168,7 +168,7 @@ class UserProfileViewModelTest {
         val viewModel = UserProfileViewModel(getCurrentUserUseCase, getUserUseCase)
 
         // When login is clicked
-        viewModel.starredClick(TestData.user.login)
+        viewModel.starredReposClick(TestData.user.login)
 
         // Then event should be emitted
         val userProfileEvent = LiveDataTestUtil.getValue(viewModel.userProfileEvent)

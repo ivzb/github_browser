@@ -27,4 +27,10 @@
     <string name="contributors">Contributors</string>
     <string name="contributions_count">%d contributions</string>
     <string name="search">Search</string>
+    <string name="home">Home</string>
+    <string name="logout">Logout</string>
+    <string name="sorry_to_see_you_go">Sorry to see you go</string>
+    <string name="own">Own</string>
+    <string name="follow">Follow</string>
+    <string name="follow_info">%s following - %s followers</string>
 </resources>
