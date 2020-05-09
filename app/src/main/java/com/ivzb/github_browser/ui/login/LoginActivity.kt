@@ -66,7 +66,7 @@ class LoginActivity : DaggerAppCompatActivity() {
             path(BuildConfig.authorization_path)
             appendQueryParameter(CLIENT_ID, BuildConfig.client_id)
             appendQueryParameter(REDIRECT_URI, BuildConfig.redirect_uri)
-            appendQueryParameter(SCOPE, REPO)
+            appendQueryParameter(SCOPE, BuildConfig.scope)
             build()
         }
         val intent = Intent(Intent.ACTION_VIEW, uri)
@@ -80,7 +80,7 @@ class LoginActivity : DaggerAppCompatActivity() {
     }
 
     private fun showErrorMessage(message: String) {
-        Toast.makeText(this, message, Toast.LENGTH_LONG).show()
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }
 
     companion object {
@@ -88,7 +88,6 @@ class LoginActivity : DaggerAppCompatActivity() {
         private const val CLIENT_ID = "client_id"
         private const val REDIRECT_URI = "redirect_uri"
         private const val SCOPE = "scope"
-        private const val REPO = "repo"
         private const val CODE = "code"
 
         fun start(context: Context) {

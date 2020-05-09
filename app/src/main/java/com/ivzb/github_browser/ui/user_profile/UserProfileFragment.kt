@@ -7,7 +7,9 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.ivzb.github_browser.R
 import com.ivzb.github_browser.databinding.FragmentUserProfileBinding
+import com.ivzb.github_browser.domain.EventObserver
 import com.ivzb.github_browser.util.provideViewModel
 import dagger.android.support.DaggerFragment
 import javax.inject.Inject
@@ -32,12 +34,21 @@ class UserProfileFragment : DaggerFragment() {
 
         userProfileViewModel.user.observe(viewLifecycleOwner, Observer {
             it?.let {
-                Toast.makeText(requireContext(), "User loaded", Toast.LENGTH_LONG).show()
+                Toast.makeText(requireContext(), "User loaded", Toast.LENGTH_SHORT).show()
             }
         })
 
-        userProfileViewModel.errorMessage.observe(viewLifecycleOwner, Observer {
+        userProfileViewModel.error.observe(viewLifecycleOwner, Observer {
             showErrorMessage(it.peekContent())
+        })
+
+        userProfileViewModel.userProfileEvent.observe(viewLifecycleOwner, EventObserver { event ->
+            when (event) {
+                UserProfileEvent.Repositories -> openRepositories()
+                UserProfileEvent.Stars -> openStars()
+                UserProfileEvent.Following -> openFollowing()
+                UserProfileEvent.Followers -> openFollowers()
+            }
         })
 
         userProfileViewModel.getUser(null)
@@ -46,6 +57,22 @@ class UserProfileFragment : DaggerFragment() {
     }
 
     private fun showErrorMessage(message: String) {
-        Toast.makeText(requireContext(), message, Toast.LENGTH_LONG).show()
+        Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
+    }
+
+    private fun openRepositories() {
+        Toast.makeText(requireContext(), getString(R.string.repositories), Toast.LENGTH_SHORT).show()
+    }
+
+    private fun openStars() {
+        Toast.makeText(requireContext(), getString(R.string.stars), Toast.LENGTH_SHORT).show()
+    }
+
+    private fun openFollowing() {
+        Toast.makeText(requireContext(), getString(R.string.following), Toast.LENGTH_SHORT).show()
+    }
+
+    private fun openFollowers() {
+        Toast.makeText(requireContext(), getString(R.string.followers), Toast.LENGTH_SHORT).show()
     }
 }

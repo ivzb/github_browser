@@ -40,7 +40,7 @@ class LoginViewModel @Inject constructor(
         }
     }
 
-    fun onLogin() {
+    fun loginClick() {
         loading.postValue(Event(true))
         loginClick.postValue(Event(true))
     }

@@ -2,6 +2,7 @@ package com.ivzb.github_browser.model
 
 import com.ivzb.github_browser.domain.login.AccessTokenParameters
 import com.ivzb.github_browser.model.ui.AccessToken
+import com.ivzb.github_browser.model.ui.User
 
 object TestData {
 
@@ -12,7 +13,17 @@ object TestData {
     )
 
     val accessToken = AccessToken(
-        accessToken= "c59898d66264f5f9ed7e1656fb6bbd211d3a82e3",
-        tokenType=  "bearer"
+        accessToken = "c59898d66264f5f9ed7e1656fb6bbd211d3a82e3",
+        tokenType = "bearer"
+    )
+
+    val user = User(
+        id = 7501124,
+        login = "ivzb",
+        name = "Ivan Zahariev",
+        avatarUrl = "https://avatars1.githubusercontent.com/u/7501124?v=4",
+        repos = 41,
+        followers = 12,
+        following = 79
     )
 }

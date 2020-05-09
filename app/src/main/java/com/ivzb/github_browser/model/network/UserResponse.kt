@@ -16,7 +16,7 @@ data class UserResponse(
     @SerializedName("avatar_url")
     val avatarUrl: String,
 
-    @SerializedName("repos")
+    @SerializedName("public_repos")
     val repos: Int,
 
     @SerializedName("followers")

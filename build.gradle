@@ -16,6 +16,7 @@ buildscript {
         okhttpVersion = '4.3.1'
         retrofitVersion = '2.7.0'
         retrofitConverterGsonVersion = '2.5.0'
+        glideVersion = "4.6.1"
         junitVersion = '4.12'
         mockitoVersion = "2.8.9"
         mockitoKotlinVersion = "1.5.0"

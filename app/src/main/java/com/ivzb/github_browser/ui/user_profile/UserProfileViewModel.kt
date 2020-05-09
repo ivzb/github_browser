@@ -16,8 +16,10 @@ class UserProfileViewModel @Inject constructor(
 ) : ViewModel() {
 
     val loading = MutableLiveData<Event<Boolean>>()
-    val errorMessage = MutableLiveData<Event<String>>()
+    val error = MutableLiveData<Event<String>>()
     val user: LiveData<User?>
+
+    val userProfileEvent: MutableLiveData<Event<UserProfileEvent>> = MutableLiveData()
 
     private val getCurrentUserResult = MutableLiveData<Result<User?>>()
 
@@ -28,7 +30,7 @@ class UserProfileViewModel @Inject constructor(
             val user = it.successOr(null)
 
             if (user == null) {
-                errorMessage.postValue(Event("Couldn't get user. Please try again."))
+                error.postValue(Event(COULD_NOT_GET_USER))
             }
 
             user
@@ -36,6 +38,8 @@ class UserProfileViewModel @Inject constructor(
     }
 
     fun getUser(user: String?) {
+        loading.postValue(Event(true))
+
         when (user) {
             null -> {
                 getCurrentUserUseCase(Unit, getCurrentUserResult)
@@ -46,4 +50,23 @@ class UserProfileViewModel @Inject constructor(
             }
         }
     }
+
+    fun repositoriesClick() = userProfileEvent.postValue(Event(UserProfileEvent.Repositories))
+
+    fun starsClick() = userProfileEvent.postValue(Event(UserProfileEvent.Stars))
+
+    fun followingClick() = userProfileEvent.postValue(Event(UserProfileEvent.Following))
+
+    fun followersClick() = userProfileEvent.postValue(Event(UserProfileEvent.Followers))
+
+    companion object {
+        const val COULD_NOT_GET_USER = "Couldn't get user. Please try again."
+    }
+}
+
+enum class UserProfileEvent {
+    Repositories,
+    Stars,
+    Following,
+    Followers
 }

@@ -42,7 +42,7 @@ class LoginViewModelTest {
         val viewModel = LoginViewModel(getAccessTokenUseCase, saveAccessTokenUseCase)
 
         // When login is clicked
-        viewModel.onLogin()
+        viewModel.loginClick()
 
         // Then loading and click event should be triggered
         val loadingEvent = LiveDataTestUtil.getValue(viewModel.loginClick)
@@ -83,8 +83,7 @@ class LoginViewModelTest {
         val loadingEvent = LiveDataTestUtil.getValue(viewModel.loading)
         assertThat(loadingEvent?.getContentIfNotHandled(), `is`(CoreMatchers.equalTo(false)))
 
-        verify(prefs).accessToken = TestData.accessToken.accessToken
-        verify(prefs).tokenType = TestData.accessToken.tokenType
+        verify(prefs).accessToken = "${TestData.accessToken.tokenType} ${TestData.accessToken.accessToken}"
     }
 
     @Test

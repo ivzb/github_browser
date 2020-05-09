@@ -20,7 +20,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/login_margin"
             android:enabled="@{!viewModel.loading.peekContent()}"
-            android:onClick="@{ () -> viewModel.onLogin() }"
+            android:onClick="@{ () -> viewModel.loginClick() }"
             android:text="@string/login"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

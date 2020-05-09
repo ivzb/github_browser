@@ -23,6 +23,7 @@ android {
             buildConfigField("String", "client_id", '"d03c9206aecf87f7478f"')
             buildConfigField("String", "client_secret", '"8ef0eb5b36e4f07c14c206afa87c1f6dbf17a100"')
             buildConfigField("String", "redirect_uri", '"github-browser://callback"')
+            buildConfigField("String", "scope", '"repo"')
             buildConfigField("String", "authorization_scheme", '"https"')
             buildConfigField("String", "authorization_path", '"github.com/login/oauth/authorize"')
             buildConfigField("String", "oauth_url", '"https://github.com/"')
@@ -36,6 +37,7 @@ android {
             buildConfigField("String", "client_id", '"d03c9206aecf87f7478f"')
             buildConfigField("String", "client_secret", '"8ef0eb5b36e4f07c14c206afa87c1f6dbf17a100"')
             buildConfigField("String", "redirect_uri", '"github-browser://callback"')
+            buildConfigField("String", "scope", '"repo"')
             buildConfigField("String", "authorization_scheme", '"https"')
             buildConfigField("String", "authorization_path", '"github.com/login/oauth/authorize"')
             buildConfigField("String", "oauth_url", '"https://github.com/"')
@@ -89,6 +91,10 @@ dependencies {
     implementation "com.squareup.okhttp3:logging-interceptor:$rootProject.okhttpVersion"
     implementation "com.squareup.retrofit2:retrofit:$rootProject.retrofitVersion"
     implementation "com.squareup.retrofit2:converter-gson:$retrofitConverterGsonVersion"
+
+    // Glide
+    implementation "com.github.bumptech.glide:glide:$rootProject.glideVersion"
+    annotationProcessor "com.github.bumptech.glide:compiler:$rootProject.glideVersion"
 
     // Unit tests
     testImplementation "junit:junit:$junitVersion"
