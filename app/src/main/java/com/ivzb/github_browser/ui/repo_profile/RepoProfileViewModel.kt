@@ -27,9 +27,10 @@ class RepoProfileViewModel @Inject constructor(
             loading.postValue(Event(false))
 
             it.successOr(null).also { repo ->
-                if (repo == null) {
-                    error.postValue(Event(COULD_NOT_GET_REPO))
-                }
+                error.postValue(when (repo) {
+                    null -> Event(COULD_NOT_GET_REPO)
+                    else -> null
+                })
             }
         }
     }

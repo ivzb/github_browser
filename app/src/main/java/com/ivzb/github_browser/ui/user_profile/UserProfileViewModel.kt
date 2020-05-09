@@ -29,9 +29,10 @@ class UserProfileViewModel @Inject constructor(
             loading.postValue(Event(false))
 
             it.successOr(null).also { user ->
-                if (user == null) {
-                    error.postValue(Event(COULD_NOT_GET_USER))
-                }
+                error.postValue(when (user) {
+                    null -> Event(COULD_NOT_GET_USER)
+                    else -> null
+                })
             }
         }
     }

@@ -26,7 +26,7 @@ object LiveDataTestUtil {
             }
         }
         liveData.observeForever(observer)
-        latch.await(2, TimeUnit.SECONDS)
+        latch.await(100, TimeUnit.MILLISECONDS)
 
         return data
     }

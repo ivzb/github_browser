@@ -46,7 +46,7 @@ class UserProfileFragment : DaggerFragment() {
         })
 
         userProfileViewModel.error.observe(viewLifecycleOwner, Observer {
-            showErrorMessage(it.peekContent())
+            it?.let { showErrorMessage(it.peekContent()) }
         })
 
         userProfileViewModel.userProfileEvent.observe(viewLifecycleOwner, EventObserver {

@@ -43,7 +43,7 @@ class RepoProfileFragment : DaggerFragment() {
         })
 
         repoProfileViewModel.error.observe(viewLifecycleOwner, Observer {
-            showErrorMessage(it.peekContent())
+            it?.let { showErrorMessage(it.peekContent()) }
         })
 
         repoProfileViewModel.contributors.observe(viewLifecycleOwner, EventObserver{ repo ->
