@@ -11,6 +11,9 @@ data class RepoResponse(
     @SerializedName("name")
     val name: String,
 
+    @SerializedName("full_name")
+    val fullName: String,
+
     @SerializedName("description")
     val description: String?,
 
@@ -23,6 +26,9 @@ data class RepoResponse(
     @SerializedName("watchers_count")
     val watchersCount: Int,
 
+    @SerializedName("forks_count")
+    val forksCount: Int,
+
     @SerializedName("language")
     val language: String?
 ) {
@@ -30,10 +36,12 @@ data class RepoResponse(
     fun asRepo() = Repo(
         id = this.id,
         name = this.name,
+        fullName = this.fullName,
         description = this.description ?: "",
         isFork = this.isFork,
         starsCount = this.starsCount,
         watchersCount = this.watchersCount,
+        forksCount = this.forksCount,
         language = this.language ?: ""
     )
 }

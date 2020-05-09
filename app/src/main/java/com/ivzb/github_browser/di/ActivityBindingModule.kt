@@ -6,6 +6,7 @@ import com.ivzb.github_browser.ui.login.LoginActivity
 import com.ivzb.github_browser.ui.login.LoginModule
 import com.ivzb.github_browser.ui.main.MainActivity
 import com.ivzb.github_browser.ui.main.MainModule
+import com.ivzb.github_browser.ui.repo_profile.RepoProfileModule
 import com.ivzb.github_browser.ui.repos.ReposModule
 import com.ivzb.github_browser.ui.user_profile.UserProfileModule
 import com.ivzb.github_browser.ui.users.UsersModule
@@ -37,8 +38,9 @@ abstract class ActivityBindingModule {
         modules = [
             MainModule::class,
             UserProfileModule::class,
-            ReposModule::class,
-            UsersModule::class
+            UsersModule::class,
+            RepoProfileModule::class,
+            ReposModule::class
         ]
     )
     internal abstract fun mainActivity(): MainActivity

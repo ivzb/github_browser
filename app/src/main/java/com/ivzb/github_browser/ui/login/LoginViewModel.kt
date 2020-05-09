@@ -29,14 +29,12 @@ class LoginViewModel @Inject constructor(
         accessToken = getAccessTokenResult.map {
             loading.postValue(Event(false))
 
-            val accessToken = it.successOr(null)
-
-            when (accessToken) {
-                null -> errorMessage.postValue(Event("Couldn't login. Please try again."))
-                else -> saveAccessTokenUseCase(accessToken)
+            it.successOr(null).also { accessToken ->
+                when (accessToken) {
+                    null -> errorMessage.postValue(Event("Couldn't login. Please try again."))
+                    else -> saveAccessTokenUseCase(accessToken)
+                }
             }
-
-            accessToken
         }
     }
 

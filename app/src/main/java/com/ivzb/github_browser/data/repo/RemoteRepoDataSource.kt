@@ -15,8 +15,18 @@ class RemoteRepoDataSource @Inject constructor(
             return null
         }
 
-        val response = retrofit.create<RepoAPI>(RepoAPI::class.java).getRepo(user).execute()
+        val response = retrofit.create<RepoAPI>(RepoAPI::class.java).getRepos(user).execute()
 
         return response.body()?.map { it.asRepo() }
+    }
+
+    override fun getRepo(repo: String): Repo? {
+        if (!networkUtils.hasNetworkConnection()) {
+            return null
+        }
+
+        val response = retrofit.create<RepoAPI>(RepoAPI::class.java).getRepo(repo).execute()
+
+        return response.body()?.asRepo()
     }
 }

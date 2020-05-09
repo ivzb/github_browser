@@ -15,6 +15,7 @@ import com.ivzb.github_browser.ui.user_profile.UserProfileFragmentDirections.Com
 import com.ivzb.github_browser.ui.user_profile.UserProfileFragmentDirections.Companion.toUsers
 import com.ivzb.github_browser.ui.users.UsersType
 import com.ivzb.github_browser.util.provideViewModel
+import com.ivzb.github_browser.util.showErrorMessage
 import com.ivzb.github_browser.util.updateTitle
 import dagger.android.support.DaggerFragment
 import javax.inject.Inject
@@ -65,9 +66,6 @@ class UserProfileFragment : DaggerFragment() {
 
         return binding.root
     }
-
-    private fun showErrorMessage(message: String) =
-        Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
 
     private fun openRepositories(user: String) =
         findNavController().navigate(toRepos(user))

@@ -35,9 +35,11 @@ object TestData {
     val repo = Repo(
         id = 262550983,
         name = "retrofit",
+        fullName = "square/retrofit",
         description = "",
         isFork = true,
         starsCount = 20,
+        forksCount = 5,
         watchersCount = 13,
         language = "Java"
     )

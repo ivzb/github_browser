@@ -7,6 +7,7 @@
     <string name="repositories">Repositories</string>
     <string name="repositories_count">Repositories (%d)</string>
     <string name="stars">Stars</string>
+    <string name="stars_count">%d stars</string>
     <string name="following">Following</string>
     <string name="following_count">Following (%d)</string>
     <string name="followers">Followers</string>
@@ -15,4 +16,12 @@
     <string name="nothing_to_see_here">Nothing to see here.</string>
     <string name="no_connection">No internet connection detected. Please check your network and try again.</string>
     <string name="users">Users</string>
+    <string name="repo_profile">Repo profile</string>
+    <string name="watchers">Watchers</string>
+    <string name="watchers_count">%d watchers</string>
+    <string name="forks">Forks</string>
+    <string name="forks_count">%d forks</string>
+    <string name="star">Star</string>
+    <string name="unstar">Unstar</string>
+    <string name="contributors">Contributors</string>
 </resources>

@@ -40,8 +40,8 @@
 
             <ImageView
                 android:id="@+id/ic_star"
-                android:layout_width="22dp"
-                android:layout_height="22dp"
+                android:layout_width="@dimen/icon_size"
+                android:layout_height="@dimen/icon_size"
                 android:contentDescription="@string/stars"
                 android:tint="@color/colorOrange"
                 android:src="@drawable/ic_star"

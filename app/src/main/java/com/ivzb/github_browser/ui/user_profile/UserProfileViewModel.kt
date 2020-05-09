@@ -20,7 +20,6 @@ class UserProfileViewModel @Inject constructor(
     val loading = MutableLiveData<Event<Boolean>>()
     val error = MutableLiveData<Event<String>>()
     val user: LiveData<User?>
-
     val userProfileEvent: MutableLiveData<Event<Pair<UserProfileEvent, String>>> = MutableLiveData()
 
     private val getUserResult = MutableLiveData<Result<User?>>()
@@ -29,13 +28,11 @@ class UserProfileViewModel @Inject constructor(
         user = getUserResult.map {
             loading.postValue(Event(false))
 
-            val user = it.successOr(null)
-
-            if (user == null) {
-                error.postValue(Event(COULD_NOT_GET_USER))
+            it.successOr(null).also { user ->
+                if (user == null) {
+                    error.postValue(Event(COULD_NOT_GET_USER))
+                }
             }
-
-            user
         }
     }
 

@@ -27,18 +27,6 @@
     </fragment>
 
     <fragment
-        android:id="@+id/navigation_repos"
-        android:name="com.ivzb.github_browser.ui.repos.ReposFragment"
-        android:label="@string/repositories"
-        tools:layout="@layout/fragment_repos">
-
-        <argument
-            android:name="user"
-            app:argType="string" />
-
-    </fragment>
-
-    <fragment
         android:id="@+id/navigation_users"
         android:name="com.ivzb.github_browser.ui.users.UsersFragment"
         android:label="@string/users"
@@ -55,5 +43,32 @@
         <action
             android:id="@+id/to_user_profile"
             app:destination="@id/navigation_user_profile" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_repo_profile"
+        android:name="com.ivzb.github_browser.ui.repo_profile.RepoProfileFragment"
+        android:label="@string/repo_profile"
+        tools:layout="@layout/fragment_repo_profile">
+
+        <argument
+            android:name="repo"
+            app:argType="string" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_repos"
+        android:name="com.ivzb.github_browser.ui.repos.ReposFragment"
+        android:label="@string/repositories"
+        tools:layout="@layout/fragment_repos">
+
+        <argument
+            android:name="user"
+            app:argType="string" />
+
+        <action
+            android:id="@+id/to_repo_profile"
+            app:destination="@id/navigation_repo_profile" />
     </fragment>
 </navigation>

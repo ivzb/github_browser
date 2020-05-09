@@ -8,5 +8,9 @@ interface RepoAPI {
 
     @Headers("Accept: application/json")
     @GET("users/{user}/repos")
-    fun getRepo(@Path("user") user: String): Call<List<RepoResponse>>
+    fun getRepos(@Path("user") user: String): Call<List<RepoResponse>>
+
+    @Headers("Accept: application/json")
+    @GET("repos/{repo}")
+    fun getRepo(@Path("repo", encoded = true) repo: String): Call<RepoResponse>
 }

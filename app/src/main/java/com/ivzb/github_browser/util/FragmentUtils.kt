@@ -1,5 +1,6 @@
 package com.ivzb.github_browser.util
 
+import android.widget.Toast
 import androidx.annotation.StringRes
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
@@ -21,3 +22,6 @@ fun Fragment.updateTitle(title: String) {
 fun Fragment.updateTitle(@StringRes title: Int) {
     updateTitle(getString(title))
 }
+
+fun Fragment.showErrorMessage(message: String) =
+    Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
