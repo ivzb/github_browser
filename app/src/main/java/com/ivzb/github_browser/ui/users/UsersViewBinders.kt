@@ -8,6 +8,7 @@ import com.ivzb.github_browser.R
 import com.ivzb.github_browser.databinding.ItemUserBinding
 import com.ivzb.github_browser.model.ui.User
 import com.ivzb.github_browser.ui.ItemViewBinder
+import com.ivzb.github_browser.ui.QueryMatcher
 
 class UserViewBinder(
     private val lifecycleOwner: LifecycleOwner,
@@ -50,5 +51,19 @@ class UserViewHolder(
         binding.cvUser.setOnClickListener {
             usersViewModel.click(user)
         }
+    }
+}
+
+class UsersQueryMatcher : QueryMatcher {
+
+    override fun matches(item: Any, query: String): Boolean {
+        if (item is User) {
+            listOf(item.login, item.name)
+                .forEach { if (it.contains(query, ignoreCase = true)) return true }
+
+            return false
+        }
+
+        return true
     }
 }

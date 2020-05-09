@@ -1,20 +1,19 @@
 package com.ivzb.github_browser.ui.repos
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
+import android.widget.SearchView
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
+import com.ivzb.github_browser.R
 import com.ivzb.github_browser.databinding.FragmentReposBinding
 import com.ivzb.github_browser.domain.EventObserver
 import com.ivzb.github_browser.model.ui.Repo
 import com.ivzb.github_browser.ui.*
 import com.ivzb.github_browser.ui.repos.ReposFragmentDirections.Companion.toRepoProfile
-import com.ivzb.github_browser.util.provideViewModel
-import com.ivzb.github_browser.util.updateTitle
+import com.ivzb.github_browser.util.*
 import dagger.android.support.DaggerFragment
 import javax.inject.Inject
 
@@ -24,8 +23,10 @@ class ReposFragment : DaggerFragment() {
     lateinit var viewModelFactory: ViewModelProvider.Factory
 
     private lateinit var reposViewModel: ReposViewModel
+    private lateinit var title: String
 
     private var adapter: ItemAdapter? = null
+    private var searchItem: MenuItem? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -46,7 +47,15 @@ class ReposFragment : DaggerFragment() {
 
         reposViewModel.click.observe(viewLifecycleOwner, EventObserver {
             openRepoProfile(it)
+            closeSearch(searchItem)
+            clearSearch(searchItem)
         })
+
+        reposViewModel.searchQuery.observe(viewLifecycleOwner, Observer {
+            filterRepos(it)
+        })
+
+        setHasOptionsMenu(true)
 
         requireArguments().apply {
             val (user, type) = ReposFragmentArgs.fromBundle(this)
@@ -54,10 +63,30 @@ class ReposFragment : DaggerFragment() {
             binding.type = type
             reposViewModel.getRepos(user, type)
 
-            updateTitle("$user ${type.toString().toLowerCase()} repos")
+            title = "$user ${type.toString().toLowerCase()} repos"
+            updateTitle(title)
         }
 
         return binding.root
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, menuInflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, menuInflater)
+
+        createSearchMenu(menu, menuInflater, object : SearchView.OnQueryTextListener {
+            override fun onQueryTextChange(query: String?): Boolean {
+                reposViewModel.search(query)
+                updateTitle(title, query)
+                return true
+            }
+
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                closeSearch(searchItem)
+                return true
+            }
+        })
+
+        searchItem = menu.findItem(R.id.search)
     }
 
     private fun showRepos(recyclerView: RecyclerView, list: List<Any>) {
@@ -69,7 +98,7 @@ class ReposFragment : DaggerFragment() {
             recyclerView.adapter = adapter
         }
 
-        (recyclerView.adapter as ItemAdapter).submitList(list)
+        (recyclerView.adapter as ItemAdapter).setList(list)
     }
 
     private fun createAdapter(): ItemAdapter {
@@ -81,10 +110,14 @@ class ReposFragment : DaggerFragment() {
             put(emptyViewBinder.modelClass, emptyViewBinder as ItemBinder)
             put(noConnectionViewBinder.modelClass, noConnectionViewBinder as ItemBinder)
         }
+        val queryMatcher = ReposQueryMatcher()
 
-        return ItemAdapter(viewBinders)
+        return ItemAdapter(viewBinders, queryMatcher)
     }
 
     private fun openRepoProfile(repo: Repo) =
         findNavController().navigate(toRepoProfile(repo.fullName))
+
+    private fun filterRepos(query: String) =
+        adapter?.filter?.filter(query)
 }

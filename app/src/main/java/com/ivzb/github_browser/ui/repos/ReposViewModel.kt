@@ -23,6 +23,7 @@ class ReposViewModel @Inject constructor(
     val loading = MutableLiveData<Event<Boolean>>()
     val click = MutableLiveData<Event<Repo>>()
     val repos: LiveData<List<Any>>
+    val searchQuery = MutableLiveData<String>()
 
     private val getReposResult = MutableLiveData<Result<List<Repo>?>>()
 
@@ -50,5 +51,9 @@ class ReposViewModel @Inject constructor(
 
     fun click(repo: Repo) {
         click.postValue(Event(repo))
+    }
+
+    fun search(query: String?) {
+        searchQuery.postValue(query ?: "")
     }
 }

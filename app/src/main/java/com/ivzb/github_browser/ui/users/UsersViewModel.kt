@@ -25,6 +25,7 @@ class UsersViewModel @Inject constructor(
     val loading = MutableLiveData<Event<Boolean>>()
     val click = MutableLiveData<Event<User>>()
     val users: LiveData<List<Any>>
+    val searchQuery = MutableLiveData<String>()
 
     private val getUsersResult = MutableLiveData<Result<List<User>?>>()
 
@@ -53,5 +54,9 @@ class UsersViewModel @Inject constructor(
 
     fun click(user: User) {
         click.postValue(Event(user))
+    }
+
+    fun search(query: String?) {
+        searchQuery.postValue(query ?: "")
     }
 }

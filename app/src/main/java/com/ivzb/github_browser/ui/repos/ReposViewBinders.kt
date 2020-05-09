@@ -8,6 +8,7 @@ import com.ivzb.github_browser.R
 import com.ivzb.github_browser.databinding.ItemRepoBinding
 import com.ivzb.github_browser.model.ui.Repo
 import com.ivzb.github_browser.ui.ItemViewBinder
+import com.ivzb.github_browser.ui.QueryMatcher
 
 class RepoViewBinder(
     private val lifecycleOwner: LifecycleOwner,
@@ -50,5 +51,19 @@ class RepoViewHolder(
         binding.cvRepo.setOnClickListener {
             reposViewModel.click(repo)
         }
+    }
+}
+
+class ReposQueryMatcher : QueryMatcher {
+
+    override fun matches(item: Any, query: String): Boolean {
+        if (item is Repo) {
+            listOf(item.name, item.fullName, item.description)
+                .forEach { if (it.contains(query, ignoreCase = true)) return true }
+
+            return false
+        }
+
+        return true
     }
 }
