@@ -31,7 +31,7 @@ class LoginViewModelTest {
     var syncTaskExecutorRule = SyncTaskExecutorRule()
 
     @Test
-    fun loginClicked_triggersLoadingAndClickEvent() {
+    fun doLogin_triggersLoadingAndClickEvent() {
         // Given a ViewModel
         val loginRepository = mock<LoginRepository>()
         val getAccessTokenUseCase = GetAccessTokenUseCase(loginRepository)
@@ -41,10 +41,10 @@ class LoginViewModelTest {
 
         val viewModel = LoginViewModel(getAccessTokenUseCase, saveAccessTokenUseCase)
 
-        // When login is clicked
-        viewModel.loginClick()
+        // When login is invoked
+        viewModel.doLogin()
 
-        // Then loading and click event should be triggered
+        // Then loading and login event should be emitted
         val loadingEvent = LiveDataTestUtil.getValue(viewModel.loginClick)
         assertThat(loadingEvent?.getContentIfNotHandled(), `is`(CoreMatchers.equalTo(true)))
 
