@@ -4,6 +4,7 @@ import com.google.gson.annotations.SerializedName
 import com.ivzb.github_browser.model.ui.User
 
 data class UserResponse(
+
     @SerializedName("id")
     val id: Long,
 

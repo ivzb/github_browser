@@ -1,11 +1,12 @@
 package com.ivzb.github_browser.di
 
-import android.os.Build
 import com.ivzb.github_browser.BuildConfig
 import com.ivzb.github_browser.data.AuthorizationInterceptor
 import com.ivzb.github_browser.data.login.LoginDataSource
 import com.ivzb.github_browser.data.login.RemoteLoginDataSource
 import com.ivzb.github_browser.data.preference.PreferenceStorage
+import com.ivzb.github_browser.data.repo.RemoteRepoDataSource
+import com.ivzb.github_browser.data.repo.RepoDataSource
 import com.ivzb.github_browser.data.user.RemoteUserDataSource
 import com.ivzb.github_browser.data.user.UserDataSource
 import com.ivzb.github_browser.util.NetworkUtils
@@ -56,4 +57,11 @@ class DataModule {
         networkUtils: NetworkUtils,
         retrofit: Retrofit
     ): UserDataSource = RemoteUserDataSource(networkUtils, retrofit)
+
+    @Singleton
+    @Provides
+    fun provideRepoRemoteDataSource(
+        networkUtils: NetworkUtils,
+        retrofit: Retrofit
+    ): RepoDataSource = RemoteRepoDataSource(networkUtils, retrofit)
 }
