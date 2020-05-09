@@ -4,6 +4,7 @@ import com.ivzb.github_browser.domain.login.AccessTokenParameters
 import com.ivzb.github_browser.model.ui.AccessToken
 import com.ivzb.github_browser.model.ui.Repo
 import com.ivzb.github_browser.model.ui.User
+import com.ivzb.github_browser.ui.Empty
 import com.ivzb.github_browser.ui.NoConnection
 
 object TestData {
@@ -29,6 +30,8 @@ object TestData {
         following = 79
     )
 
+    val users = listOf(user)
+
     val repo = Repo(
         id = 262550983,
         name = "retrofit",
@@ -42,4 +45,6 @@ object TestData {
     val repos = listOf(repo)
 
     val noConnection = listOf(NoConnection)
+
+    val empty = listOf(Empty)
 }

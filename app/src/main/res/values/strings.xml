@@ -14,4 +14,5 @@
     <string name="avatar">avatar</string>
     <string name="nothing_to_see_here">Nothing to see here.</string>
     <string name="no_connection">No internet connection detected. Please check your network and try again.</string>
+    <string name="users">Users</string>
 </resources>

@@ -54,6 +54,32 @@ class ReposViewModelTest {
     }
 
     @Test
+    fun getRepos_empty() {
+        // Given a ViewModel
+        val user = TestData.user.name
+
+        val repoRepository = mock<RepoRepository> {
+            on { getRepos(eq(user)) }.thenReturn(listOf())
+        }
+        val getReposUseCase = GetReposUseCase(repoRepository)
+
+        val viewModel = ReposViewModel(getReposUseCase)
+
+        // When repos are requested
+        viewModel.getRepos(user)
+
+        // Then event should be emitted
+        val loadingEventAtStart = LiveDataTestUtil.getValue(viewModel.loading)
+        assertThat(loadingEventAtStart?.getContentIfNotHandled(), `is`(CoreMatchers.equalTo(true)))
+
+        val repos = LiveDataTestUtil.getValue(viewModel.repos)
+        assertThat(repos, `is`(CoreMatchers.equalTo(TestData.empty as List<Any>)))
+
+        val loadingEventAtEnd = LiveDataTestUtil.getValue(viewModel.loading)
+        assertThat(loadingEventAtEnd?.getContentIfNotHandled(), `is`(CoreMatchers.equalTo(false)))
+    }
+
+    @Test
     fun getRepos_fails() {
         // Given a ViewModel
         val user = TestData.user.name

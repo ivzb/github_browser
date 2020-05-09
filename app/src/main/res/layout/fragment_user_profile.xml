@@ -44,8 +44,7 @@
             app:imageUrl="@{viewModel.user.avatarUrl}"
             app:layout_constraintEnd_toStartOf="@+id/guideline_vertical"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:placeholder="@{@drawable/generic_placeholder}" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/tv_login"

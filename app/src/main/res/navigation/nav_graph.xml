@@ -11,9 +11,18 @@
         android:label="@string/user_profile"
         tools:layout="@layout/fragment_user_profile">
 
+        <argument
+            android:name="user"
+            app:argType="string"
+            android:defaultValue="null" />
+
         <action
             android:id="@+id/to_repos"
             app:destination="@id/navigation_repos" />
+
+        <action
+            android:id="@+id/to_users"
+            app:destination="@id/navigation_users" />
     </fragment>
 
     <fragment
@@ -26,5 +35,24 @@
             android:name="user"
             app:argType="string" />
 
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_users"
+        android:name="com.ivzb.github_browser.ui.users.UsersFragment"
+        android:label="@string/users"
+        tools:layout="@layout/fragment_users">
+
+        <argument
+            android:name="user"
+            app:argType="string" />
+
+        <argument
+            android:name="type"
+            app:argType="com.ivzb.github_browser.ui.users.UsersType" />
+
+        <action
+            android:id="@+id/to_user_profile"
+            app:destination="@id/navigation_user_profile" />
     </fragment>
 </navigation>

@@ -14,24 +14,11 @@ fun goneUnless(view: View, visible: Boolean) {
     view.visibility = if (visible) View.VISIBLE else View.GONE
 }
 
-@BindingAdapter(value = ["imageUri", "placeholder"], requireAll = false)
-fun imageUri(imageView: ImageView, imageUri: Uri?, placeholder: Drawable?) {
-    when (imageUri) {
-        null -> {
-            Glide.with(imageView)
-                .load(placeholder)
-                .into(imageView)
-        }
-        else -> {
-            Glide.with(imageView)
-                .load(imageUri)
-                .apply(RequestOptions().placeholder(placeholder))
-                .into(imageView)
-        }
+@BindingAdapter("imageUrl")
+fun imageUrl(imageView: ImageView, url: String?) {
+    if (url?.isNotEmpty() == true) {
+        Glide.with(imageView)
+            .load(url)
+            .into(imageView)
     }
-}
-
-@BindingAdapter(value = ["imageUrl", "placeholder"], requireAll = false)
-fun imageUrl(imageView: ImageView, imageUrl: String?, placeholder: Drawable?) {
-    imageUri(imageView, imageUrl?.toUri(), placeholder)
 }

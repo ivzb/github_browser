@@ -12,6 +12,8 @@ import com.ivzb.github_browser.R
 import com.ivzb.github_browser.databinding.FragmentUserProfileBinding
 import com.ivzb.github_browser.domain.EventObserver
 import com.ivzb.github_browser.ui.user_profile.UserProfileFragmentDirections.Companion.toRepos
+import com.ivzb.github_browser.ui.user_profile.UserProfileFragmentDirections.Companion.toUsers
+import com.ivzb.github_browser.ui.users.UsersType
 import com.ivzb.github_browser.util.provideViewModel
 import com.ivzb.github_browser.util.updateTitle
 import dagger.android.support.DaggerFragment
@@ -30,10 +32,11 @@ class UserProfileFragment : DaggerFragment() {
 
         val userProfileViewModel: UserProfileViewModel = provideViewModel(viewModelFactory)
 
-        val binding: FragmentUserProfileBinding = FragmentUserProfileBinding.inflate(inflater, container, false).apply {
-            viewModel = userProfileViewModel
-            lifecycleOwner = viewLifecycleOwner
-        }
+        val binding: FragmentUserProfileBinding =
+            FragmentUserProfileBinding.inflate(inflater, container, false).apply {
+                viewModel = userProfileViewModel
+                lifecycleOwner = viewLifecycleOwner
+            }
 
         userProfileViewModel.user.observe(viewLifecycleOwner, Observer { user ->
             user?.let { updateTitle("${user.login} profile") }
@@ -59,23 +62,18 @@ class UserProfileFragment : DaggerFragment() {
         return binding.root
     }
 
-    private fun showErrorMessage(message: String) {
+    private fun showErrorMessage(message: String) =
         Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
-    }
 
-    private fun openRepositories(user: String) {
+    private fun openRepositories(user: String) =
         findNavController().navigate(toRepos(user))
-    }
 
-    private fun openStars(user: String) {
+    private fun openStars(user: String) =
         Toast.makeText(requireContext(), getString(R.string.stars), Toast.LENGTH_SHORT).show()
-    }
 
-    private fun openFollowing(user: String) {
-        Toast.makeText(requireContext(), getString(R.string.following), Toast.LENGTH_SHORT).show()
-    }
+    private fun openFollowing(user: String) =
+        findNavController().navigate(toUsers(user, UsersType.Following))
 
-    private fun openFollowers(user: String) {
-        Toast.makeText(requireContext(), getString(R.string.followers), Toast.LENGTH_SHORT).show()
-    }
+    private fun openFollowers(user: String) =
+        findNavController().navigate(toUsers(user, UsersType.Followers))
 }
