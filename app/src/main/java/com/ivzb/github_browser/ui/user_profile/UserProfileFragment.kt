@@ -57,7 +57,11 @@ class UserProfileFragment : DaggerFragment() {
             }
         })
 
-        userProfileViewModel.getUser(null)
+        requireArguments().apply {
+            val user = UserProfileFragmentArgs.fromBundle(this).user
+
+            userProfileViewModel.getUser(user)
+        }
 
         return binding.root
     }

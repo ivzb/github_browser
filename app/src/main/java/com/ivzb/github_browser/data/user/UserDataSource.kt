@@ -6,6 +6,8 @@ interface UserDataSource {
 
     fun getCurrentUser(): User?
 
+    fun getUser(user: String): User?
+
     fun getFollowing(user: String): List<User>?
 
     fun getFollowers(user: String): List<User>?

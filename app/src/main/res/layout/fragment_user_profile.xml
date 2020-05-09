@@ -40,6 +40,7 @@
             android:id="@+id/iv_avatar"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_margin="@dimen/card_margin"
             android:contentDescription="@string/avatar"
             app:imageUrl="@{viewModel.user.avatarUrl}"
             app:layout_constraintEnd_toStartOf="@+id/guideline_vertical"
@@ -75,7 +76,7 @@
             android:id="@+id/tv_follows"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="@{ viewModel.user.followers + ` followers, ` + viewModel.user.following + ` following` }"
+            android:text="@{ viewModel.user.followers + ` followers\n` + viewModel.user.following + ` following` }"
             app:goneUnless="@{viewModel.user != null}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/guideline_vertical"
@@ -89,6 +90,7 @@
             android:layout_margin="@dimen/card_margin"
             android:clickable="true"
             android:foreground="?android:attr/selectableItemBackground"
+            android:minHeight="@dimen/profile_min_height"
             android:onClick="@{ () -> viewModel.repositoriesClick(viewModel.user.login) }"
             app:goneUnless="@{viewModel.user != null}"
             app:layout_constraintEnd_toEndOf="parent"
@@ -100,7 +102,7 @@
                 style="@style/TextAppearance.AppCompat.Headline"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/item_margin"
+                android:layout_margin="@dimen/card_margin"
                 android:text="@{String.format(@string/repositories_count, viewModel.user.repos)}"
                 tools:text="Repositories (5)" />
         </androidx.cardview.widget.CardView>
@@ -112,6 +114,7 @@
             android:layout_margin="@dimen/card_margin"
             android:clickable="true"
             android:foreground="?android:attr/selectableItemBackground"
+            android:minHeight="@dimen/profile_min_height"
             android:onClick="@{ () -> viewModel.starsClick(viewModel.user.login) }"
             app:goneUnless="@{viewModel.user != null}"
             app:layout_constraintEnd_toEndOf="parent"
@@ -123,7 +126,7 @@
                 style="@style/TextAppearance.AppCompat.Headline"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/item_margin"
+                android:layout_margin="@dimen/card_margin"
                 android:text="@string/stars" />
         </androidx.cardview.widget.CardView>
 
@@ -134,6 +137,7 @@
             android:layout_margin="@dimen/card_margin"
             android:clickable="true"
             android:foreground="?android:attr/selectableItemBackground"
+            android:minHeight="@dimen/profile_min_height"
             android:onClick="@{ () -> viewModel.followingClick(viewModel.user.login) }"
             app:goneUnless="@{viewModel.user != null}"
             app:layout_constraintEnd_toEndOf="parent"
@@ -145,7 +149,7 @@
                 style="@style/TextAppearance.AppCompat.Headline"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/item_margin"
+                android:layout_margin="@dimen/card_margin"
                 android:text="@{String.format(@string/following_count, viewModel.user.following)}"
                 tools:text="Following (17)" />
         </androidx.cardview.widget.CardView>
@@ -157,6 +161,7 @@
             android:layout_margin="@dimen/card_margin"
             android:clickable="true"
             android:foreground="?android:attr/selectableItemBackground"
+            android:minHeight="@dimen/profile_min_height"
             android:onClick="@{ () -> viewModel.followersClick(viewModel.user.login) }"
             app:goneUnless="@{viewModel.user != null}"
             app:layout_constraintEnd_toEndOf="parent"
@@ -168,7 +173,7 @@
                 style="@style/TextAppearance.AppCompat.Headline"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/item_margin"
+                android:layout_margin="@dimen/card_margin"
                 android:text="@{String.format(@string/followers_count, viewModel.user.followers)}"
                 tools:text="Followers (8)" />
         </androidx.cardview.widget.CardView>

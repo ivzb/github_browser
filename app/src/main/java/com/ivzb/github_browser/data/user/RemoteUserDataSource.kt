@@ -20,6 +20,16 @@ class RemoteUserDataSource @Inject constructor(
         return response.body()?.asUser()
     }
 
+    override fun getUser(user: String): User? {
+        if (!networkUtils.hasNetworkConnection()) {
+            return null
+        }
+
+        val response = retrofit.create<UserAPI>(UserAPI::class.java).getUser(user).execute()
+
+        return response.body()?.asUser()
+    }
+
     override fun getFollowing(user: String): List<User>? {
         if (!networkUtils.hasNetworkConnection()) {
             return null

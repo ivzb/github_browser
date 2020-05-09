@@ -13,8 +13,9 @@
 
         <argument
             android:name="user"
+            android:defaultValue="@null"
             app:argType="string"
-            android:defaultValue="null" />
+            app:nullable="true" />
 
         <action
             android:id="@+id/to_repos"

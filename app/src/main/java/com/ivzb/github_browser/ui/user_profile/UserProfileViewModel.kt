@@ -7,12 +7,14 @@ import com.ivzb.github_browser.domain.Event
 import com.ivzb.github_browser.domain.Result
 import com.ivzb.github_browser.domain.successOr
 import com.ivzb.github_browser.domain.user.GetCurrentUserUseCase
+import com.ivzb.github_browser.domain.user.GetUserUseCase
 import com.ivzb.github_browser.model.ui.User
 import com.ivzb.github_browser.util.map
 import javax.inject.Inject
 
 class UserProfileViewModel @Inject constructor(
-    private val getCurrentUserUseCase: GetCurrentUserUseCase
+    private val getCurrentUserUseCase: GetCurrentUserUseCase,
+    private val getUserUseCase: GetUserUseCase
 ) : ViewModel() {
 
     val loading = MutableLiveData<Event<Boolean>>()
@@ -21,10 +23,10 @@ class UserProfileViewModel @Inject constructor(
 
     val userProfileEvent: MutableLiveData<Event<Pair<UserProfileEvent, String>>> = MutableLiveData()
 
-    private val getCurrentUserResult = MutableLiveData<Result<User?>>()
+    private val getUserResult = MutableLiveData<Result<User?>>()
 
     init {
-        user = getCurrentUserResult.map {
+        user = getUserResult.map {
             loading.postValue(Event(false))
 
             val user = it.successOr(null)
@@ -41,13 +43,8 @@ class UserProfileViewModel @Inject constructor(
         loading.postValue(Event(true))
 
         when (user) {
-            null -> {
-                getCurrentUserUseCase(Unit, getCurrentUserResult)
-            }
-
-            else -> {
-
-            }
+            null -> getCurrentUserUseCase(Unit, getUserResult)
+            else -> getUserUseCase(user, getUserResult)
         }
     }
 

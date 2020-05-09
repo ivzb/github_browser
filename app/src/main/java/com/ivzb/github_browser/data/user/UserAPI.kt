@@ -11,6 +11,10 @@ interface UserAPI {
     fun getCurrentUser(): Call<UserResponse>
 
     @Headers("Accept: application/json")
+    @GET("users/{user}")
+    fun getUser(@Path("user") user: String): Call<UserResponse>
+
+    @Headers("Accept: application/json")
     @GET("users/{user}/following")
     fun getFollowing(@Path("user") user: String): Call<List<UserResponse>>
 
