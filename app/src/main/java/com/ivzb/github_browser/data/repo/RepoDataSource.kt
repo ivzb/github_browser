@@ -9,4 +9,6 @@ interface RepoDataSource {
     fun getStarredRepos(user: String): List<Repo>?
 
     fun getRepo(repo: String): Repo?
+
+    fun getSearchRepos(query: String): List<Repo>?
 }

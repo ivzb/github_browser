@@ -5,6 +5,7 @@ import com.ivzb.github_browser.data.user.UserRepository
 import com.ivzb.github_browser.domain.user.GetContributorsUseCase
 import com.ivzb.github_browser.domain.user.GetFollowersUseCase
 import com.ivzb.github_browser.domain.user.GetFollowingUseCase
+import com.ivzb.github_browser.domain.user.GetSearchUsersUseCase
 import com.ivzb.github_browser.model.TestData
 import com.ivzb.github_browser.ui.users.UsersType
 import com.ivzb.github_browser.ui.users.UsersViewModel
@@ -41,8 +42,14 @@ class UsersViewModelTest {
         val getFollowingUseCase = GetFollowingUseCase(userRepository)
         val getFollowersUseCase = GetFollowersUseCase(userRepository)
         val getContributorsUseCase = GetContributorsUseCase(userRepository)
+        val getSearchUsersUseCase = GetSearchUsersUseCase(userRepository)
 
-        val viewModel = UsersViewModel(getFollowingUseCase, getFollowersUseCase, getContributorsUseCase)
+        val viewModel = UsersViewModel(
+            getFollowingUseCase,
+            getFollowersUseCase,
+            getContributorsUseCase,
+            getSearchUsersUseCase
+        )
 
         // When users are requested
         viewModel.getUsers(user, UsersType.Followers)
@@ -69,8 +76,14 @@ class UsersViewModelTest {
         val getFollowingUseCase = GetFollowingUseCase(userRepository)
         val getFollowersUseCase = GetFollowersUseCase(userRepository)
         val getContributorsUseCase = GetContributorsUseCase(userRepository)
+        val getSearchUsersUseCase = GetSearchUsersUseCase(userRepository)
 
-        val viewModel = UsersViewModel(getFollowingUseCase, getFollowersUseCase, getContributorsUseCase)
+        val viewModel = UsersViewModel(
+            getFollowingUseCase,
+            getFollowersUseCase,
+            getContributorsUseCase,
+            getSearchUsersUseCase
+        )
 
         // When users are requested
         viewModel.getUsers(user, UsersType.Followers)
@@ -97,8 +110,14 @@ class UsersViewModelTest {
         val getFollowingUseCase = GetFollowingUseCase(userRepository)
         val getFollowersUseCase = GetFollowersUseCase(userRepository)
         val getContributorsUseCase = GetContributorsUseCase(userRepository)
+        val getSearchUsersUseCase = GetSearchUsersUseCase(userRepository)
 
-        val viewModel = UsersViewModel(getFollowingUseCase, getFollowersUseCase, getContributorsUseCase)
+        val viewModel = UsersViewModel(
+            getFollowingUseCase,
+            getFollowersUseCase,
+            getContributorsUseCase,
+            getSearchUsersUseCase
+        )
 
         // When users are requested
         viewModel.getUsers(user, UsersType.Followers)
@@ -125,8 +144,14 @@ class UsersViewModelTest {
         val getFollowingUseCase = GetFollowingUseCase(userRepository)
         val getFollowersUseCase = GetFollowersUseCase(userRepository)
         val getContributorsUseCase = GetContributorsUseCase(userRepository)
+        val getSearchUsersUseCase = GetSearchUsersUseCase(userRepository)
 
-        val viewModel = UsersViewModel(getFollowingUseCase, getFollowersUseCase, getContributorsUseCase)
+        val viewModel = UsersViewModel(
+            getFollowingUseCase,
+            getFollowersUseCase,
+            getContributorsUseCase,
+            getSearchUsersUseCase
+        )
 
         // When users are requested
         viewModel.getUsers(user, UsersType.Following)
@@ -153,8 +178,14 @@ class UsersViewModelTest {
         val getFollowingUseCase = GetFollowingUseCase(userRepository)
         val getFollowersUseCase = GetFollowersUseCase(userRepository)
         val getContributorsUseCase = GetContributorsUseCase(userRepository)
+        val getSearchUsersUseCase = GetSearchUsersUseCase(userRepository)
 
-        val viewModel = UsersViewModel(getFollowingUseCase, getFollowersUseCase, getContributorsUseCase)
+        val viewModel = UsersViewModel(
+            getFollowingUseCase,
+            getFollowersUseCase,
+            getContributorsUseCase,
+            getSearchUsersUseCase
+        )
 
         // When users are requested
         viewModel.getUsers(user, UsersType.Following)
@@ -181,8 +212,14 @@ class UsersViewModelTest {
         val getFollowingUseCase = GetFollowingUseCase(userRepository)
         val getFollowersUseCase = GetFollowersUseCase(userRepository)
         val getContributorsUseCase = GetContributorsUseCase(userRepository)
+        val getSearchUsersUseCase = GetSearchUsersUseCase(userRepository)
 
-        val viewModel = UsersViewModel(getFollowingUseCase, getFollowersUseCase, getContributorsUseCase)
+        val viewModel = UsersViewModel(
+            getFollowingUseCase,
+            getFollowersUseCase,
+            getContributorsUseCase,
+            getSearchUsersUseCase
+        )
 
         // When users are requested
         viewModel.getUsers(user, UsersType.Following)
@@ -209,8 +246,14 @@ class UsersViewModelTest {
         val getFollowingUseCase = GetFollowingUseCase(userRepository)
         val getFollowersUseCase = GetFollowersUseCase(userRepository)
         val getContributorsUseCase = GetContributorsUseCase(userRepository)
+        val getSearchUsersUseCase = GetSearchUsersUseCase(userRepository)
 
-        val viewModel = UsersViewModel(getFollowingUseCase, getFollowersUseCase, getContributorsUseCase)
+        val viewModel = UsersViewModel(
+            getFollowingUseCase,
+            getFollowersUseCase,
+            getContributorsUseCase,
+            getSearchUsersUseCase
+        )
 
         // When users are requested
         viewModel.getUsers(user, UsersType.Contributors)
@@ -237,8 +280,14 @@ class UsersViewModelTest {
         val getFollowingUseCase = GetFollowingUseCase(userRepository)
         val getFollowersUseCase = GetFollowersUseCase(userRepository)
         val getContributorsUseCase = GetContributorsUseCase(userRepository)
+        val getSearchUsersUseCase = GetSearchUsersUseCase(userRepository)
 
-        val viewModel = UsersViewModel(getFollowingUseCase, getFollowersUseCase, getContributorsUseCase)
+        val viewModel = UsersViewModel(
+            getFollowingUseCase,
+            getFollowersUseCase,
+            getContributorsUseCase,
+            getSearchUsersUseCase
+        )
 
         // When users are requested
         viewModel.getUsers(user, UsersType.Contributors)
@@ -265,11 +314,119 @@ class UsersViewModelTest {
         val getFollowingUseCase = GetFollowingUseCase(userRepository)
         val getFollowersUseCase = GetFollowersUseCase(userRepository)
         val getContributorsUseCase = GetContributorsUseCase(userRepository)
+        val getSearchUsersUseCase = GetSearchUsersUseCase(userRepository)
 
-        val viewModel = UsersViewModel(getFollowingUseCase, getFollowersUseCase, getContributorsUseCase)
+        val viewModel = UsersViewModel(
+            getFollowingUseCase,
+            getFollowersUseCase,
+            getContributorsUseCase,
+            getSearchUsersUseCase
+        )
 
         // When users are requested
         viewModel.getUsers(user, UsersType.Contributors)
+
+        // Then loading and error events should be emitted
+        val loadingEventAtStart = LiveDataTestUtil.getValue(viewModel.loading)
+        assertThat(loadingEventAtStart?.getContentIfNotHandled(), `is`(CoreMatchers.equalTo(true)))
+
+        val users = LiveDataTestUtil.getValue(viewModel.users)
+        assertThat(users, `is`(CoreMatchers.equalTo(TestData.noConnection as List<Any>)))
+
+        val loadingEventAtEnd = LiveDataTestUtil.getValue(viewModel.loading)
+        assertThat(loadingEventAtEnd?.getContentIfNotHandled(), `is`(CoreMatchers.equalTo(false)))
+    }
+
+    @Test
+    fun getSearchUseres_succeeds() {
+        // Given a ViewModel
+        val search = TestData.search
+
+        val userRepository = mock<UserRepository> {
+            on { getSearchUsers(search) }.thenReturn(TestData.users)
+        }
+        val getFollowingUseCase = GetFollowingUseCase(userRepository)
+        val getFollowersUseCase = GetFollowersUseCase(userRepository)
+        val getContributorsUseCase = GetContributorsUseCase(userRepository)
+        val getSearchUsersUseCase = GetSearchUsersUseCase(userRepository)
+
+        val viewModel = UsersViewModel(
+            getFollowingUseCase,
+            getFollowersUseCase,
+            getContributorsUseCase,
+            getSearchUsersUseCase
+        )
+
+        // When users are requested
+        viewModel.getUsers(search, UsersType.Search)
+
+        // Then event should be emitted
+        val loadingEventAtStart = LiveDataTestUtil.getValue(viewModel.loading)
+        assertThat(loadingEventAtStart?.getContentIfNotHandled(), `is`(CoreMatchers.equalTo(true)))
+
+        val users = LiveDataTestUtil.getValue(viewModel.users)
+        assertThat(users, `is`(CoreMatchers.equalTo(TestData.users as List<Any>)))
+
+        val loadingEventAtEnd = LiveDataTestUtil.getValue(viewModel.loading)
+        assertThat(loadingEventAtEnd?.getContentIfNotHandled(), `is`(CoreMatchers.equalTo(false)))
+    }
+
+    @Test
+    fun getSearch_empty() {
+        // Given a ViewModel
+        val search = TestData.search
+
+        val userRepository = mock<UserRepository> {
+            on { getSearchUsers(search) }.thenReturn(listOf())
+        }
+        val getFollowingUseCase = GetFollowingUseCase(userRepository)
+        val getFollowersUseCase = GetFollowersUseCase(userRepository)
+        val getContributorsUseCase = GetContributorsUseCase(userRepository)
+        val getSearchUsersUseCase = GetSearchUsersUseCase(userRepository)
+
+        val viewModel = UsersViewModel(
+            getFollowingUseCase,
+            getFollowersUseCase,
+            getContributorsUseCase,
+            getSearchUsersUseCase
+        )
+
+        // When users are requested
+        viewModel.getUsers(search, UsersType.Search)
+
+        // Then loading and error events should be emitted
+        val loadingEventAtStart = LiveDataTestUtil.getValue(viewModel.loading)
+        assertThat(loadingEventAtStart?.getContentIfNotHandled(), `is`(CoreMatchers.equalTo(true)))
+
+        val users = LiveDataTestUtil.getValue(viewModel.users)
+        assertThat(users, `is`(CoreMatchers.equalTo(TestData.empty as List<Any>)))
+
+        val loadingEventAtEnd = LiveDataTestUtil.getValue(viewModel.loading)
+        assertThat(loadingEventAtEnd?.getContentIfNotHandled(), `is`(CoreMatchers.equalTo(false)))
+    }
+
+    @Test
+    fun getSearch_fails() {
+        // Given a ViewModel
+        val search = TestData.search
+
+        val userRepository = mock<UserRepository> {
+            on { getSearchUsers(search) }.thenReturn(null)
+        }
+        val getFollowingUseCase = GetFollowingUseCase(userRepository)
+        val getFollowersUseCase = GetFollowersUseCase(userRepository)
+        val getContributorsUseCase = GetContributorsUseCase(userRepository)
+        val getSearchUsersUseCase = GetSearchUsersUseCase(userRepository)
+
+        val viewModel = UsersViewModel(
+            getFollowingUseCase,
+            getFollowersUseCase,
+            getContributorsUseCase,
+            getSearchUsersUseCase
+        )
+
+        // When users are requested
+        viewModel.getUsers(search, UsersType.Search)
 
         // Then loading and error events should be emitted
         val loadingEventAtStart = LiveDataTestUtil.getValue(viewModel.loading)
@@ -289,8 +446,14 @@ class UsersViewModelTest {
         val getFollowingUseCase = GetFollowingUseCase(userRepository)
         val getFollowersUseCase = GetFollowersUseCase(userRepository)
         val getContributorsUseCase = GetContributorsUseCase(userRepository)
+        val getSearchUsersUseCase = GetSearchUsersUseCase(userRepository)
 
-        val viewModel = UsersViewModel(getFollowingUseCase, getFollowersUseCase, getContributorsUseCase)
+        val viewModel = UsersViewModel(
+            getFollowingUseCase,
+            getFollowersUseCase,
+            getContributorsUseCase,
+            getSearchUsersUseCase
+        )
 
         // When user is clicked
         viewModel.click(TestData.user)

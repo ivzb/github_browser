@@ -39,4 +39,14 @@ class RemoteRepoDataSource @Inject constructor(
 
         return response.body()?.asRepo()
     }
+
+    override fun getSearchRepos(query: String): List<Repo>? {
+        if (!networkUtils.hasNetworkConnection()) {
+            return null
+        }
+
+        val response = retrofit.create<RepoAPI>(RepoAPI::class.java).getSearchRepos(query).execute()
+
+        return response.body()?.items?.map { it.asRepo() }
+    }
 }

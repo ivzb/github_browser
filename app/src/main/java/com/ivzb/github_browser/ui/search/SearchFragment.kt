@@ -5,9 +5,14 @@ import android.view.*
 import android.widget.SearchView
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import com.ivzb.github_browser.R
 import com.ivzb.github_browser.databinding.FragmentSearchBinding
 import com.ivzb.github_browser.domain.EventObserver
+import com.ivzb.github_browser.ui.repos.ReposType
+import com.ivzb.github_browser.ui.search.SearchFragmentDirections.Companion.toRepos
+import com.ivzb.github_browser.ui.search.SearchFragmentDirections.Companion.toUsers
+import com.ivzb.github_browser.ui.users.UsersType
 import com.ivzb.github_browser.util.*
 import dagger.android.support.DaggerFragment
 import javax.inject.Inject
@@ -71,8 +76,8 @@ class SearchFragment : DaggerFragment() {
     }
 
     private fun openRepositories(search: String) =
-        Toast.makeText(requireContext(), R.string.repositories, Toast.LENGTH_SHORT).show()
+        findNavController().navigate(toRepos(search, ReposType.Search))
 
     private fun openUsers(search: String) =
-        Toast.makeText(requireContext(), R.string.users, Toast.LENGTH_SHORT).show()
+        findNavController().navigate(toUsers(search, UsersType.Search))
 }

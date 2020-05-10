@@ -3,6 +3,7 @@ package com.ivzb.github_browser.ui
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.ivzb.github_browser.data.repo.RepoRepository
 import com.ivzb.github_browser.domain.repo.GetOwnReposUseCase
+import com.ivzb.github_browser.domain.repo.GetSearchReposUseCase
 import com.ivzb.github_browser.domain.repo.GetStarredReposUseCase
 import com.ivzb.github_browser.model.TestData
 import com.ivzb.github_browser.ui.repos.ReposType
@@ -39,8 +40,9 @@ class ReposViewModelTest {
         }
         val getOwnReposUseCase = GetOwnReposUseCase(repoRepository)
         val getStarredReposUseCase = GetStarredReposUseCase(repoRepository)
+        val getSearchReposUseCase = GetSearchReposUseCase(repoRepository)
 
-        val viewModel = ReposViewModel(getOwnReposUseCase, getStarredReposUseCase)
+        val viewModel = ReposViewModel(getOwnReposUseCase, getStarredReposUseCase, getSearchReposUseCase)
 
         // When repos are requested
         viewModel.getRepos(user, ReposType.Own)
@@ -66,8 +68,9 @@ class ReposViewModelTest {
         }
         val getOwnReposUseCase = GetOwnReposUseCase(repoRepository)
         val getStarredReposUseCase = GetStarredReposUseCase(repoRepository)
+        val getSearchReposUseCase = GetSearchReposUseCase(repoRepository)
 
-        val viewModel = ReposViewModel(getOwnReposUseCase, getStarredReposUseCase)
+        val viewModel = ReposViewModel(getOwnReposUseCase, getStarredReposUseCase, getSearchReposUseCase)
 
         // When repos are requested
         viewModel.getRepos(user, ReposType.Own)
@@ -93,8 +96,9 @@ class ReposViewModelTest {
         }
         val getOwnReposUseCase = GetOwnReposUseCase(repoRepository)
         val getStarredReposUseCase = GetStarredReposUseCase(repoRepository)
+        val getSearchReposUseCase = GetSearchReposUseCase(repoRepository)
 
-        val viewModel = ReposViewModel(getOwnReposUseCase, getStarredReposUseCase)
+        val viewModel = ReposViewModel(getOwnReposUseCase, getStarredReposUseCase, getSearchReposUseCase)
 
         // When repos are requested
         viewModel.getRepos(user, ReposType.Own)
@@ -120,8 +124,9 @@ class ReposViewModelTest {
         }
         val getOwnReposUseCase = GetOwnReposUseCase(repoRepository)
         val getStarredReposUseCase = GetStarredReposUseCase(repoRepository)
+        val getSearchReposUseCase = GetSearchReposUseCase(repoRepository)
 
-        val viewModel = ReposViewModel(getOwnReposUseCase, getStarredReposUseCase)
+        val viewModel = ReposViewModel(getOwnReposUseCase, getStarredReposUseCase, getSearchReposUseCase)
 
         // When repos are requested
         viewModel.getRepos(user, ReposType.Starred)
@@ -147,8 +152,9 @@ class ReposViewModelTest {
         }
         val getOwnReposUseCase = GetOwnReposUseCase(repoRepository)
         val getStarredReposUseCase = GetStarredReposUseCase(repoRepository)
+        val getSearchReposUseCase = GetSearchReposUseCase(repoRepository)
 
-        val viewModel = ReposViewModel(getOwnReposUseCase, getStarredReposUseCase)
+        val viewModel = ReposViewModel(getOwnReposUseCase, getStarredReposUseCase, getSearchReposUseCase)
 
         // When repos are requested
         viewModel.getRepos(user, ReposType.Starred)
@@ -174,8 +180,9 @@ class ReposViewModelTest {
         }
         val getOwnReposUseCase = GetOwnReposUseCase(repoRepository)
         val getStarredReposUseCase = GetStarredReposUseCase(repoRepository)
+        val getSearchReposUseCase = GetSearchReposUseCase(repoRepository)
 
-        val viewModel = ReposViewModel(getOwnReposUseCase, getStarredReposUseCase)
+        val viewModel = ReposViewModel(getOwnReposUseCase, getStarredReposUseCase, getSearchReposUseCase)
 
         // When repos are requested
         viewModel.getRepos(user, ReposType.Starred)
@@ -192,13 +199,98 @@ class ReposViewModelTest {
     }
 
     @Test
+    fun getSearchRepos_succeeds() {
+        // Given a ViewModel
+        val search = TestData.search
+
+        val repoRepository = mock<RepoRepository> {
+            on { getSearchRepos(eq(search)) }.thenReturn(TestData.repos)
+        }
+        val getOwnReposUseCase = GetOwnReposUseCase(repoRepository)
+        val getStarredReposUseCase = GetStarredReposUseCase(repoRepository)
+        val getSearchReposUseCase = GetSearchReposUseCase(repoRepository)
+
+        val viewModel = ReposViewModel(getOwnReposUseCase, getStarredReposUseCase, getSearchReposUseCase)
+
+        // When repos are requested
+        viewModel.getRepos(search, ReposType.Search)
+
+        // Then event should be emitted
+        val loadingEventAtStart = LiveDataTestUtil.getValue(viewModel.loading)
+        assertThat(loadingEventAtStart?.getContentIfNotHandled(), `is`(CoreMatchers.equalTo(true)))
+
+        val repos = LiveDataTestUtil.getValue(viewModel.repos)
+        assertThat(repos, `is`(CoreMatchers.equalTo(TestData.repos as List<Any>)))
+
+        val loadingEventAtEnd = LiveDataTestUtil.getValue(viewModel.loading)
+        assertThat(loadingEventAtEnd?.getContentIfNotHandled(), `is`(CoreMatchers.equalTo(false)))
+    }
+
+    @Test
+    fun getSearchRepos_empty() {
+        // Given a ViewModel
+        val search = TestData.search
+
+        val repoRepository = mock<RepoRepository> {
+            on { getSearchRepos(eq(search)) }.thenReturn(listOf())
+        }
+        val getOwnReposUseCase = GetOwnReposUseCase(repoRepository)
+        val getStarredReposUseCase = GetStarredReposUseCase(repoRepository)
+        val getSearchReposUseCase = GetSearchReposUseCase(repoRepository)
+
+        val viewModel = ReposViewModel(getOwnReposUseCase, getStarredReposUseCase, getSearchReposUseCase)
+
+        // When repos are requested
+        viewModel.getRepos(search, ReposType.Search)
+
+        // Then event should be emitted
+        val loadingEventAtStart = LiveDataTestUtil.getValue(viewModel.loading)
+        assertThat(loadingEventAtStart?.getContentIfNotHandled(), `is`(CoreMatchers.equalTo(true)))
+
+        val repos = LiveDataTestUtil.getValue(viewModel.repos)
+        assertThat(repos, `is`(CoreMatchers.equalTo(TestData.empty as List<Any>)))
+
+        val loadingEventAtEnd = LiveDataTestUtil.getValue(viewModel.loading)
+        assertThat(loadingEventAtEnd?.getContentIfNotHandled(), `is`(CoreMatchers.equalTo(false)))
+    }
+
+    @Test
+    fun getSearchRepos_fails() {
+        // Given a ViewModel
+        val search = TestData.search
+
+        val repoRepository = mock<RepoRepository> {
+            on { getSearchRepos(eq(search)) }.thenReturn(null)
+        }
+        val getOwnReposUseCase = GetOwnReposUseCase(repoRepository)
+        val getStarredReposUseCase = GetStarredReposUseCase(repoRepository)
+        val getSearchReposUseCase = GetSearchReposUseCase(repoRepository)
+
+        val viewModel = ReposViewModel(getOwnReposUseCase, getStarredReposUseCase, getSearchReposUseCase)
+
+        // When repos are requested
+        viewModel.getRepos(search, ReposType.Search)
+
+        // Then loading and error events should be emitted
+        val loadingEventAtStart = LiveDataTestUtil.getValue(viewModel.loading)
+        assertThat(loadingEventAtStart?.getContentIfNotHandled(), `is`(CoreMatchers.equalTo(true)))
+
+        val repos = LiveDataTestUtil.getValue(viewModel.repos)
+        assertThat(repos, `is`(CoreMatchers.equalTo(TestData.noConnection as List<Any>)))
+
+        val loadingEventAtEnd = LiveDataTestUtil.getValue(viewModel.loading)
+        assertThat(loadingEventAtEnd?.getContentIfNotHandled(), `is`(CoreMatchers.equalTo(false)))
+    }
+
+    @Test
     fun clickRepo_emitsEvent() {
         // Given a ViewModel
         val repoRepository = mock<RepoRepository>()
-        val getOwnRepoUseCase = GetOwnReposUseCase(repoRepository)
+        val getOwnReposUseCase = GetOwnReposUseCase(repoRepository)
         val getStarredReposUseCase = GetStarredReposUseCase(repoRepository)
+        val getSearchReposUseCase = GetSearchReposUseCase(repoRepository)
 
-        val viewModel = ReposViewModel(getOwnRepoUseCase, getStarredReposUseCase)
+        val viewModel = ReposViewModel(getOwnReposUseCase, getStarredReposUseCase, getSearchReposUseCase)
 
         // When repo is clicked
         viewModel.click(TestData.repo)

@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import com.ivzb.github_browser.domain.Event
 import com.ivzb.github_browser.domain.Result
 import com.ivzb.github_browser.domain.repo.GetOwnReposUseCase
+import com.ivzb.github_browser.domain.repo.GetSearchReposUseCase
 import com.ivzb.github_browser.domain.repo.GetStarredReposUseCase
 import com.ivzb.github_browser.domain.successOr
 import com.ivzb.github_browser.model.ui.Repo
@@ -17,7 +18,8 @@ import javax.inject.Inject
 
 class ReposViewModel @Inject constructor(
     private val getOwnReposUseCase: GetOwnReposUseCase,
-    private val getStarredReposUseCase: GetStarredReposUseCase
+    private val getStarredReposUseCase: GetStarredReposUseCase,
+    private val getSearchReposUseCase: GetSearchReposUseCase
 ) : ViewModel() {
 
     val loading = MutableLiveData<Event<Boolean>>()
@@ -46,6 +48,7 @@ class ReposViewModel @Inject constructor(
         when (type) {
             ReposType.Own -> getOwnReposUseCase(user, getReposResult)
             ReposType.Starred -> getStarredReposUseCase(user, getReposResult)
+            ReposType.Search -> getSearchReposUseCase(user, getReposResult)
         }.checkAllMatched
     }
 

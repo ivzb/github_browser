@@ -83,7 +83,16 @@
         android:id="@+id/navigation_search"
         android:name="com.ivzb.github_browser.ui.search.SearchFragment"
         android:label="@string/search"
-        tools:layout="@layout/fragment_search" />
+        tools:layout="@layout/fragment_search">
+
+        <action
+            android:id="@+id/to_repos"
+            app:destination="@id/navigation_repos" />
+
+        <action
+            android:id="@+id/to_users"
+            app:destination="@id/navigation_users" />
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_logout"

@@ -9,6 +9,7 @@ import com.ivzb.github_browser.domain.successOr
 import com.ivzb.github_browser.domain.user.GetContributorsUseCase
 import com.ivzb.github_browser.domain.user.GetFollowersUseCase
 import com.ivzb.github_browser.domain.user.GetFollowingUseCase
+import com.ivzb.github_browser.domain.user.GetSearchUsersUseCase
 import com.ivzb.github_browser.model.ui.User
 import com.ivzb.github_browser.ui.Empty
 import com.ivzb.github_browser.ui.NoConnection
@@ -19,7 +20,8 @@ import javax.inject.Inject
 class UsersViewModel @Inject constructor(
     private val getFollowingUseCase: GetFollowingUseCase,
     private val getFollowersUseCase: GetFollowersUseCase,
-    private val getContributorsUseCase: GetContributorsUseCase
+    private val getContributorsUseCase: GetContributorsUseCase,
+    private val getSearchUsersUseCase: GetSearchUsersUseCase
 ) : ViewModel() {
 
     val loading = MutableLiveData<Event<Boolean>>()
@@ -49,6 +51,7 @@ class UsersViewModel @Inject constructor(
             UsersType.Following -> getFollowingUseCase(user, getUsersResult)
             UsersType.Followers -> getFollowersUseCase(user, getUsersResult)
             UsersType.Contributors -> getContributorsUseCase(user, getUsersResult)
+            UsersType.Search -> getSearchUsersUseCase(user, getUsersResult)
         }.checkAllMatched
     }
 

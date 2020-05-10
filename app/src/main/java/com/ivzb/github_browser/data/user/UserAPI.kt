@@ -1,5 +1,6 @@
 package com.ivzb.github_browser.data.user
 
+import com.ivzb.github_browser.model.network.SearchResponse
 import com.ivzb.github_browser.model.network.UserResponse
 import retrofit2.Call
 import retrofit2.http.*
@@ -25,4 +26,16 @@ interface UserAPI {
     @Headers("Accept: application/json")
     @GET("repos/{repo}/contributors")
     fun getContributors(@Path("repo", encoded = true) repo: String): Call<List<UserResponse>>
+
+    @Headers("Accept: application/json")
+    @GET("search/users")
+    fun getSearchUsers(
+        @Query("q") query: String,
+        @Query("sort") sort: String = SORT
+    ): Call<SearchResponse<UserResponse>>
+
+    companion object {
+
+        private const val SORT = "followers"
+    }
 }

@@ -59,4 +59,14 @@ class RemoteUserDataSource @Inject constructor(
 
         return response.body()?.map { it.asUser() }
     }
+
+    override fun getSearchUsers(query: String): List<User>? {
+        if (!networkUtils.hasNetworkConnection()) {
+            return null
+        }
+
+        val response = retrofit.create<UserAPI>(UserAPI::class.java).getSearchUsers(query).execute()
+
+        return response.body()?.items?.map { it.asUser() }
+    }
 }
