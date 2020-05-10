@@ -19,8 +19,8 @@ open class ObserveRepoUseCase @Inject constructor(
         }
 
         repo = repository.observeRepo(parameters).also { source ->
-            result.addSource(source) { list ->
-                result.postValue(Result.Success(list))
+            result.addSource(source) { repo ->
+                result.postValue(Result.Success(repo))
             }
         }
     }

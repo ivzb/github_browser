@@ -7,11 +7,11 @@ import javax.inject.Inject
 
 open class FetchReposUseCase @Inject constructor(
     private val repository: RepoRepository
-) : UseCase<Pair<String, RepoType>, Unit>() {
+) : UseCase<Pair<String, RepoType>, Boolean>() {
 
-    override fun execute(parameters: Pair<String, RepoType>) {
+    override fun execute(parameters: Pair<String, RepoType>): Boolean {
         val (user, type) = parameters
 
-        repository.fetchRepos(user, type)
+        return repository.fetchRepos(user, type)
     }
 }

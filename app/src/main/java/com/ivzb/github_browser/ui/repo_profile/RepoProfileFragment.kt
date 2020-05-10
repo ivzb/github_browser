@@ -58,7 +58,7 @@ class RepoProfileFragment : DaggerFragment() {
 
         requireArguments().apply {
             val repo = RepoProfileFragmentArgs.fromBundle(this).repo
-
+            binding.name = repo
             repoProfileViewModel.getRepo(repo)
         }
 

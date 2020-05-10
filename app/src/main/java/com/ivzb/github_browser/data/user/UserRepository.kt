@@ -17,12 +17,16 @@ open class UserRepository @Inject constructor(
     private val database: DatabaseDataSource
 ) : UserDataSource, UserRemoteDataSource by remoteDataSource {
 
-    override fun fetchUser(user: String?) {
+    override fun fetchUser(user: String?): Boolean {
         remoteDataSource.getUser(user)?.let {
             it.asUserFtsEntity(user).let { user ->
                 database.userFtsDao().insert(user)
             }
+
+            return true
         }
+
+        return false
     }
 
     override fun observeUser(user: String?): LiveData<User?> =
@@ -31,11 +35,15 @@ open class UserRepository @Inject constructor(
             .observe(user)
             .map { it?.asUser() }
 
-    override fun fetchUsers(user: String, type: UserType) {
+    override fun fetchUsers(user: String, type: UserType): Boolean {
         remoteDataSource.getUsers(user, type)?.let { users ->
             val userFtsEntities = users.map { it.asUserFtsEntity(user, type.name) }
             database.userFtsDao().insertAll(userFtsEntities)
+
+            return true
         }
+
+        return false
     }
 
     override fun observeUsers(user: String, type: UserType): LiveData<List<User>> =

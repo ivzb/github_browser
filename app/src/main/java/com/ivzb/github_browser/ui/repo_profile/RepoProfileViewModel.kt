@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.ivzb.github_browser.domain.Event
+import com.ivzb.github_browser.domain.Result
 import com.ivzb.github_browser.domain.repo.FetchRepoUseCase
 import com.ivzb.github_browser.domain.repo.ObserveRepoUseCase
 import com.ivzb.github_browser.domain.successOr
@@ -17,24 +18,28 @@ class RepoProfileViewModel @Inject constructor(
     private val fetchRepoUseCase: FetchRepoUseCase
 ) : ViewModel() {
 
-    val loading = MutableLiveData<Event<Boolean>>()
+    val loading: MutableLiveData<Event<Boolean>>
     val error = MutableLiveData<Event<String>>()
     val repo: LiveData<Event<Repo?>>
     val repoProfileEvent: MutableLiveData<Event<Pair<RepoProfileEvent, String>>> = MutableLiveData()
 
+    private val fetchRepoResult = MutableLiveData<Result<Boolean>>()
+
     init {
         repo = observeRepoUseCase.observe().map {
-            loading.postValue(Event(false))
-
-            Event(it.successOr(null).also { repo -> sendError(repo) })
+            Event(it.successOr(null))
         }
+
+        loading = fetchRepoResult.map { fetched ->
+            fetched.successOr(false).also { sendError(it) }
+            Event(false)
+        } as MutableLiveData<Event<Boolean>>
     }
 
     fun getRepo(repo: String) {
         loading.postValue(Event(true))
-
         observeRepoUseCase.execute(repo)
-        fetchRepoUseCase(repo)
+        fetchRepoUseCase(repo, fetchRepoResult)
     }
 
     fun star(repo: Repo) {
@@ -54,16 +59,16 @@ class RepoProfileViewModel @Inject constructor(
     private fun emitEvent(event: RepoProfileEvent, value: String) =
         repoProfileEvent.postValue(Event(Pair(event, value)))
 
-    private fun sendError(repo: Repo?) =
+    private fun sendError(fetched: Boolean) =
         error.postValue(
-            when (repo) {
-                null -> Event(COULD_NOT_GET_REPO)
+            when (fetched) {
+                false -> Event(COULD_NOT_GET_REPO)
                 else -> null
             }.checkAllMatched
         )
 
     companion object {
-        const val COULD_NOT_GET_REPO = "Couldn't get repo. Please try again."
+        const val COULD_NOT_GET_REPO = "No internet connection.\nCouldn't get repo.\nPlease try again."
     }
 }
 

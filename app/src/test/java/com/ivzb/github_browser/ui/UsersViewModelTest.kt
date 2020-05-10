@@ -36,6 +36,7 @@ class UsersViewModelTest {
 
         val userRepository = mock<UserRepository> {
             on { observeUsers(eq(user), eq(type)) }.thenReturn(TestData.liveDataOf(TestData.users))
+            on { fetchUsers(eq(user), eq(type)) }.thenReturn(true)
         }
         val observeUsersUseCase = ObserveUsersUseCase(userRepository)
         val fetchUsersUseCase = FetchUsersUseCase(userRepository)
@@ -46,16 +47,13 @@ class UsersViewModelTest {
         viewModel.getUsers(user, type)
 
         // Then event should be emitted and users fetched
-        val loadingEventAtStart = LiveDataTestUtil.getValue(viewModel.loading)
-        assertThat(loadingEventAtStart?.getContentIfNotHandled(), `is`(CoreMatchers.equalTo(true)))
-
         val users = LiveDataTestUtil.getValue(viewModel.users)
         assertThat(users?.getContentIfNotHandled(), `is`(CoreMatchers.equalTo(TestData.users as List<Any>)))
 
         verify(userRepository).fetchUsers(eq(user), eq(type))
 
-        val loadingEventAtEnd = LiveDataTestUtil.getValue(viewModel.loading)
-        assertThat(loadingEventAtEnd?.getContentIfNotHandled(), `is`(CoreMatchers.equalTo(false)))
+        val loading = LiveDataTestUtil.getValue(viewModel.loading)
+        assertThat(loading?.getContentIfNotHandled(), `is`(CoreMatchers.equalTo(false)))
     }
 
     @Test
@@ -66,6 +64,7 @@ class UsersViewModelTest {
 
         val userRepository = mock<UserRepository> {
             on { observeUsers(eq(user), eq(type)) }.thenReturn(TestData.liveDataOf(listOf()))
+            on { fetchUsers(eq(user), eq(type)) }.thenReturn(true)
         }
         val observeUsersUseCase = ObserveUsersUseCase(userRepository)
         val fetchUsersUseCase = FetchUsersUseCase(userRepository)
@@ -76,16 +75,13 @@ class UsersViewModelTest {
         viewModel.getUsers(user, type)
 
         // Then loading and error events should be emitted
-        val loadingEventAtStart = LiveDataTestUtil.getValue(viewModel.loading)
-        assertThat(loadingEventAtStart?.getContentIfNotHandled(), `is`(CoreMatchers.equalTo(true)))
-
         val users = LiveDataTestUtil.getValue(viewModel.users)
         assertThat(users?.getContentIfNotHandled(), `is`(CoreMatchers.equalTo(TestData.empty as List<Any>)))
 
         verify(userRepository).fetchUsers(eq(user), eq(type))
 
-        val loadingEventAtEnd = LiveDataTestUtil.getValue(viewModel.loading)
-        assertThat(loadingEventAtEnd?.getContentIfNotHandled(), `is`(CoreMatchers.equalTo(false)))
+        val loading = LiveDataTestUtil.getValue(viewModel.loading)
+        assertThat(loading?.getContentIfNotHandled(), `is`(CoreMatchers.equalTo(false)))
     }
 
     @Test
@@ -96,6 +92,7 @@ class UsersViewModelTest {
 
         val userRepository = mock<UserRepository> {
             on { observeUsers(eq(user), eq(type)) }.thenReturn(TestData.liveDataOf(null))
+            on { fetchUsers(eq(user), eq(type)) }.thenReturn(false)
         }
         val observeUsersUseCase = ObserveUsersUseCase(userRepository)
         val fetchUsersUseCase = FetchUsersUseCase(userRepository)
@@ -106,16 +103,13 @@ class UsersViewModelTest {
         viewModel.getUsers(user, type)
 
         // Then loading and error events should be emitted
-        val loadingEventAtStart = LiveDataTestUtil.getValue(viewModel.loading)
-        assertThat(loadingEventAtStart?.getContentIfNotHandled(), `is`(CoreMatchers.equalTo(true)))
-
         val users = LiveDataTestUtil.getValue(viewModel.users)
         assertThat(users?.getContentIfNotHandled(), `is`(CoreMatchers.equalTo(TestData.noConnection as List<Any>)))
 
         verify(userRepository).fetchUsers(eq(user), eq(type))
 
-        val loadingEventAtEnd = LiveDataTestUtil.getValue(viewModel.loading)
-        assertThat(loadingEventAtEnd?.getContentIfNotHandled(), `is`(CoreMatchers.equalTo(false)))
+        val loading = LiveDataTestUtil.getValue(viewModel.loading)
+        assertThat(loading?.getContentIfNotHandled(), `is`(CoreMatchers.equalTo(false)))
     }
 
     @Test

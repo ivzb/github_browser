@@ -60,7 +60,7 @@ class UserProfileFragment : DaggerFragment() {
 
         requireArguments().apply {
             val user = UserProfileFragmentArgs.fromBundle(this).user
-
+            binding.name = user
             userProfileViewModel.getUser(user)
         }
 

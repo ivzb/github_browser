@@ -17,12 +17,16 @@ open class RepoRepository @Inject constructor(
     private val database: DatabaseDataSource
 ) : RepoDataSource, RepoRemoteDataSource by remoteDataSource {
 
-    override fun fetchRepo(repo: String) {
+    override fun fetchRepo(repo: String): Boolean {
         remoteDataSource.getRepo(repo)?.let {
             it.asRepoFtsEntity().let { repo ->
                 database.repoFtsDao().insert(repo)
             }
+
+            return true
         }
+
+        return false
     }
 
     override fun observeRepo(repo: String): LiveData<Repo> =
@@ -31,11 +35,15 @@ open class RepoRepository @Inject constructor(
             .observe(repo)
             .map { it.asRepo() }
 
-    override fun fetchRepos(user: String, type: RepoType) {
+    override fun fetchRepos(user: String, type: RepoType): Boolean {
         remoteDataSource.getRepos(user, type)?.let { repos ->
             val repoFtsEntities = repos.map { it.asRepoFtsEntity(user, type.name) }
             database.repoFtsDao().insertAll(repoFtsEntities)
+
+            return true
         }
+
+        return false
     }
 
     override fun observeRepos(user: String, type: RepoType): LiveData<List<Repo>> =

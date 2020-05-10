@@ -6,9 +6,8 @@ import javax.inject.Inject
 
 open class FetchRepoUseCase @Inject constructor(
     private val repository: RepoRepository
-) : UseCase<String, Unit>() {
+) : UseCase<String, Boolean>() {
 
-    override fun execute(parameters: String) {
+    override fun execute(parameters: String) =
         repository.fetchRepo(parameters)
-    }
 }

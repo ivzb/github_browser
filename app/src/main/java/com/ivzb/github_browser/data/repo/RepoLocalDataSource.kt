@@ -6,11 +6,11 @@ import com.ivzb.github_browser.model.repo.RepoType
 
 interface RepoLocalDataSource {
 
-    fun fetchRepo(repo: String)
+    fun fetchRepo(repo: String): Boolean
 
     fun observeRepo(repo: String): LiveData<Repo>
 
-    fun fetchRepos(user: String, type: RepoType)
+    fun fetchRepos(user: String, type: RepoType): Boolean
 
     fun observeRepos(user: String, type: RepoType): LiveData<List<Repo>>
 }

@@ -20,15 +20,15 @@ class UsersViewModel @Inject constructor(
     private val fetchUsersUseCase: FetchUsersUseCase
 ) : ViewModel() {
 
-    val loading = MutableLiveData<Event<Boolean>>()
+    val loading: MutableLiveData<Event<Boolean>>
     val click = MutableLiveData<Event<User>>()
     val users: LiveData<Event<List<Any>>>
     val searchQuery = MutableLiveData<Event<String>>()
 
+    private val fetchUsersResult = MutableLiveData<Result<Boolean>>()
+
     init {
         users = observeUsersUseCase.observe().map {
-            loading.postValue(Event(false))
-
             val result = it.successOr(listOf(NoConnection)) ?: listOf(Empty)
 
             Event(
@@ -38,6 +38,10 @@ class UsersViewModel @Inject constructor(
                 }
             )
         }
+
+        loading = fetchUsersResult.map {
+            Event(false)
+        } as MutableLiveData<Event<Boolean>>
     }
 
     fun getUsers(user: String, type: UserType) {
@@ -45,7 +49,7 @@ class UsersViewModel @Inject constructor(
 
         Pair(user, type).run {
             observeUsersUseCase.execute(this)
-            fetchUsersUseCase(this)
+            fetchUsersUseCase(this, fetchUsersResult)
         }
     }
 

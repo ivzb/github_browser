@@ -38,6 +38,7 @@ class RepoProfileViewModelTest {
 
         val repoRepository = mock<RepoRepository> {
             on { observeRepo(eq(repoName)) }.thenReturn(TestData.liveDataOf(TestData.repo))
+            on { fetchRepo(eq(repoName)) }.thenReturn(true)
         }
         val observeRepoUseCase = ObserveRepoUseCase(repoRepository)
         val fetchRepoUseCase = FetchRepoUseCase(repoRepository)
@@ -48,16 +49,13 @@ class RepoProfileViewModelTest {
         viewModel.getRepo(repoName)
 
         // Then event should be emitted and repo fetched
-        val loadingEventAtStart = LiveDataTestUtil.getValue(viewModel.loading)
-        assertThat(loadingEventAtStart?.getContentIfNotHandled(), `is`(CoreMatchers.equalTo(true)))
-
         val repo = LiveDataTestUtil.getValue(viewModel.repo)
         assertThat(repo?.getContentIfNotHandled(), `is`(CoreMatchers.equalTo(TestData.repo)))
 
         verify(repoRepository).fetchRepo(eq(repoName))
 
-        val loadingEventAtEnd = LiveDataTestUtil.getValue(viewModel.loading)
-        assertThat(loadingEventAtEnd?.getContentIfNotHandled(), `is`(CoreMatchers.equalTo(false)))
+        val loading = LiveDataTestUtil.getValue(viewModel.loading)
+        assertThat(loading?.getContentIfNotHandled(), `is`(CoreMatchers.equalTo(false)))
     }
 
     @Test
@@ -67,6 +65,7 @@ class RepoProfileViewModelTest {
 
         val repoRepository = mock<RepoRepository> {
             on { observeRepo(eq(repoName)) }.thenReturn(TestData.liveDataOf(null))
+            on { fetchRepo(eq(repoName)) }.thenReturn(false)
         }
         val observeRepoUseCase = ObserveRepoUseCase(repoRepository)
         val fetchRepoUseCase = FetchRepoUseCase(repoRepository)
@@ -77,22 +76,19 @@ class RepoProfileViewModelTest {
         viewModel.getRepo(repoName)
 
         // Then loading and error events should be emitted
-        val loadingEventAtStart = LiveDataTestUtil.getValue(viewModel.loading)
-        assertThat(loadingEventAtStart?.getContentIfNotHandled(), `is`(CoreMatchers.equalTo(true)))
-
         val repo = LiveDataTestUtil.getValue(viewModel.repo)
         assertTrue(repo?.getContentIfNotHandled() == null)
 
         verify(repoRepository).fetchRepo(eq(repoName))
+
+        val loading = LiveDataTestUtil.getValue(viewModel.loading)
+        assertThat(loading?.getContentIfNotHandled(), `is`(CoreMatchers.equalTo(false)))
 
         val errorEvent = LiveDataTestUtil.getValue(viewModel.error)
         assertThat(
             errorEvent?.getContentIfNotHandled(),
             `is`(CoreMatchers.equalTo(COULD_NOT_GET_REPO))
         )
-
-        val loadingEventAtEnd = LiveDataTestUtil.getValue(viewModel.loading)
-        assertThat(loadingEventAtEnd?.getContentIfNotHandled(), `is`(CoreMatchers.equalTo(false)))
     }
 
     @Test

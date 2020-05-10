@@ -3,7 +3,8 @@
     android:id="@+id/tv_station_empty"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:gravity="center_horizontal"
     android:padding="@dimen/item_padding"
     android:text="@string/nothing_to_see_here"
-    android:gravity="center_horizontal"
-    android:textAppearance="?android:textAppearanceMedium" />
+    android:textAppearance="?android:textAppearanceMedium"
+    android:visibility="gone" />

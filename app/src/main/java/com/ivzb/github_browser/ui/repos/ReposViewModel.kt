@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.ivzb.github_browser.domain.Event
+import com.ivzb.github_browser.domain.Result
 import com.ivzb.github_browser.domain.repo.*
 import com.ivzb.github_browser.domain.successOr
 import com.ivzb.github_browser.model.repo.Repo
@@ -18,15 +19,15 @@ class ReposViewModel @Inject constructor(
     private val fetchReposUseCase: FetchReposUseCase
 ) : ViewModel() {
 
-    val loading = MutableLiveData<Event<Boolean>>()
+    val loading: MutableLiveData<Event<Boolean>>
     val click = MutableLiveData<Event<Repo>>()
     val repos: LiveData<Event<List<Any>>>
     val searchQuery = MutableLiveData<Event<String>>()
 
+    private val fetchReposResult = MutableLiveData<Result<Boolean>>()
+
     init {
         repos = observeReposUseCase.observe().map {
-            loading.postValue(Event(false))
-
             val result = it.successOr(listOf(NoConnection)) ?: listOf(Empty)
 
             Event(
@@ -36,6 +37,10 @@ class ReposViewModel @Inject constructor(
                 }
             )
         }
+
+        loading = fetchReposResult.map {
+            Event(false)
+        } as MutableLiveData<Event<Boolean>>
     }
 
     fun getRepos(user: String, type: RepoType) {
@@ -43,7 +48,7 @@ class ReposViewModel @Inject constructor(
 
         Pair(user, type).run {
             observeReposUseCase.execute(this)
-            fetchReposUseCase(this)
+            fetchReposUseCase(this, fetchReposResult)
         }
     }
 
