@@ -17,6 +17,20 @@ open class UserRepository @Inject constructor(
     private val database: DatabaseDataSource
 ) : UserDataSource, UserRemoteDataSource by remoteDataSource {
 
+    override fun fetchUser(user: String?) {
+        remoteDataSource.getUser(user)?.let {
+            it.asUserFtsEntity(user).let { user ->
+                database.userFtsDao().insert(user)
+            }
+        }
+    }
+
+    override fun observeUser(user: String?): LiveData<User?> =
+        database
+            .userFtsDao()
+            .observe(user)
+            .map { it?.asUser() }
+
     override fun fetchUsers(user: String, type: UserType) {
         remoteDataSource.getUsers(user, type)?.let { users ->
             val userFtsEntities = users.map { it.asUserFtsEntity(user, type.name) }

@@ -8,6 +8,7 @@ import com.ivzb.github_browser.domain.repo.FetchRepoUseCase
 import com.ivzb.github_browser.domain.repo.ObserveRepoUseCase
 import com.ivzb.github_browser.domain.successOr
 import com.ivzb.github_browser.model.repo.Repo
+import com.ivzb.github_browser.util.checkAllMatched
 import com.ivzb.github_browser.util.map
 import javax.inject.Inject
 
@@ -25,16 +26,7 @@ class RepoProfileViewModel @Inject constructor(
         repo = observeRepoUseCase.observe().map {
             loading.postValue(Event(false))
 
-            Event(
-                it.successOr(null).also { repo ->
-                    error.postValue(
-                        when (repo) {
-                            null -> Event(COULD_NOT_GET_REPO)
-                            else -> null
-                        }
-                    )
-                }
-            )
+            Event(it.successOr(null).also { repo -> sendError(repo) })
         }
     }
 
@@ -61,6 +53,14 @@ class RepoProfileViewModel @Inject constructor(
 
     private fun emitEvent(event: RepoProfileEvent, value: String) =
         repoProfileEvent.postValue(Event(Pair(event, value)))
+
+    private fun sendError(repo: Repo?) =
+        error.postValue(
+            when (repo) {
+                null -> Event(COULD_NOT_GET_REPO)
+                else -> null
+            }.checkAllMatched
+        )
 
     companion object {
         const val COULD_NOT_GET_REPO = "Couldn't get repo. Please try again."

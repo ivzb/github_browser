@@ -5,23 +5,20 @@ import com.ivzb.github_browser.data.user.UserRepository
 import com.ivzb.github_browser.domain.MediatorUseCase
 import com.ivzb.github_browser.domain.Result
 import com.ivzb.github_browser.model.user.User
-import com.ivzb.github_browser.model.user.UserType
 import javax.inject.Inject
 
-open class ObserveUsersUseCase @Inject constructor(
+open class ObserveUserUseCase @Inject constructor(
     private val repository: UserRepository
-) : MediatorUseCase<Pair<String, UserType>, List<User>?>() {
+) : MediatorUseCase<String?, User?>() {
 
-    private var users: LiveData<List<User>>? = null
+    private var user: LiveData<User?>? = null
 
-    override fun execute(parameters: Pair<String, UserType>) {
-        val (user, type) = parameters
-
-        users?.let { source ->
+    override fun execute(parameters: String?) {
+        user?.let { source ->
             result.removeSource(source)
         }
 
-        users = repository.observeUsers(user, type).also { source ->
+        user = repository.observeUser(parameters).also { source ->
             result.addSource(source) { list ->
                 result.postValue(Result.Success(list))
             }

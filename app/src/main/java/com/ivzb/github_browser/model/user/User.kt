@@ -11,7 +11,7 @@ data class User(
     val contributions: Int
 ) {
 
-    fun asUserFtsEntity(user: String, type: String) = UserFtsEntity(
+    fun asUserFtsEntity(user: String? = null, type: String? = null) = UserFtsEntity(
         id = this.id,
         user = user,
         type = type,

@@ -8,6 +8,10 @@
         <variable
             name="viewModel"
             type="com.ivzb.github_browser.ui.user_profile.UserProfileViewModel" />
+
+        <variable
+            name="user"
+            type="com.ivzb.github_browser.model.user.User" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -42,7 +46,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/card_margin"
             android:contentDescription="@string/avatar"
-            app:imageUrl="@{viewModel.user.avatarUrl}"
+            app:imageUrl="@{ user.avatarUrl }"
             app:layout_constraintEnd_toStartOf="@+id/guideline_vertical"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -52,9 +56,9 @@
             style="@style/TextAppearance.AppCompat.Display1"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="@{ viewModel.user.login }"
+            android:text="@{ user.login }"
             android:textStyle="bold"
-            app:goneUnless="@{viewModel.user != null}"
+            app:goneUnless="@{ user != null }"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/guideline_vertical"
             app:layout_constraintTop_toTopOf="parent"
@@ -66,8 +70,8 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/item_margin"
-            android:text="@{ viewModel.user.name }"
-            app:goneUnless="@{ viewModel.user != null &amp;&amp; !viewModel.user.name.empty }"
+            android:text="@{ user.name }"
+            app:goneUnless="@{ user != null &amp;&amp; !user.name.empty }"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/guideline_vertical"
             app:layout_constraintTop_toBottomOf="@+id/tv_login"
@@ -80,7 +84,7 @@
             android:layout_marginTop="@dimen/item_margin"
             android:contentDescription="@string/followers"
             android:src="@drawable/ic_users"
-            app:goneUnless="@{viewModel.user != null}"
+            app:goneUnless="@{ user != null }"
             app:layout_constraintStart_toEndOf="@+id/guideline_vertical"
             app:layout_constraintTop_toBottomOf="@+id/tv_name" />
 
@@ -90,9 +94,9 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/item_margin"
             android:layout_marginTop="@dimen/item_margin"
-            android:text="@{String.format(@string/follow_info, viewModel.user.following, viewModel.user.followers)}"
+            android:text="@{ String.format(@string/follow_info, user.following, user.followers)}"
             android:textColor="@color/colorPrimaryDark"
-            app:goneUnless="@{viewModel.user != null}"
+            app:goneUnless="@{ user != null }"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/iv_follows"
             app:layout_constraintTop_toBottomOf="@+id/tv_name"
@@ -105,7 +109,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/card_margin"
             android:text="@string/repositories"
-            app:goneUnless="@{viewModel.user != null}"
+            app:goneUnless="@{ user != null }"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/iv_avatar" />
@@ -116,9 +120,9 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/item_margin"
-            android:onClick="@{ () -> viewModel.ownReposClick(viewModel.user.login) }"
+            android:onClick="@{ () -> viewModel.ownReposClick(user.login) }"
             android:text="@string/own"
-            app:goneUnless="@{viewModel.user != null}"
+            app:goneUnless="@{ user != null }"
             app:layout_constraintEnd_toStartOf="@+id/btn_starred_repositories"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_repositories" />
@@ -129,9 +133,9 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/item_margin"
-            android:onClick="@{ () -> viewModel.starredReposClick(viewModel.user.login) }"
+            android:onClick="@{ () -> viewModel.starredReposClick(user.login) }"
             android:text="@string/starred"
-            app:goneUnless="@{viewModel.user != null}"
+            app:goneUnless="@{ user != null }"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/btn_own_repositories"
             app:layout_constraintTop_toBottomOf="@+id/tv_repositories" />
@@ -143,7 +147,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/card_margin"
             android:text="@string/follow"
-            app:goneUnless="@{viewModel.user != null}"
+            app:goneUnless="@{ user != null }"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/btn_own_repositories" />
@@ -154,9 +158,9 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/item_margin"
-            android:onClick="@{ () -> viewModel.followingClick(viewModel.user.login) }"
-            android:text="@{String.format(@string/following_count, viewModel.user.following)}"
-            app:goneUnless="@{viewModel.user != null}"
+            android:onClick="@{ () -> viewModel.followingClick(user.login) }"
+            android:text="@{ String.format(@string/following_count, user.following) }"
+            app:goneUnless="@{ user != null }"
             app:layout_constraintEnd_toStartOf="@+id/btn_followers"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_follow"
@@ -168,9 +172,9 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/item_margin"
-            android:onClick="@{ () -> viewModel.followersClick(viewModel.user.login) }"
-            android:text="@{String.format(@string/followers_count, viewModel.user.followers)}"
-            app:goneUnless="@{viewModel.user != null}"
+            android:onClick="@{ () -> viewModel.followersClick(user.login) }"
+            android:text="@{ String.format(@string/followers_count, user.followers) }"
+            app:goneUnless="@{ user != null }"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/btn_following"
             app:layout_constraintTop_toBottomOf="@+id/tv_follow"

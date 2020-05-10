@@ -12,24 +12,19 @@ class RemoteUserDataSource @Inject constructor(
     private val retrofit: Retrofit
 ) : UserRemoteDataSource {
 
-    override fun getCurrentUser(): User? {
+    override fun getUser(user: String?): User? {
         if (!networkUtils.hasNetworkConnection()) {
             return null
         }
 
-        val response = retrofit.create<UserAPI>(UserAPI::class.java).getCurrentUser().execute()
+        val response = retrofit.create<UserAPI>(UserAPI::class.java).let {
+            when (user) {
+                null -> it.getCurrentUser()
+                else -> it.getUser(user)
+            }.checkAllMatched
+        }.execute().body()
 
-        return response.body()?.asUser()
-    }
-
-    override fun getUser(user: String): User? {
-        if (!networkUtils.hasNetworkConnection()) {
-            return null
-        }
-
-        val response = retrofit.create<UserAPI>(UserAPI::class.java).getUser(user).execute()
-
-        return response.body()?.asUser()
+        return response?.asUser()
     }
 
     override fun getUsers(user: String, type: UserType): List<User>? {

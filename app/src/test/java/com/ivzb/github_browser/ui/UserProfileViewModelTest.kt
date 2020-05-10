@@ -2,8 +2,8 @@ package com.ivzb.github_browser.ui
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.ivzb.github_browser.data.user.UserRepository
-import com.ivzb.github_browser.domain.user.GetCurrentUserUseCase
-import com.ivzb.github_browser.domain.user.GetUserUseCase
+import com.ivzb.github_browser.domain.user.FetchUserUseCase
+import com.ivzb.github_browser.domain.user.ObserveUserUseCase
 import com.ivzb.github_browser.model.TestData
 import com.ivzb.github_browser.ui.user_profile.UserProfileEvent
 import com.ivzb.github_browser.ui.user_profile.UserProfileViewModel
@@ -35,12 +35,12 @@ class UserProfileViewModelTest {
     fun getCurrentUser_succeeds() {
         // Given a ViewModel
         val userRepository = mock<UserRepository> {
-            on { getCurrentUser() }.thenReturn(TestData.user)
+            on { observeUser(eq(null)) }.thenReturn(TestData.liveDataOf(TestData.user))
         }
-        val getCurrentUserUseCase = GetCurrentUserUseCase(userRepository)
-        val getUserUseCase = GetUserUseCase(userRepository)
+        val observeUserUseCase = ObserveUserUseCase(userRepository)
+        val fetchUserUseCase = FetchUserUseCase(userRepository)
 
-        val viewModel = UserProfileViewModel(getCurrentUserUseCase, getUserUseCase)
+        val viewModel = UserProfileViewModel(observeUserUseCase, fetchUserUseCase)
 
         // When current user is requested
         viewModel.getUser(null)
@@ -50,7 +50,9 @@ class UserProfileViewModelTest {
         assertThat(loadingEventAtStart?.getContentIfNotHandled(), `is`(CoreMatchers.equalTo(true)))
 
         val user = LiveDataTestUtil.getValue(viewModel.user)
-        assertThat(user, `is`(CoreMatchers.equalTo(TestData.user)))
+        assertThat(user?.getContentIfNotHandled(), `is`(CoreMatchers.equalTo(TestData.user)))
+
+        verify(userRepository).fetchUser(eq(null))
 
         val loadingEventAtEnd = LiveDataTestUtil.getValue(viewModel.loading)
         assertThat(loadingEventAtEnd?.getContentIfNotHandled(), `is`(CoreMatchers.equalTo(false)))
@@ -60,12 +62,12 @@ class UserProfileViewModelTest {
     fun getCurrentUser_fails() {
         // Given a ViewModel
         val userRepository = mock<UserRepository> {
-            on { getCurrentUser() }.thenReturn(null)
+            on { observeUser(eq(null)) }.thenReturn(TestData.liveDataOf(null))
         }
-        val getCurrentUserUseCase = GetCurrentUserUseCase(userRepository)
-        val getUserUseCase = GetUserUseCase(userRepository)
+        val observeUserUseCase = ObserveUserUseCase(userRepository)
+        val fetchUserUseCase = FetchUserUseCase(userRepository)
 
-        val viewModel = UserProfileViewModel(getCurrentUserUseCase, getUserUseCase)
+        val viewModel = UserProfileViewModel(observeUserUseCase, fetchUserUseCase)
 
         // When current user is requested
         viewModel.getUser(null)
@@ -75,7 +77,9 @@ class UserProfileViewModelTest {
         assertThat(loadingEventAtStart?.getContentIfNotHandled(), `is`(CoreMatchers.equalTo(true)))
 
         val user = LiveDataTestUtil.getValue(viewModel.user)
-        assertTrue(user == null)
+        assertTrue(user?.getContentIfNotHandled() == null)
+
+        verify(userRepository).fetchUser(eq(null))
 
         val errorEvent = LiveDataTestUtil.getValue(viewModel.error)
         assertThat(
@@ -93,12 +97,12 @@ class UserProfileViewModelTest {
         val userName = TestData.user.login
 
         val userRepository = mock<UserRepository> {
-            on { getUser(eq(userName)) }.thenReturn(TestData.user)
+            on { observeUser(eq(userName)) }.thenReturn(TestData.liveDataOf(TestData.user))
         }
-        val getCurrentUserUseCase = GetCurrentUserUseCase(userRepository)
-        val getUserUseCase = GetUserUseCase(userRepository)
+        val observeUserUseCase = ObserveUserUseCase(userRepository)
+        val fetchUserUseCase = FetchUserUseCase(userRepository)
 
-        val viewModel = UserProfileViewModel(getCurrentUserUseCase, getUserUseCase)
+        val viewModel = UserProfileViewModel(observeUserUseCase, fetchUserUseCase)
 
         // When current user is requested
         viewModel.getUser(userName)
@@ -107,8 +111,10 @@ class UserProfileViewModelTest {
         val loadingEventAtStart = LiveDataTestUtil.getValue(viewModel.loading)
         assertThat(loadingEventAtStart?.getContentIfNotHandled(), `is`(CoreMatchers.equalTo(true)))
 
+        verify(userRepository).fetchUser(eq(userName))
+
         val user = LiveDataTestUtil.getValue(viewModel.user)
-        assertThat(user, `is`(CoreMatchers.equalTo(TestData.user)))
+        assertThat(user?.getContentIfNotHandled(), `is`(CoreMatchers.equalTo(TestData.user)))
 
         val loadingEventAtEnd = LiveDataTestUtil.getValue(viewModel.loading)
         assertThat(loadingEventAtEnd?.getContentIfNotHandled(), `is`(CoreMatchers.equalTo(false)))
@@ -120,12 +126,12 @@ class UserProfileViewModelTest {
         val userName = TestData.user.login
 
         val userRepository = mock<UserRepository> {
-            on { getUser(eq(userName)) }.thenReturn(null)
+            on { observeUser(eq(userName)) }.thenReturn(TestData.liveDataOf(null))
         }
-        val getCurrentUserUseCase = GetCurrentUserUseCase(userRepository)
-        val getUserUseCase = GetUserUseCase(userRepository)
+        val observeUserUseCase = ObserveUserUseCase(userRepository)
+        val fetchUserUseCase = FetchUserUseCase(userRepository)
 
-        val viewModel = UserProfileViewModel(getCurrentUserUseCase, getUserUseCase)
+        val viewModel = UserProfileViewModel(observeUserUseCase, fetchUserUseCase)
 
         // When current user is requested
         viewModel.getUser(userName)
@@ -135,7 +141,9 @@ class UserProfileViewModelTest {
         assertThat(loadingEventAtStart?.getContentIfNotHandled(), `is`(CoreMatchers.equalTo(true)))
 
         val user = LiveDataTestUtil.getValue(viewModel.user)
-        assertTrue(user == null)
+        assertTrue(user?.getContentIfNotHandled() == null)
+
+        verify(userRepository).fetchUser(eq(userName))
 
         val errorEvent = LiveDataTestUtil.getValue(viewModel.error)
         assertThat(
@@ -151,10 +159,10 @@ class UserProfileViewModelTest {
     fun ownReposClick_emitsEvent() {
         // Given a ViewModel
         val userRepository = mock<UserRepository>()
-        val getCurrentUserUseCase = GetCurrentUserUseCase(userRepository)
-        val getUserUseCase = GetUserUseCase(userRepository)
+        val observeUserUseCase = ObserveUserUseCase(userRepository)
+        val fetchUserUseCase = FetchUserUseCase(userRepository)
 
-        val viewModel = UserProfileViewModel(getCurrentUserUseCase, getUserUseCase)
+        val viewModel = UserProfileViewModel(observeUserUseCase, fetchUserUseCase)
 
         // When login is clicked
         viewModel.ownReposClick(TestData.user.login)
@@ -171,10 +179,10 @@ class UserProfileViewModelTest {
     fun starredReposClick_emitsEvent() {
         // Given a ViewModel
         val userRepository = mock<UserRepository>()
-        val getCurrentUserUseCase = GetCurrentUserUseCase(userRepository)
-        val getUserUseCase = GetUserUseCase(userRepository)
+        val observeUserUseCase = ObserveUserUseCase(userRepository)
+        val fetchUserUseCase = FetchUserUseCase(userRepository)
 
-        val viewModel = UserProfileViewModel(getCurrentUserUseCase, getUserUseCase)
+        val viewModel = UserProfileViewModel(observeUserUseCase, fetchUserUseCase)
 
         // When login is clicked
         viewModel.starredReposClick(TestData.user.login)
@@ -191,10 +199,10 @@ class UserProfileViewModelTest {
     fun followingClick_emitsEvent() {
         // Given a ViewModel
         val userRepository = mock<UserRepository>()
-        val getCurrentUserUseCase = GetCurrentUserUseCase(userRepository)
-        val getUserUseCase = GetUserUseCase(userRepository)
+        val observeUserUseCase = ObserveUserUseCase(userRepository)
+        val fetchUserUseCase = FetchUserUseCase(userRepository)
 
-        val viewModel = UserProfileViewModel(getCurrentUserUseCase, getUserUseCase)
+        val viewModel = UserProfileViewModel(observeUserUseCase, fetchUserUseCase)
 
         // When login is clicked
         viewModel.followingClick(TestData.user.login)
@@ -211,10 +219,10 @@ class UserProfileViewModelTest {
     fun followersClick_emitsEvent() {
         // Given a ViewModel
         val userRepository = mock<UserRepository>()
-        val getCurrentUserUseCase = GetCurrentUserUseCase(userRepository)
-        val getUserUseCase = GetUserUseCase(userRepository)
+        val observeUserUseCase = ObserveUserUseCase(userRepository)
+        val fetchUserUseCase = FetchUserUseCase(userRepository)
 
-        val viewModel = UserProfileViewModel(getCurrentUserUseCase, getUserUseCase)
+        val viewModel = UserProfileViewModel(observeUserUseCase, fetchUserUseCase)
 
         // When login is clicked
         viewModel.followersClick(TestData.user.login)

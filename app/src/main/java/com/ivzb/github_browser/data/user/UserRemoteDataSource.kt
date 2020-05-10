@@ -5,9 +5,7 @@ import com.ivzb.github_browser.model.user.UserType
 
 interface UserRemoteDataSource {
 
-    fun getCurrentUser(): User?
-
-    fun getUser(user: String): User?
+    fun getUser(user: String?): User?
 
     fun getUsers(user: String, type: UserType): List<User>?
 }

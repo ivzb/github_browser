@@ -14,6 +14,19 @@ interface UserFtsDao {
         """
         SELECT rowid, user, type, login, name, avatar_url, repos, followers, following, contributions 
         FROM userFts 
+        WHERE (user IS NULL AND type IS NULL AND :user IS NULL) OR (login = :user AND :user IS NOT NULL)
+        LIMIT 1
+        """
+    )
+    fun observe(user: String?): LiveData<UserFtsEntity?>
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insert(user: UserFtsEntity)
+
+    @Query(
+        """
+        SELECT rowid, user, type, login, name, avatar_url, repos, followers, following, contributions 
+        FROM userFts 
         WHERE user = :user and type = :type
         ORDER BY followers DESC
         """

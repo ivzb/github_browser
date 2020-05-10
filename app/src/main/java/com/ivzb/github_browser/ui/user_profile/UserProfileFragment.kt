@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.ivzb.github_browser.databinding.FragmentUserProfileBinding
@@ -39,12 +38,13 @@ class UserProfileFragment : DaggerFragment() {
                 lifecycleOwner = viewLifecycleOwner
             }
 
-        userProfileViewModel.user.observe(viewLifecycleOwner, Observer { user ->
+        userProfileViewModel.user.observe(viewLifecycleOwner, EventObserver { user ->
             user?.let { updateTitle("${user.login} profile") }
+            binding.user = user
         })
 
-        userProfileViewModel.error.observe(viewLifecycleOwner, Observer {
-            it?.let { showErrorMessage(it.peekContent()) }
+        userProfileViewModel.error.observe(viewLifecycleOwner, EventObserver {
+            showErrorMessage(it)
         })
 
         userProfileViewModel.userProfileEvent.observe(viewLifecycleOwner, EventObserver {
