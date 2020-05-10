@@ -18,7 +18,7 @@ class RepoProfileViewModel @Inject constructor(
     val loading = MutableLiveData<Event<Boolean>>()
     val error = MutableLiveData<Event<String>>()
     val repo: LiveData<Repo?>
-    val contributors: MutableLiveData<Event<String>> = MutableLiveData()
+    val repoProfileEvent: MutableLiveData<Event<Pair<RepoProfileEvent, String>>> = MutableLiveData()
 
     private val getRepoResult = MutableLiveData<Result<Repo?>>()
 
@@ -49,11 +49,21 @@ class RepoProfileViewModel @Inject constructor(
         // todo
     }
 
-    fun contributorsClick(repo: String) {
-        contributors.postValue(Event(repo))
-    }
+    fun contributorsClick(repo: String) =
+        emitEvent(RepoProfileEvent.Contributors, repo)
+
+    fun ownerClick(user: String) =
+        emitEvent(RepoProfileEvent.Owner, user)
+
+    private fun emitEvent(event: RepoProfileEvent, value: String) =
+        repoProfileEvent.postValue(Event(Pair(event, value)))
 
     companion object {
         const val COULD_NOT_GET_REPO = "Couldn't get repo. Please try again."
     }
+}
+
+enum class RepoProfileEvent {
+    Contributors,
+    Owner
 }

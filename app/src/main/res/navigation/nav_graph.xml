@@ -58,6 +58,10 @@
         <action
             android:id="@+id/to_users"
             app:destination="@id/navigation_users" />
+
+        <action
+            android:id="@+id/to_user_profile"
+            app:destination="@id/navigation_user_profile" />
     </fragment>
 
     <fragment

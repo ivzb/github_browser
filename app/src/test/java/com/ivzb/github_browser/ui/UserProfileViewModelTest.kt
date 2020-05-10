@@ -78,7 +78,10 @@ class UserProfileViewModelTest {
         assertTrue(user == null)
 
         val errorEvent = LiveDataTestUtil.getValue(viewModel.error)
-        assertThat(errorEvent?.getContentIfNotHandled(), `is`(CoreMatchers.equalTo(COULD_NOT_GET_USER)))
+        assertThat(
+            errorEvent?.getContentIfNotHandled(),
+            `is`(CoreMatchers.equalTo(COULD_NOT_GET_USER))
+        )
 
         val loadingEventAtEnd = LiveDataTestUtil.getValue(viewModel.loading)
         assertThat(loadingEventAtEnd?.getContentIfNotHandled(), `is`(CoreMatchers.equalTo(false)))
@@ -135,7 +138,10 @@ class UserProfileViewModelTest {
         assertTrue(user == null)
 
         val errorEvent = LiveDataTestUtil.getValue(viewModel.error)
-        assertThat(errorEvent?.getContentIfNotHandled(), `is`(CoreMatchers.equalTo(COULD_NOT_GET_USER)))
+        assertThat(
+            errorEvent?.getContentIfNotHandled(),
+            `is`(CoreMatchers.equalTo(COULD_NOT_GET_USER))
+        )
 
         val loadingEventAtEnd = LiveDataTestUtil.getValue(viewModel.loading)
         assertThat(loadingEventAtEnd?.getContentIfNotHandled(), `is`(CoreMatchers.equalTo(false)))
@@ -155,7 +161,10 @@ class UserProfileViewModelTest {
 
         // Then event should be emitted
         val userProfileEvent = LiveDataTestUtil.getValue(viewModel.userProfileEvent)
-        assertThat(userProfileEvent?.getContentIfNotHandled(), `is`(CoreMatchers.equalTo(Pair(UserProfileEvent.Repositories, TestData.user.login))))
+        assertThat(
+            userProfileEvent?.getContentIfNotHandled(),
+            `is`(CoreMatchers.equalTo(Pair(UserProfileEvent.Repositories, TestData.user.login)))
+        )
     }
 
     @Test
@@ -172,7 +181,10 @@ class UserProfileViewModelTest {
 
         // Then event should be emitted
         val userProfileEvent = LiveDataTestUtil.getValue(viewModel.userProfileEvent)
-        assertThat(userProfileEvent?.getContentIfNotHandled(), `is`(CoreMatchers.equalTo(Pair(UserProfileEvent.Starred, TestData.user.login))))
+        assertThat(
+            userProfileEvent?.getContentIfNotHandled(),
+            `is`(CoreMatchers.equalTo(Pair(UserProfileEvent.Starred, TestData.user.login)))
+        )
     }
 
     @Test
@@ -189,7 +201,10 @@ class UserProfileViewModelTest {
 
         // Then event should be emitted
         val userProfileEvent = LiveDataTestUtil.getValue(viewModel.userProfileEvent)
-        assertThat(userProfileEvent?.getContentIfNotHandled(), `is`(CoreMatchers.equalTo(Pair(UserProfileEvent.Following, TestData.user.login))))
+        assertThat(
+            userProfileEvent?.getContentIfNotHandled(),
+            `is`(CoreMatchers.equalTo(Pair(UserProfileEvent.Following, TestData.user.login)))
+        )
     }
 
     @Test
@@ -206,6 +221,9 @@ class UserProfileViewModelTest {
 
         // Then event should be emitted
         val userProfileEvent = LiveDataTestUtil.getValue(viewModel.userProfileEvent)
-        assertThat(userProfileEvent?.getContentIfNotHandled(), `is`(CoreMatchers.equalTo(Pair(UserProfileEvent.Followers, TestData.user.login))))
+        assertThat(
+            userProfileEvent?.getContentIfNotHandled(),
+            `is`(CoreMatchers.equalTo(Pair(UserProfileEvent.Followers, TestData.user.login)))
+        )
     }
 }

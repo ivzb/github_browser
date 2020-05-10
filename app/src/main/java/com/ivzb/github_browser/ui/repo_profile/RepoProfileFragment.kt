@@ -11,6 +11,8 @@ import com.ivzb.github_browser.databinding.FragmentRepoProfileBinding
 import com.ivzb.github_browser.domain.EventObserver
 import com.ivzb.github_browser.ui.user_profile.UserProfileFragmentDirections.Companion.toUsers
 import com.ivzb.github_browser.model.user.UserType
+import com.ivzb.github_browser.ui.users.UsersFragmentDirections.Companion.toUserProfile
+import com.ivzb.github_browser.util.checkAllMatched
 import com.ivzb.github_browser.util.provideViewModel
 import com.ivzb.github_browser.util.showErrorMessage
 import com.ivzb.github_browser.util.updateTitle
@@ -44,8 +46,13 @@ class RepoProfileFragment : DaggerFragment() {
             it?.let { showErrorMessage(it.peekContent()) }
         })
 
-        repoProfileViewModel.contributors.observe(viewLifecycleOwner, EventObserver{ repo ->
-            openContributors(repo)
+        repoProfileViewModel.repoProfileEvent.observe(viewLifecycleOwner, EventObserver{
+            val (event, value) = it
+
+            when (event) {
+                RepoProfileEvent.Contributors -> openContributors(value)
+                RepoProfileEvent.Owner -> openOwner(value)
+            }.checkAllMatched
         })
 
         requireArguments().apply {
@@ -59,4 +66,7 @@ class RepoProfileFragment : DaggerFragment() {
 
     private fun openContributors(repo: String) =
         findNavController().navigate(toUsers(repo, UserType.Contributors))
+
+    private fun openOwner(user: String) =
+        findNavController().navigate(toUserProfile(user))
 }

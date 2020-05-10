@@ -4,6 +4,7 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.ivzb.github_browser.data.repo.RepoRepository
 import com.ivzb.github_browser.domain.repo.GetRepoUseCase
 import com.ivzb.github_browser.model.TestData
+import com.ivzb.github_browser.ui.repo_profile.RepoProfileEvent
 import com.ivzb.github_browser.ui.repo_profile.RepoProfileViewModel
 import com.ivzb.github_browser.ui.repo_profile.RepoProfileViewModel.Companion.COULD_NOT_GET_REPO
 import com.ivzb.github_browser.util.LiveDataTestUtil
@@ -78,7 +79,10 @@ class RepoProfileViewModelTest {
         assertTrue(repo == null)
 
         val errorEvent = LiveDataTestUtil.getValue(viewModel.error)
-        assertThat(errorEvent?.getContentIfNotHandled(), `is`(CoreMatchers.equalTo(COULD_NOT_GET_REPO)))
+        assertThat(
+            errorEvent?.getContentIfNotHandled(),
+            `is`(CoreMatchers.equalTo(COULD_NOT_GET_REPO))
+        )
 
         val loadingEventAtEnd = LiveDataTestUtil.getValue(viewModel.loading)
         assertThat(loadingEventAtEnd?.getContentIfNotHandled(), `is`(CoreMatchers.equalTo(false)))
@@ -96,7 +100,29 @@ class RepoProfileViewModelTest {
         viewModel.contributorsClick(TestData.repo.fullName)
 
         // Then event should be emitted
-        val repoProfileEvent = LiveDataTestUtil.getValue(viewModel.contributors)
-        assertThat(repoProfileEvent?.getContentIfNotHandled(), `is`(CoreMatchers.equalTo(TestData.repo.fullName)))
+        val repoProfileEvent = LiveDataTestUtil.getValue(viewModel.repoProfileEvent)
+        assertThat(
+            repoProfileEvent?.getContentIfNotHandled(),
+            `is`(CoreMatchers.equalTo(Pair(RepoProfileEvent.Contributors, TestData.repo.fullName)))
+        )
+    }
+
+    @Test
+    fun ownerClick_emitsEvent() {
+        // Given a ViewModel
+        val repoRepository = mock<RepoRepository>()
+        val getRepoUseCase = GetRepoUseCase(repoRepository)
+
+        val viewModel = RepoProfileViewModel(getRepoUseCase)
+
+        // When login is clicked
+        viewModel.ownerClick(TestData.repo.owner)
+
+        // Then event should be emitted
+        val repoProfileEvent = LiveDataTestUtil.getValue(viewModel.repoProfileEvent)
+        assertThat(
+            repoProfileEvent?.getContentIfNotHandled(),
+            `is`(CoreMatchers.equalTo(Pair(RepoProfileEvent.Owner, TestData.repo.owner)))
+        )
     }
 }

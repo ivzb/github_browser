@@ -171,6 +171,7 @@
             app:layout_constraintTop_toBottomOf="@+id/btn_star" />
 
         <Button
+            android:id="@+id/btn_contributors"
             style="@style/Widget.AppCompat.Button.Colored"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -178,8 +179,21 @@
             android:onClick="@{ () -> viewModel.contributorsClick(viewModel.repo.fullName) }"
             android:text="@string/contributors"
             app:goneUnless="@{viewModel.repo != null}"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/btn_owner"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btn_unstar" />
+
+        <Button
+            android:id="@+id/btn_owner"
+            style="@style/Widget.AppCompat.Button.Colored"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/card_margin"
+            android:onClick="@{ () -> viewModel.ownerClick(viewModel.repo.owner) }"
+            android:text="@string/owner"
+            app:goneUnless="@{viewModel.repo != null}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/btn_contributors"
             app:layout_constraintTop_toBottomOf="@+id/btn_unstar" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
