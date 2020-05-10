@@ -26,6 +26,18 @@
             android:padding="@dimen/item_padding">
 
             <TextView
+                android:id="@+id/tv_owner"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@{ repo.owner }"
+                android:textAlignment="viewStart"
+                android:textAppearance="?textAppearanceListItem"
+                app:layout_constraintEnd_toStartOf="@+id/ic_star"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="square" />
+
+            <TextView
                 android:id="@+id/tv_name"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -35,7 +47,7 @@
                 android:textStyle="bold"
                 app:layout_constraintEnd_toStartOf="@+id/ic_star"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_owner"
                 tools:text="retrofit" />
 
             <ImageView

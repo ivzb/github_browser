@@ -8,17 +8,18 @@ import com.ivzb.github_browser.model.db.RepoFtsEntity
  * The Data Access Object for the [RepoFtsEntity] class.
  */
 @Dao
-interface UserFtsDao {
+interface RepoFtsDao {
 
     @Query(
         """
-        SELECT rowid, name, full_name, description, is_fork, stars_count, watchers_count, forks_count, language
+        SELECT rowid, name, full_name, description, owner, is_fork, stars_count, watchers_count, forks_count, language
         FROM repoFts 
+        WHERE owner = :user
         ORDER BY stars_count DESC
         """
     )
-    fun observeAll(): LiveData<List<RepoFtsEntity>>
+    fun observeOwn(user: String): LiveData<List<RepoFtsEntity>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertAll(users: List<RepoFtsEntity>)
+    fun insertOwn(users: List<RepoFtsEntity>)
 }

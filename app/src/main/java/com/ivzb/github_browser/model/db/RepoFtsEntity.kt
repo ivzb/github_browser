@@ -29,6 +29,9 @@ data class RepoFtsEntity(
     @ColumnInfo(name = "description")
     val description: String,
 
+    @ColumnInfo(name = "owner")
+    val owner: String,
+
     @ColumnInfo(name = "is_fork")
     val isFork: Boolean,
 
@@ -50,6 +53,7 @@ data class RepoFtsEntity(
         name = this.name,
         fullName = this.fullName,
         description = this.description,
+        owner = this.owner,
         isFork = this.isFork,
         starsCount = this.starsCount,
         watchersCount = this.watchersCount,

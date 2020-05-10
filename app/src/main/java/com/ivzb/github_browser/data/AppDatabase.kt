@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import com.ivzb.github_browser.data.repo.RepoFtsDao
 import com.ivzb.github_browser.data.user.UserFtsDao
 import com.ivzb.github_browser.model.db.RepoFtsEntity
 import com.ivzb.github_browser.model.db.UserFtsEntity
@@ -21,7 +22,9 @@ import com.ivzb.github_browser.model.db.UserFtsEntity
 )
 abstract class AppDatabase : RoomDatabase() {
 
-    abstract fun usersFtsDao(): UserFtsDao
+    abstract fun userFtsDao(): UserFtsDao
+
+    abstract fun repoFtsDao(): RepoFtsDao
 
     companion object {
 
