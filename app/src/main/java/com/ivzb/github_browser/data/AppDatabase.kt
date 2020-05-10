@@ -20,11 +20,7 @@ import com.ivzb.github_browser.model.user.UserFtsEntity
     version = 1,
     exportSchema = false
 )
-abstract class AppDatabase : RoomDatabase() {
-
-    abstract fun userFtsDao(): UserFtsDao
-
-    abstract fun repoFtsDao(): RepoFtsDao
+abstract class AppDatabase : RoomDatabase(), DatabaseDataSource {
 
     companion object {
 

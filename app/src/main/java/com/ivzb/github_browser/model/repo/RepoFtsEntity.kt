@@ -4,7 +4,6 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.Fts4
 import androidx.room.PrimaryKey
-import com.ivzb.github_browser.model.repo.Repo
 
 /**
  * This class represents [Repo] data for searching with FTS (full-text search).
@@ -19,6 +18,12 @@ data class RepoFtsEntity(
     @PrimaryKey(autoGenerate = false)
     @ColumnInfo(name = "rowid")
     val id: Long,
+
+    @ColumnInfo(name = "user")
+    val user: String,
+
+    @ColumnInfo(name = "type")
+    val type: String,
 
     @ColumnInfo(name = "name")
     val name: String,

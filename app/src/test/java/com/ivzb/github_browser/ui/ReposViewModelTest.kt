@@ -2,9 +2,7 @@ package com.ivzb.github_browser.ui
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.ivzb.github_browser.data.repo.RepoRepository
-import com.ivzb.github_browser.domain.repo.GetOwnReposUseCase
-import com.ivzb.github_browser.domain.repo.GetSearchReposUseCase
-import com.ivzb.github_browser.domain.repo.GetStarredReposUseCase
+import com.ivzb.github_browser.domain.repo.*
 import com.ivzb.github_browser.model.TestData
 import com.ivzb.github_browser.model.repo.RepoType
 import com.ivzb.github_browser.ui.repos.ReposViewModel
@@ -31,56 +29,60 @@ class ReposViewModelTest {
     var syncTaskExecutorRule = SyncTaskExecutorRule()
 
     @Test
-    fun getOwnRepos_succeeds() {
+    fun getRepos_succeeds() {
         // Given a ViewModel
         val user = TestData.user.name
+        val type = RepoType.Own
 
         val repoRepository = mock<RepoRepository> {
-            on { getOwnRepos(eq(user)) }.thenReturn(TestData.repos)
+            on { observeRepos(eq(user), eq(type)) }.thenReturn(TestData.liveDataOf(TestData.repos))
         }
-        val getOwnReposUseCase = GetOwnReposUseCase(repoRepository)
-        val getStarredReposUseCase = GetStarredReposUseCase(repoRepository)
-        val getSearchReposUseCase = GetSearchReposUseCase(repoRepository)
+        val observeReposUseCase = ObserveReposUseCase(repoRepository)
+        val fetchReposUseCase = FetchReposUseCase(repoRepository)
 
-        val viewModel = ReposViewModel(getOwnReposUseCase, getStarredReposUseCase, getSearchReposUseCase)
+        val viewModel = ReposViewModel(observeReposUseCase, fetchReposUseCase)
 
         // When repos are requested
-        viewModel.getRepos(user, RepoType.Own)
+        viewModel.getRepos(user, type)
 
-        // Then event should be emitted
+        // Then event should be emitted and repos fetched
         val loadingEventAtStart = LiveDataTestUtil.getValue(viewModel.loading)
         assertThat(loadingEventAtStart?.getContentIfNotHandled(), `is`(CoreMatchers.equalTo(true)))
 
         val repos = LiveDataTestUtil.getValue(viewModel.repos)
-        assertThat(repos, `is`(CoreMatchers.equalTo(TestData.repos as List<Any>)))
+        assertThat(repos?.getContentIfNotHandled(), `is`(CoreMatchers.equalTo(TestData.repos as List<Any>)))
+
+        verify(repoRepository).fetchRepos(eq(user), eq(type))
 
         val loadingEventAtEnd = LiveDataTestUtil.getValue(viewModel.loading)
         assertThat(loadingEventAtEnd?.getContentIfNotHandled(), `is`(CoreMatchers.equalTo(false)))
     }
 
     @Test
-    fun getOwnRepos_empty() {
+    fun getRepos_empty() {
         // Given a ViewModel
         val user = TestData.user.name
+        val type = RepoType.Own
 
         val repoRepository = mock<RepoRepository> {
-            on { getOwnRepos(eq(user)) }.thenReturn(listOf())
+            on { observeRepos(eq(user), eq(type)) }.thenReturn(TestData.liveDataOf(listOf()))
         }
-        val getOwnReposUseCase = GetOwnReposUseCase(repoRepository)
-        val getStarredReposUseCase = GetStarredReposUseCase(repoRepository)
-        val getSearchReposUseCase = GetSearchReposUseCase(repoRepository)
+        val observeReposUseCase = ObserveReposUseCase(repoRepository)
+        val fetchReposUseCase = FetchReposUseCase(repoRepository)
 
-        val viewModel = ReposViewModel(getOwnReposUseCase, getStarredReposUseCase, getSearchReposUseCase)
+        val viewModel = ReposViewModel(observeReposUseCase, fetchReposUseCase)
 
         // When repos are requested
-        viewModel.getRepos(user, RepoType.Own)
+        viewModel.getRepos(user, type)
 
         // Then event should be emitted
         val loadingEventAtStart = LiveDataTestUtil.getValue(viewModel.loading)
         assertThat(loadingEventAtStart?.getContentIfNotHandled(), `is`(CoreMatchers.equalTo(true)))
 
         val repos = LiveDataTestUtil.getValue(viewModel.repos)
-        assertThat(repos, `is`(CoreMatchers.equalTo(TestData.empty as List<Any>)))
+        assertThat(repos?.getContentIfNotHandled(), `is`(CoreMatchers.equalTo(TestData.empty as List<Any>)))
+
+        verify(repoRepository).fetchRepos(eq(user), eq(type))
 
         val loadingEventAtEnd = LiveDataTestUtil.getValue(viewModel.loading)
         assertThat(loadingEventAtEnd?.getContentIfNotHandled(), `is`(CoreMatchers.equalTo(false)))
@@ -90,193 +92,27 @@ class ReposViewModelTest {
     fun getOwnRepos_fails() {
         // Given a ViewModel
         val user = TestData.user.name
+        val type = RepoType.Own
 
         val repoRepository = mock<RepoRepository> {
-            on { getOwnRepos(eq(user)) }.thenReturn(null)
+            on { observeRepos(eq(user), eq(type)) }.thenReturn(TestData.liveDataOf(null))
         }
-        val getOwnReposUseCase = GetOwnReposUseCase(repoRepository)
-        val getStarredReposUseCase = GetStarredReposUseCase(repoRepository)
-        val getSearchReposUseCase = GetSearchReposUseCase(repoRepository)
+        val observeReposUseCase = ObserveReposUseCase(repoRepository)
+        val fetchReposUseCase = FetchReposUseCase(repoRepository)
 
-        val viewModel = ReposViewModel(getOwnReposUseCase, getStarredReposUseCase, getSearchReposUseCase)
+        val viewModel = ReposViewModel(observeReposUseCase, fetchReposUseCase)
 
         // When repos are requested
-        viewModel.getRepos(user, RepoType.Own)
+        viewModel.getRepos(user, type)
 
         // Then loading and error events should be emitted
         val loadingEventAtStart = LiveDataTestUtil.getValue(viewModel.loading)
         assertThat(loadingEventAtStart?.getContentIfNotHandled(), `is`(CoreMatchers.equalTo(true)))
 
         val repos = LiveDataTestUtil.getValue(viewModel.repos)
-        assertThat(repos, `is`(CoreMatchers.equalTo(TestData.noConnection as List<Any>)))
+        assertThat(repos?.getContentIfNotHandled(), `is`(CoreMatchers.equalTo(TestData.noConnection as List<Any>)))
 
-        val loadingEventAtEnd = LiveDataTestUtil.getValue(viewModel.loading)
-        assertThat(loadingEventAtEnd?.getContentIfNotHandled(), `is`(CoreMatchers.equalTo(false)))
-    }
-
-    @Test
-    fun getStarredRepos_succeeds() {
-        // Given a ViewModel
-        val user = TestData.user.name
-
-        val repoRepository = mock<RepoRepository> {
-            on { getStarredRepos(eq(user)) }.thenReturn(TestData.repos)
-        }
-        val getOwnReposUseCase = GetOwnReposUseCase(repoRepository)
-        val getStarredReposUseCase = GetStarredReposUseCase(repoRepository)
-        val getSearchReposUseCase = GetSearchReposUseCase(repoRepository)
-
-        val viewModel = ReposViewModel(getOwnReposUseCase, getStarredReposUseCase, getSearchReposUseCase)
-
-        // When repos are requested
-        viewModel.getRepos(user, RepoType.Starred)
-
-        // Then event should be emitted
-        val loadingEventAtStart = LiveDataTestUtil.getValue(viewModel.loading)
-        assertThat(loadingEventAtStart?.getContentIfNotHandled(), `is`(CoreMatchers.equalTo(true)))
-
-        val repos = LiveDataTestUtil.getValue(viewModel.repos)
-        assertThat(repos, `is`(CoreMatchers.equalTo(TestData.repos as List<Any>)))
-
-        val loadingEventAtEnd = LiveDataTestUtil.getValue(viewModel.loading)
-        assertThat(loadingEventAtEnd?.getContentIfNotHandled(), `is`(CoreMatchers.equalTo(false)))
-    }
-
-    @Test
-    fun getStarredRepos_empty() {
-        // Given a ViewModel
-        val user = TestData.user.name
-
-        val repoRepository = mock<RepoRepository> {
-            on { getStarredRepos(eq(user)) }.thenReturn(listOf())
-        }
-        val getOwnReposUseCase = GetOwnReposUseCase(repoRepository)
-        val getStarredReposUseCase = GetStarredReposUseCase(repoRepository)
-        val getSearchReposUseCase = GetSearchReposUseCase(repoRepository)
-
-        val viewModel = ReposViewModel(getOwnReposUseCase, getStarredReposUseCase, getSearchReposUseCase)
-
-        // When repos are requested
-        viewModel.getRepos(user, RepoType.Starred)
-
-        // Then event should be emitted
-        val loadingEventAtStart = LiveDataTestUtil.getValue(viewModel.loading)
-        assertThat(loadingEventAtStart?.getContentIfNotHandled(), `is`(CoreMatchers.equalTo(true)))
-
-        val repos = LiveDataTestUtil.getValue(viewModel.repos)
-        assertThat(repos, `is`(CoreMatchers.equalTo(TestData.empty as List<Any>)))
-
-        val loadingEventAtEnd = LiveDataTestUtil.getValue(viewModel.loading)
-        assertThat(loadingEventAtEnd?.getContentIfNotHandled(), `is`(CoreMatchers.equalTo(false)))
-    }
-
-    @Test
-    fun getStarredRepos_fails() {
-        // Given a ViewModel
-        val user = TestData.user.name
-
-        val repoRepository = mock<RepoRepository> {
-            on { getStarredRepos(eq(user)) }.thenReturn(null)
-        }
-        val getOwnReposUseCase = GetOwnReposUseCase(repoRepository)
-        val getStarredReposUseCase = GetStarredReposUseCase(repoRepository)
-        val getSearchReposUseCase = GetSearchReposUseCase(repoRepository)
-
-        val viewModel = ReposViewModel(getOwnReposUseCase, getStarredReposUseCase, getSearchReposUseCase)
-
-        // When repos are requested
-        viewModel.getRepos(user, RepoType.Starred)
-
-        // Then loading and error events should be emitted
-        val loadingEventAtStart = LiveDataTestUtil.getValue(viewModel.loading)
-        assertThat(loadingEventAtStart?.getContentIfNotHandled(), `is`(CoreMatchers.equalTo(true)))
-
-        val repos = LiveDataTestUtil.getValue(viewModel.repos)
-        assertThat(repos, `is`(CoreMatchers.equalTo(TestData.noConnection as List<Any>)))
-
-        val loadingEventAtEnd = LiveDataTestUtil.getValue(viewModel.loading)
-        assertThat(loadingEventAtEnd?.getContentIfNotHandled(), `is`(CoreMatchers.equalTo(false)))
-    }
-
-    @Test
-    fun getSearchRepos_succeeds() {
-        // Given a ViewModel
-        val search = TestData.search
-
-        val repoRepository = mock<RepoRepository> {
-            on { getSearchRepos(eq(search)) }.thenReturn(TestData.repos)
-        }
-        val getOwnReposUseCase = GetOwnReposUseCase(repoRepository)
-        val getStarredReposUseCase = GetStarredReposUseCase(repoRepository)
-        val getSearchReposUseCase = GetSearchReposUseCase(repoRepository)
-
-        val viewModel = ReposViewModel(getOwnReposUseCase, getStarredReposUseCase, getSearchReposUseCase)
-
-        // When repos are requested
-        viewModel.getRepos(search, RepoType.Search)
-
-        // Then event should be emitted
-        val loadingEventAtStart = LiveDataTestUtil.getValue(viewModel.loading)
-        assertThat(loadingEventAtStart?.getContentIfNotHandled(), `is`(CoreMatchers.equalTo(true)))
-
-        val repos = LiveDataTestUtil.getValue(viewModel.repos)
-        assertThat(repos, `is`(CoreMatchers.equalTo(TestData.repos as List<Any>)))
-
-        val loadingEventAtEnd = LiveDataTestUtil.getValue(viewModel.loading)
-        assertThat(loadingEventAtEnd?.getContentIfNotHandled(), `is`(CoreMatchers.equalTo(false)))
-    }
-
-    @Test
-    fun getSearchRepos_empty() {
-        // Given a ViewModel
-        val search = TestData.search
-
-        val repoRepository = mock<RepoRepository> {
-            on { getSearchRepos(eq(search)) }.thenReturn(listOf())
-        }
-        val getOwnReposUseCase = GetOwnReposUseCase(repoRepository)
-        val getStarredReposUseCase = GetStarredReposUseCase(repoRepository)
-        val getSearchReposUseCase = GetSearchReposUseCase(repoRepository)
-
-        val viewModel = ReposViewModel(getOwnReposUseCase, getStarredReposUseCase, getSearchReposUseCase)
-
-        // When repos are requested
-        viewModel.getRepos(search, RepoType.Search)
-
-        // Then event should be emitted
-        val loadingEventAtStart = LiveDataTestUtil.getValue(viewModel.loading)
-        assertThat(loadingEventAtStart?.getContentIfNotHandled(), `is`(CoreMatchers.equalTo(true)))
-
-        val repos = LiveDataTestUtil.getValue(viewModel.repos)
-        assertThat(repos, `is`(CoreMatchers.equalTo(TestData.empty as List<Any>)))
-
-        val loadingEventAtEnd = LiveDataTestUtil.getValue(viewModel.loading)
-        assertThat(loadingEventAtEnd?.getContentIfNotHandled(), `is`(CoreMatchers.equalTo(false)))
-    }
-
-    @Test
-    fun getSearchRepos_fails() {
-        // Given a ViewModel
-        val search = TestData.search
-
-        val repoRepository = mock<RepoRepository> {
-            on { getSearchRepos(eq(search)) }.thenReturn(null)
-        }
-        val getOwnReposUseCase = GetOwnReposUseCase(repoRepository)
-        val getStarredReposUseCase = GetStarredReposUseCase(repoRepository)
-        val getSearchReposUseCase = GetSearchReposUseCase(repoRepository)
-
-        val viewModel = ReposViewModel(getOwnReposUseCase, getStarredReposUseCase, getSearchReposUseCase)
-
-        // When repos are requested
-        viewModel.getRepos(search, RepoType.Search)
-
-        // Then loading and error events should be emitted
-        val loadingEventAtStart = LiveDataTestUtil.getValue(viewModel.loading)
-        assertThat(loadingEventAtStart?.getContentIfNotHandled(), `is`(CoreMatchers.equalTo(true)))
-
-        val repos = LiveDataTestUtil.getValue(viewModel.repos)
-        assertThat(repos, `is`(CoreMatchers.equalTo(TestData.noConnection as List<Any>)))
+        verify(repoRepository).fetchRepos(eq(user), eq(type))
 
         val loadingEventAtEnd = LiveDataTestUtil.getValue(viewModel.loading)
         assertThat(loadingEventAtEnd?.getContentIfNotHandled(), `is`(CoreMatchers.equalTo(false)))
@@ -286,11 +122,10 @@ class ReposViewModelTest {
     fun clickRepo_emitsEvent() {
         // Given a ViewModel
         val repoRepository = mock<RepoRepository>()
-        val getOwnReposUseCase = GetOwnReposUseCase(repoRepository)
-        val getStarredReposUseCase = GetStarredReposUseCase(repoRepository)
-        val getSearchReposUseCase = GetSearchReposUseCase(repoRepository)
+        val observeReposUseCase = ObserveReposUseCase(repoRepository)
+        val fetchReposUseCase = FetchReposUseCase(repoRepository)
 
-        val viewModel = ReposViewModel(getOwnReposUseCase, getStarredReposUseCase, getSearchReposUseCase)
+        val viewModel = ReposViewModel(observeReposUseCase, fetchReposUseCase)
 
         // When repo is clicked
         viewModel.click(TestData.repo)
@@ -298,5 +133,42 @@ class ReposViewModelTest {
         // Then event should be emitted
         val clickEvent = LiveDataTestUtil.getValue(viewModel.click)
         assertThat(clickEvent?.getContentIfNotHandled(), `is`(CoreMatchers.equalTo(TestData.repo)))
+    }
+
+    @Test
+    fun searchRepo_emitsEvent() {
+        // Given a ViewModel
+        val repoRepository = mock<RepoRepository>()
+        val observeReposUseCase = ObserveReposUseCase(repoRepository)
+        val fetchReposUseCase = FetchReposUseCase(repoRepository)
+
+        val viewModel = ReposViewModel(observeReposUseCase, fetchReposUseCase)
+
+        // When repo is clicked
+        viewModel.search(TestData.search)
+
+        // Then event should be emitted
+        val searchEvent = LiveDataTestUtil.getValue(viewModel.searchQuery)
+        assertThat(
+            searchEvent?.getContentIfNotHandled(),
+            `is`(CoreMatchers.equalTo(TestData.search))
+        )
+    }
+
+    @Test
+    fun searchNullRepo_emitsEvent() {
+        // Given a ViewModel
+        val repoRepository = mock<RepoRepository>()
+        val observeReposUseCase = ObserveReposUseCase(repoRepository)
+        val fetchReposUseCase = FetchReposUseCase(repoRepository)
+
+        val viewModel = ReposViewModel(observeReposUseCase, fetchReposUseCase)
+
+        // When repo is clicked
+        viewModel.search(null)
+
+        // Then event should be emitted
+        val searchEvent = LiveDataTestUtil.getValue(viewModel.searchQuery)
+        assertThat(searchEvent?.getContentIfNotHandled(), `is`(CoreMatchers.equalTo("")))
     }
 }

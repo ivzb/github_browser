@@ -1,8 +1,9 @@
 package com.ivzb.github_browser.data.repo
 
 import androidx.lifecycle.LiveData
-import com.ivzb.github_browser.data.AppDatabase
+import com.ivzb.github_browser.data.DatabaseDataSource
 import com.ivzb.github_browser.model.repo.Repo
+import com.ivzb.github_browser.model.repo.RepoType
 import com.ivzb.github_browser.util.map
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -12,22 +13,23 @@ import javax.inject.Singleton
  */
 @Singleton
 open class RepoRepository @Inject constructor(
-    private val dataSource: RepoDataSource,
-    private val appDatabase: AppDatabase
-) : RepoDataSource by dataSource {
+    private val remoteDataSource: RepoRemoteDataSource,
+    private val database: DatabaseDataSource
+) : RepoDataSource, RepoRemoteDataSource by remoteDataSource {
 
-    fun fetchOwnRepos(user: String) {
-        dataSource.getOwnRepos(user)?.let { repos ->
-            val repoFtsEntities = repos.map { repo -> repo.asRepoFtsEntity() }
-            appDatabase.repoFtsDao().insertOwn(repoFtsEntities)
+    override fun fetchRepos(user: String, type: RepoType) {
+        remoteDataSource.getRepos(user, type)?.let { repos ->
+            val repoFtsEntities = repos.map { it.asRepoFtsEntity(user, type.name) }
+            database.repoFtsDao().insertAll(repoFtsEntities)
         }
     }
 
-    fun observeOwnRepos(user: String): LiveData<List<Repo>> =
-        appDatabase
+    override fun observeRepos(user: String, type: RepoType): LiveData<List<Repo>> =
+        database
             .repoFtsDao()
-            .observeOwn(user)
+            .observeAll(user, type.name)
             .map {
                 it.toSet().map { repo -> repo.asRepo() }
             }
 }
+

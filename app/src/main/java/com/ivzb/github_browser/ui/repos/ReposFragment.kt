@@ -3,7 +3,6 @@ package com.ivzb.github_browser.ui.repos
 import android.os.Bundle
 import android.view.*
 import android.widget.SearchView
-import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -42,7 +41,7 @@ class ReposFragment : DaggerFragment() {
             lifecycleOwner = viewLifecycleOwner
         }
 
-        reposViewModel.repos.observe(viewLifecycleOwner, Observer {
+        reposViewModel.repos.observe(viewLifecycleOwner, EventObserver {
             showRepos(binding.rvRepos, it)
         })
 
@@ -52,7 +51,7 @@ class ReposFragment : DaggerFragment() {
             clearSearch(searchItem)
         })
 
-        reposViewModel.searchQuery.observe(viewLifecycleOwner, Observer {
+        reposViewModel.searchQuery.observe(viewLifecycleOwner, EventObserver {
             filterRepos(it)
         })
 

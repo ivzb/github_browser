@@ -11,7 +11,7 @@ interface RepoAPI {
     @GET("users/{user}/repos")
     fun getOwnRepos(
         @Path("user") user: String,
-        @Query("sort") sort: String = SORT
+        @Query("sort") sort: String = UPDATED
     ): Call<List<RepoResponse>>
 
     @Headers("Accept: application/json")
@@ -26,11 +26,12 @@ interface RepoAPI {
     @GET("search/repositories")
     fun getSearchRepos(
         @Query("q") query: String,
-        @Query("sort") sort: String = SORT
+        @Query("sort") sort: String = STARS
     ): Call<SearchResponse<RepoResponse>>
 
     companion object {
 
-        private const val SORT = "updated"
+        private const val UPDATED = "updated"
+        private const val STARS = "stars"
     }
 }

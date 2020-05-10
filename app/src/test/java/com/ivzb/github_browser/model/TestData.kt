@@ -1,5 +1,7 @@
 package com.ivzb.github_browser.model
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import com.ivzb.github_browser.domain.login.AccessTokenParameters
 import com.ivzb.github_browser.model.access_token.AccessToken
 import com.ivzb.github_browser.model.repo.Repo
@@ -38,6 +40,7 @@ object TestData {
         name = "retrofit",
         fullName = "square/retrofit",
         description = "",
+        owner = "square",
         isFork = true,
         starsCount = 20,
         forksCount = 5,
@@ -52,4 +55,8 @@ object TestData {
     val empty = listOf(Empty)
 
     val search = "Retrofit"
+
+    fun <T> liveDataOf(data: T) = MutableLiveData<T>().apply {
+        postValue(data)
+    }
 }
