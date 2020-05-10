@@ -58,8 +58,8 @@ class UserProfileViewModel @Inject constructor(
     fun followersClick(user: String) =
         emitEvent(UserProfileEvent.Followers, user)
 
-    private fun emitEvent(type: UserProfileEvent, user: String) =
-        userProfileEvent.postValue(Event(Pair(type, user)))
+    private fun emitEvent(event: UserProfileEvent, user: String) =
+        userProfileEvent.postValue(Event(Pair(event, user)))
 
     companion object {
         const val COULD_NOT_GET_USER = "Couldn't get user. Please try again."

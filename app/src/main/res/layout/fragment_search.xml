@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -14,12 +15,72 @@
         android:layout_height="match_parent">
 
         <TextView
+            android:id="@+id/tv_title"
+            style="@style/TextAppearance.AppCompat.Title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/search"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:text="@string/find_your_stuff"
+            app:goneUnless="@{ viewModel.searchQuery.empty }"
+            app:layout_constraintBottom_toTopOf="@+id/guideline_horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_description"
+            style="@style/TextAppearance.AppCompat.Body1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/search_people_and_repos"
+            app:goneUnless="@{ viewModel.searchQuery.empty }"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@+id/guideline_horizontal" />
+
+        <Button
+            android:id="@+id/btn_search_repositories"
+            style="@style/Widget.AppCompat.Button.Colored"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/item_margin"
+            android:drawableStart="@drawable/ic_repo"
+            android:drawablePadding="@dimen/button_drawable_padding"
+            android:drawableTint="@color/colorWhite"
+            android:ellipsize="end"
+            android:onClick="@{ () -> viewModel.searchReposClick(viewModel.searchQuery) }"
+            android:singleLine="true"
+            android:text="@{String.format(@string/search_repositories, viewModel.searchQuery)}"
+            android:textAlignment="viewStart"
+            app:goneUnless="@{ viewModel.searchQuery != null &amp;&amp; !viewModel.searchQuery.empty }"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Repositories with Retrofit" />
+
+        <Button
+            android:id="@+id/btn_search_people"
+            style="@style/Widget.AppCompat.Button.Colored"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/item_margin"
+            android:drawableStart="@drawable/ic_users"
+            android:drawablePadding="@dimen/button_drawable_padding"
+            android:drawableTint="@color/colorWhite"
+            android:ellipsize="end"
+            android:onClick="@{ () -> viewModel.searchUsersClick(viewModel.searchQuery) }"
+            android:singleLine="true"
+            android:text="@{String.format(@string/search_people, viewModel.searchQuery)}"
+            android:textAlignment="viewStart"
+            app:goneUnless="@{ viewModel.searchQuery != null &amp;&amp; !viewModel.searchQuery.empty }"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btn_search_repositories"
+            tools:text="People with Retrofit" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.5" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -33,4 +33,8 @@
     <string name="own">Own</string>
     <string name="follow">Follow</string>
     <string name="follow_info">%s following - %s followers</string>
+    <string name="find_your_stuff">Find your stuff</string>
+    <string name="search_people_and_repos">Search all of GitHub for People and Repositories</string>
+    <string name="search_repositories">Search Repositories for \"%s\"</string>
+    <string name="search_people">Search People for \"%s\"</string>
 </resources>

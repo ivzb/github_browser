@@ -50,4 +50,6 @@ object TestData {
     val noConnection = listOf(NoConnection)
 
     val empty = listOf(Empty)
+
+    val search = "Retrofit"
 }

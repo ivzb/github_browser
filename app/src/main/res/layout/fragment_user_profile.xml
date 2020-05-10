@@ -101,9 +101,9 @@
         <TextView
             android:id="@+id/tv_repositories"
             style="@style/TextAppearance.AppCompat.Title"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/item_margin"
+            android:layout_margin="@dimen/card_margin"
             android:text="@string/repositories"
             app:goneUnless="@{viewModel.user != null}"
             app:layout_constraintEnd_toEndOf="parent"
@@ -139,9 +139,9 @@
         <TextView
             android:id="@+id/tv_follow"
             style="@style/TextAppearance.AppCompat.Title"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/card_margin"
+            android:layout_margin="@dimen/card_margin"
             android:text="@string/follow"
             app:goneUnless="@{viewModel.user != null}"
             app:layout_constraintEnd_toEndOf="parent"
@@ -159,7 +159,8 @@
             app:goneUnless="@{viewModel.user != null}"
             app:layout_constraintEnd_toStartOf="@+id/btn_followers"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_follow" />
+            app:layout_constraintTop_toBottomOf="@+id/tv_follow"
+            tools:text="Following (13)" />
 
         <Button
             android:id="@+id/btn_followers"
@@ -172,7 +173,8 @@
             app:goneUnless="@{viewModel.user != null}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/btn_following"
-            app:layout_constraintTop_toBottomOf="@+id/tv_follow" />
+            app:layout_constraintTop_toBottomOf="@+id/tv_follow"
+            tools:text="Followers (0)" />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline_vertical"
