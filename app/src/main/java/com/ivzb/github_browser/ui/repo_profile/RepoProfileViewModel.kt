@@ -1,12 +1,16 @@
 package com.ivzb.github_browser.ui.repo_profile
 
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.ivzb.github_browser.domain.Event
 import com.ivzb.github_browser.domain.Result
 import com.ivzb.github_browser.domain.repo.FetchRepoUseCase
 import com.ivzb.github_browser.domain.repo.ObserveRepoUseCase
+import com.ivzb.github_browser.domain.star.IsStarredUseCase
+import com.ivzb.github_browser.domain.star.StarUseCase
+import com.ivzb.github_browser.domain.star.UnstarUseCase
 import com.ivzb.github_browser.domain.successOr
 import com.ivzb.github_browser.model.repo.Repo
 import com.ivzb.github_browser.util.checkAllMatched
@@ -15,15 +19,22 @@ import javax.inject.Inject
 
 class RepoProfileViewModel @Inject constructor(
     private val observeRepoUseCase: ObserveRepoUseCase,
-    private val fetchRepoUseCase: FetchRepoUseCase
+    private val fetchRepoUseCase: FetchRepoUseCase,
+    private val isStarredUseCase: IsStarredUseCase,
+    private val starUseCase: StarUseCase,
+    private val unstarUseCase: UnstarUseCase
 ) : ViewModel() {
 
     val loading: MutableLiveData<Event<Boolean>>
     val error = MutableLiveData<Event<String>>()
     val repo: LiveData<Event<Repo?>>
     val repoProfileEvent: MutableLiveData<Event<Pair<RepoProfileEvent, String>>> = MutableLiveData()
+    val isStarred: LiveData<Event<Boolean?>>
 
     private val fetchRepoResult = MutableLiveData<Result<Boolean>>()
+    private val isStarredResult = MutableLiveData<Result<Boolean?>>()
+    private val starResult = MutableLiveData<Result<Boolean?>>()
+    private val unstarResult = MutableLiveData<Result<Boolean?>>()
 
     init {
         repo = observeRepoUseCase.observe().map {
@@ -34,20 +45,35 @@ class RepoProfileViewModel @Inject constructor(
             fetched.successOr(false).also { sendError(it) }
             Event(false)
         } as MutableLiveData<Event<Boolean>>
+
+        isStarred = MediatorLiveData<Event<Boolean?>>()
+
+        isStarred.addSource(isStarredResult) { starred ->
+            isStarred.postValue(Event(starred.successOr(null)))
+        }
+
+        isStarred.addSource(starResult) { starred ->
+            isStarred.postValue(Event(starred.successOr(null)))
+        }
+
+        isStarred.addSource(unstarResult) { unstarred ->
+            isStarred.postValue(Event(unstarred.successOr(null)))
+        }
     }
 
     fun getRepo(repo: String) {
         loading.postValue(Event(true))
         observeRepoUseCase.execute(repo)
         fetchRepoUseCase(repo, fetchRepoResult)
+        isStarredUseCase(repo, isStarredResult)
     }
 
-    fun star(repo: Repo) {
-        // todo
+    fun star(repo: String) {
+        starUseCase(repo, starResult)
     }
 
-    fun unstar(repo: Repo) {
-        // todo
+    fun unstar(repo: String) {
+        unstarUseCase(repo, unstarResult)
     }
 
     fun contributorsClick(repo: String) =

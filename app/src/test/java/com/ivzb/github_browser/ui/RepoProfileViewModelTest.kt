@@ -2,8 +2,12 @@ package com.ivzb.github_browser.ui
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.ivzb.github_browser.data.repo.RepoRepository
+import com.ivzb.github_browser.data.star.StarRepository
 import com.ivzb.github_browser.domain.repo.FetchRepoUseCase
 import com.ivzb.github_browser.domain.repo.ObserveRepoUseCase
+import com.ivzb.github_browser.domain.star.IsStarredUseCase
+import com.ivzb.github_browser.domain.star.StarUseCase
+import com.ivzb.github_browser.domain.star.UnstarUseCase
 import com.ivzb.github_browser.model.TestData
 import com.ivzb.github_browser.ui.repo_profile.RepoProfileEvent
 import com.ivzb.github_browser.ui.repo_profile.RepoProfileViewModel
@@ -43,7 +47,20 @@ class RepoProfileViewModelTest {
         val observeRepoUseCase = ObserveRepoUseCase(repoRepository)
         val fetchRepoUseCase = FetchRepoUseCase(repoRepository)
 
-        val viewModel = RepoProfileViewModel(observeRepoUseCase, fetchRepoUseCase)
+        val starRepository = mock<StarRepository> {
+            on { isStarred(eq(repoName)) }.thenReturn(true)
+        }
+        val isStarredUseCase = IsStarredUseCase(starRepository)
+        val starUseCase = StarUseCase(starRepository)
+        val unstarUseCase = UnstarUseCase(starRepository)
+
+        val viewModel = RepoProfileViewModel(
+            observeRepoUseCase,
+            fetchRepoUseCase,
+            isStarredUseCase,
+            starUseCase,
+            unstarUseCase
+        )
 
         // When repo is requested
         viewModel.getRepo(repoName)
@@ -56,6 +73,11 @@ class RepoProfileViewModelTest {
 
         val loading = LiveDataTestUtil.getValue(viewModel.loading)
         assertThat(loading?.getContentIfNotHandled(), `is`(CoreMatchers.equalTo(false)))
+
+        val isStarred = LiveDataTestUtil.getValue(viewModel.isStarred)
+        assertThat(isStarred?.getContentIfNotHandled(), `is`(CoreMatchers.equalTo(true)))
+
+        verify(starRepository).isStarred(eq(repoName))
     }
 
     @Test
@@ -70,7 +92,20 @@ class RepoProfileViewModelTest {
         val observeRepoUseCase = ObserveRepoUseCase(repoRepository)
         val fetchRepoUseCase = FetchRepoUseCase(repoRepository)
 
-        val viewModel = RepoProfileViewModel(observeRepoUseCase, fetchRepoUseCase)
+        val starRepository = mock<StarRepository> {
+            on { isStarred(eq(repoName)) }.thenReturn(null)
+        }
+        val isStarredUseCase = IsStarredUseCase(starRepository)
+        val starUseCase = StarUseCase(starRepository)
+        val unstarUseCase = UnstarUseCase(starRepository)
+
+        val viewModel = RepoProfileViewModel(
+            observeRepoUseCase,
+            fetchRepoUseCase,
+            isStarredUseCase,
+            starUseCase,
+            unstarUseCase
+        )
 
         // When current repo is requested
         viewModel.getRepo(repoName)
@@ -89,6 +124,215 @@ class RepoProfileViewModelTest {
             errorEvent?.getContentIfNotHandled(),
             `is`(CoreMatchers.equalTo(COULD_NOT_GET_REPO))
         )
+
+        val isStarred = LiveDataTestUtil.getValue(viewModel.isStarred)
+        assertTrue(isStarred?.getContentIfNotHandled() == null)
+
+        verify(starRepository).isStarred(eq(repoName))
+    }
+
+    @Test
+    fun star_succeeds() {
+        // Given a ViewModel
+        val repoName = TestData.repo.fullName
+
+        val repoRepository = mock<RepoRepository>()
+        val observeRepoUseCase = ObserveRepoUseCase(repoRepository)
+        val fetchRepoUseCase = FetchRepoUseCase(repoRepository)
+
+        val starRepository = mock<StarRepository> {
+            on { star(eq(repoName)) }.thenReturn(true)
+        }
+        val isStarredUseCase = IsStarredUseCase(starRepository)
+        val starUseCase = StarUseCase(starRepository)
+        val unstarUseCase = UnstarUseCase(starRepository)
+
+        val viewModel = RepoProfileViewModel(
+            observeRepoUseCase,
+            fetchRepoUseCase,
+            isStarredUseCase,
+            starUseCase,
+            unstarUseCase
+        )
+
+        // When star repo
+        viewModel.star(repoName)
+
+        // Then event should be emitted and repo fetched
+        val isStarred = LiveDataTestUtil.getValue(viewModel.isStarred)
+        assertThat(isStarred?.getContentIfNotHandled(), `is`(CoreMatchers.equalTo(true)))
+
+        verify(starRepository).star(eq(repoName))
+    }
+
+    @Test
+    fun star_fails() {
+        // Given a ViewModel
+        val repoName = TestData.repo.fullName
+
+        val repoRepository = mock<RepoRepository>()
+        val observeRepoUseCase = ObserveRepoUseCase(repoRepository)
+        val fetchRepoUseCase = FetchRepoUseCase(repoRepository)
+
+        val starRepository = mock<StarRepository> {
+            on { star(eq(repoName)) }.thenReturn(false)
+        }
+        val isStarredUseCase = IsStarredUseCase(starRepository)
+        val starUseCase = StarUseCase(starRepository)
+        val unstarUseCase = UnstarUseCase(starRepository)
+
+        val viewModel = RepoProfileViewModel(
+            observeRepoUseCase,
+            fetchRepoUseCase,
+            isStarredUseCase,
+            starUseCase,
+            unstarUseCase
+        )
+
+        // When star repo
+        viewModel.star(repoName)
+
+        // Then event should be emitted and repo fetched
+        val isStarred = LiveDataTestUtil.getValue(viewModel.isStarred)
+        assertThat(isStarred?.getContentIfNotHandled(), `is`(CoreMatchers.equalTo(false)))
+
+        verify(starRepository).star(eq(repoName))
+    }
+
+    @Test
+    fun star_noInternet() {
+        // Given a ViewModel
+        val repoName = TestData.repo.fullName
+
+        val repoRepository = mock<RepoRepository>()
+        val observeRepoUseCase = ObserveRepoUseCase(repoRepository)
+        val fetchRepoUseCase = FetchRepoUseCase(repoRepository)
+
+        val starRepository = mock<StarRepository> {
+            on { star(eq(repoName)) }.thenReturn(null)
+        }
+        val isStarredUseCase = IsStarredUseCase(starRepository)
+        val starUseCase = StarUseCase(starRepository)
+        val unstarUseCase = UnstarUseCase(starRepository)
+
+        val viewModel = RepoProfileViewModel(
+            observeRepoUseCase,
+            fetchRepoUseCase,
+            isStarredUseCase,
+            starUseCase,
+            unstarUseCase
+        )
+
+        // When star repo
+        viewModel.star(repoName)
+
+        // Then event should be emitted and repo fetched
+        val isStarred = LiveDataTestUtil.getValue(viewModel.isStarred)
+        assertTrue(isStarred?.getContentIfNotHandled() == null)
+
+        verify(starRepository).star(eq(repoName))
+    }
+
+    @Test
+    fun unstar_succeeds() {
+        // Given a ViewModel
+        val repoName = TestData.repo.fullName
+
+        val repoRepository = mock<RepoRepository>()
+        val observeRepoUseCase = ObserveRepoUseCase(repoRepository)
+        val fetchRepoUseCase = FetchRepoUseCase(repoRepository)
+
+        val starRepository = mock<StarRepository> {
+            on { unstar(eq(repoName)) }.thenReturn(false)
+        }
+        val isStarredUseCase = IsStarredUseCase(starRepository)
+        val starUseCase = StarUseCase(starRepository)
+        val unstarUseCase = UnstarUseCase(starRepository)
+
+        val viewModel = RepoProfileViewModel(
+            observeRepoUseCase,
+            fetchRepoUseCase,
+            isStarredUseCase,
+            starUseCase,
+            unstarUseCase
+        )
+
+        // When unstar repo
+        viewModel.unstar(repoName)
+
+        // Then event should be emitted and repo fetched
+        val isStarred = LiveDataTestUtil.getValue(viewModel.isStarred)
+        assertThat(isStarred?.getContentIfNotHandled(), `is`(CoreMatchers.equalTo(false)))
+
+        verify(starRepository).unstar(eq(repoName))
+    }
+
+    @Test
+    fun unstar_fails() {
+        // Given a ViewModel
+        val repoName = TestData.repo.fullName
+
+        val repoRepository = mock<RepoRepository>()
+        val observeRepoUseCase = ObserveRepoUseCase(repoRepository)
+        val fetchRepoUseCase = FetchRepoUseCase(repoRepository)
+
+        val starRepository = mock<StarRepository> {
+            on { unstar(eq(repoName)) }.thenReturn(true)
+        }
+        val isStarredUseCase = IsStarredUseCase(starRepository)
+        val starUseCase = StarUseCase(starRepository)
+        val unstarUseCase = UnstarUseCase(starRepository)
+
+        val viewModel = RepoProfileViewModel(
+            observeRepoUseCase,
+            fetchRepoUseCase,
+            isStarredUseCase,
+            starUseCase,
+            unstarUseCase
+        )
+
+        // When unstar repo
+        viewModel.unstar(repoName)
+
+        // Then event should be emitted and repo fetched
+        val isStarred = LiveDataTestUtil.getValue(viewModel.isStarred)
+        assertThat(isStarred?.getContentIfNotHandled(), `is`(CoreMatchers.equalTo(true)))
+
+        verify(starRepository).unstar(eq(repoName))
+    }
+
+    @Test
+    fun unstar_noInternet() {
+        // Given a ViewModel
+        val repoName = TestData.repo.fullName
+
+        val repoRepository = mock<RepoRepository>()
+        val observeRepoUseCase = ObserveRepoUseCase(repoRepository)
+        val fetchRepoUseCase = FetchRepoUseCase(repoRepository)
+
+        val starRepository = mock<StarRepository> {
+            on { unstar(eq(repoName)) }.thenReturn(null)
+        }
+        val isStarredUseCase = IsStarredUseCase(starRepository)
+        val starUseCase = StarUseCase(starRepository)
+        val unstarUseCase = UnstarUseCase(starRepository)
+
+        val viewModel = RepoProfileViewModel(
+            observeRepoUseCase,
+            fetchRepoUseCase,
+            isStarredUseCase,
+            starUseCase,
+            unstarUseCase
+        )
+
+        // When unstar repo
+        viewModel.unstar(repoName)
+
+        // Then event should be emitted and repo fetched
+        val isStarred = LiveDataTestUtil.getValue(viewModel.isStarred)
+        assertTrue(isStarred?.getContentIfNotHandled() == null)
+
+        verify(starRepository).unstar(eq(repoName))
     }
 
     @Test
@@ -98,9 +342,20 @@ class RepoProfileViewModelTest {
         val observeRepoUseCase = ObserveRepoUseCase(repoRepository)
         val fetchRepoUseCase = FetchRepoUseCase(repoRepository)
 
-        val viewModel = RepoProfileViewModel(observeRepoUseCase, fetchRepoUseCase)
+        val starRepository = mock<StarRepository>()
+        val isStarredUseCase = IsStarredUseCase(starRepository)
+        val starUseCase = StarUseCase(starRepository)
+        val unstarUseCase = UnstarUseCase(starRepository)
 
-        // When login is clicked
+        val viewModel = RepoProfileViewModel(
+            observeRepoUseCase,
+            fetchRepoUseCase,
+            isStarredUseCase,
+            starUseCase,
+            unstarUseCase
+        )
+
+        // When contributors is clicked
         viewModel.contributorsClick(TestData.repo.fullName)
 
         // Then event should be emitted
@@ -118,9 +373,20 @@ class RepoProfileViewModelTest {
         val observeRepoUseCase = ObserveRepoUseCase(repoRepository)
         val fetchRepoUseCase = FetchRepoUseCase(repoRepository)
 
-        val viewModel = RepoProfileViewModel(observeRepoUseCase, fetchRepoUseCase)
+        val starRepository = mock<StarRepository>()
+        val isStarredUseCase = IsStarredUseCase(starRepository)
+        val starUseCase = StarUseCase(starRepository)
+        val unstarUseCase = UnstarUseCase(starRepository)
 
-        // When login is clicked
+        val viewModel = RepoProfileViewModel(
+            observeRepoUseCase,
+            fetchRepoUseCase,
+            isStarredUseCase,
+            starUseCase,
+            unstarUseCase
+        )
+
+        // When owner is clicked
         viewModel.ownerClick(TestData.repo.owner)
 
         // Then event should be emitted

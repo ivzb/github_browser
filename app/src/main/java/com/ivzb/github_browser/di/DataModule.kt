@@ -10,6 +10,8 @@ import com.ivzb.github_browser.data.login.RemoteLoginDataSource
 import com.ivzb.github_browser.data.preference.PreferenceStorage
 import com.ivzb.github_browser.data.repo.RemoteRepoDataSource
 import com.ivzb.github_browser.data.repo.RepoRemoteDataSource
+import com.ivzb.github_browser.data.star.RemoteStarDataSource
+import com.ivzb.github_browser.data.star.StarRemoteDataSource
 import com.ivzb.github_browser.data.user.RemoteUserDataSource
 import com.ivzb.github_browser.data.user.UserRemoteDataSource
 import com.ivzb.github_browser.util.NetworkUtils
@@ -73,4 +75,11 @@ class DataModule {
         networkUtils: NetworkUtils,
         retrofit: Retrofit
     ): RepoRemoteDataSource = RemoteRepoDataSource(networkUtils, retrofit)
+
+    @Singleton
+    @Provides
+    fun provideStarRemoteDataSource(
+        networkUtils: NetworkUtils,
+        retrofit: Retrofit
+    ): StarRemoteDataSource = RemoteStarDataSource(networkUtils, retrofit)
 }

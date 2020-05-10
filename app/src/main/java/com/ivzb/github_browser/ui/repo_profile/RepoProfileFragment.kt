@@ -56,6 +56,10 @@ class RepoProfileFragment : DaggerFragment() {
             }.checkAllMatched
         })
 
+        repoProfileViewModel.isStarred.observe(viewLifecycleOwner, EventObserver { isStarred ->
+            binding.isStarred = isStarred
+        })
+
         requireArguments().apply {
             val repo = RepoProfileFragmentArgs.fromBundle(this).repo
             binding.name = repo

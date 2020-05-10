@@ -156,7 +156,7 @@ class UserProfileViewModelTest {
 
         val viewModel = UserProfileViewModel(observeUserUseCase, fetchUserUseCase)
 
-        // When login is clicked
+        // When repos is clicked
         viewModel.ownReposClick(TestData.user.login)
 
         // Then event should be emitted
@@ -176,7 +176,7 @@ class UserProfileViewModelTest {
 
         val viewModel = UserProfileViewModel(observeUserUseCase, fetchUserUseCase)
 
-        // When login is clicked
+        // When repos is clicked
         viewModel.starredReposClick(TestData.user.login)
 
         // Then event should be emitted
@@ -196,7 +196,7 @@ class UserProfileViewModelTest {
 
         val viewModel = UserProfileViewModel(observeUserUseCase, fetchUserUseCase)
 
-        // When login is clicked
+        // When following is clicked
         viewModel.followingClick(TestData.user.login)
 
         // Then event should be emitted
@@ -216,7 +216,7 @@ class UserProfileViewModelTest {
 
         val viewModel = UserProfileViewModel(observeUserUseCase, fetchUserUseCase)
 
-        // When login is clicked
+        // When followers is clicked
         viewModel.followersClick(TestData.user.login)
 
         // Then event should be emitted

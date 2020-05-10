@@ -56,7 +56,7 @@ class SearchViewModelTest {
         // Given a ViewModel
         val viewModel = SearchViewModel()
 
-        // When login is clicked
+        // When search repo is clicked
         viewModel.searchReposClick(TestData.search)
 
         // Then event should be emitted
@@ -69,7 +69,7 @@ class SearchViewModelTest {
         // Given a ViewModel
         val viewModel = SearchViewModel()
 
-        // When login is clicked
+        // When search user is clicked
         viewModel.searchUsersClick(TestData.search)
 
         // Then event should be emitted

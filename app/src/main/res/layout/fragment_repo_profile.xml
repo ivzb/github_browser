@@ -16,6 +16,10 @@
         <variable
             name="repo"
             type="com.ivzb.github_browser.model.repo.Repo" />
+
+        <variable
+            name="isStarred"
+            type="Boolean" />
     </data>
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -160,9 +164,9 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_margin="@dimen/card_margin"
-                    android:onClick="@{ () -> viewModel.star(repo) }"
+                    android:onClick="@{ () -> viewModel.star(repo.fullName) }"
                     android:text="@string/star"
-                    app:goneUnless="@{ repo != null }"
+                    app:goneUnless="@{ repo != null &amp;&amp; isStarred != null &amp;&amp; !isStarred }"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/tv_forks" />
@@ -173,9 +177,9 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_margin="@dimen/card_margin"
-                    android:onClick="@{ () -> viewModel.unstar(repo) }"
+                    android:onClick="@{ () -> viewModel.unstar(repo.fullName) }"
                     android:text="@string/unstar"
-                    app:goneUnless="@{ repo != null }"
+                    app:goneUnless="@{ repo != null &amp;&amp; isStarred != null &amp;&amp; isStarred }"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/btn_star" />
