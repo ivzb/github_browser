@@ -7,7 +7,7 @@ import com.ivzb.github_browser.domain.user.GetFollowersUseCase
 import com.ivzb.github_browser.domain.user.GetFollowingUseCase
 import com.ivzb.github_browser.domain.user.GetSearchUsersUseCase
 import com.ivzb.github_browser.model.TestData
-import com.ivzb.github_browser.ui.users.UsersType
+import com.ivzb.github_browser.model.user.UserType
 import com.ivzb.github_browser.ui.users.UsersViewModel
 import com.ivzb.github_browser.util.LiveDataTestUtil
 import com.ivzb.github_browser.util.SyncTaskExecutorRule
@@ -52,7 +52,7 @@ class UsersViewModelTest {
         )
 
         // When users are requested
-        viewModel.getUsers(user, UsersType.Followers)
+        viewModel.getUsers(user, UserType.Followers)
 
         // Then event should be emitted
         val loadingEventAtStart = LiveDataTestUtil.getValue(viewModel.loading)
@@ -86,7 +86,7 @@ class UsersViewModelTest {
         )
 
         // When users are requested
-        viewModel.getUsers(user, UsersType.Followers)
+        viewModel.getUsers(user, UserType.Followers)
 
         // Then loading and error events should be emitted
         val loadingEventAtStart = LiveDataTestUtil.getValue(viewModel.loading)
@@ -120,7 +120,7 @@ class UsersViewModelTest {
         )
 
         // When users are requested
-        viewModel.getUsers(user, UsersType.Followers)
+        viewModel.getUsers(user, UserType.Followers)
 
         // Then loading and error events should be emitted
         val loadingEventAtStart = LiveDataTestUtil.getValue(viewModel.loading)
@@ -154,7 +154,7 @@ class UsersViewModelTest {
         )
 
         // When users are requested
-        viewModel.getUsers(user, UsersType.Following)
+        viewModel.getUsers(user, UserType.Following)
 
         // Then event should be emitted
         val loadingEventAtStart = LiveDataTestUtil.getValue(viewModel.loading)
@@ -188,7 +188,7 @@ class UsersViewModelTest {
         )
 
         // When users are requested
-        viewModel.getUsers(user, UsersType.Following)
+        viewModel.getUsers(user, UserType.Following)
 
         // Then loading and error events should be emitted
         val loadingEventAtStart = LiveDataTestUtil.getValue(viewModel.loading)
@@ -222,7 +222,7 @@ class UsersViewModelTest {
         )
 
         // When users are requested
-        viewModel.getUsers(user, UsersType.Following)
+        viewModel.getUsers(user, UserType.Following)
 
         // Then loading and error events should be emitted
         val loadingEventAtStart = LiveDataTestUtil.getValue(viewModel.loading)
@@ -256,7 +256,7 @@ class UsersViewModelTest {
         )
 
         // When users are requested
-        viewModel.getUsers(user, UsersType.Contributors)
+        viewModel.getUsers(user, UserType.Contributors)
 
         // Then event should be emitted
         val loadingEventAtStart = LiveDataTestUtil.getValue(viewModel.loading)
@@ -290,7 +290,7 @@ class UsersViewModelTest {
         )
 
         // When users are requested
-        viewModel.getUsers(user, UsersType.Contributors)
+        viewModel.getUsers(user, UserType.Contributors)
 
         // Then loading and error events should be emitted
         val loadingEventAtStart = LiveDataTestUtil.getValue(viewModel.loading)
@@ -324,7 +324,7 @@ class UsersViewModelTest {
         )
 
         // When users are requested
-        viewModel.getUsers(user, UsersType.Contributors)
+        viewModel.getUsers(user, UserType.Contributors)
 
         // Then loading and error events should be emitted
         val loadingEventAtStart = LiveDataTestUtil.getValue(viewModel.loading)
@@ -358,7 +358,7 @@ class UsersViewModelTest {
         )
 
         // When users are requested
-        viewModel.getUsers(search, UsersType.Search)
+        viewModel.getUsers(search, UserType.Search)
 
         // Then event should be emitted
         val loadingEventAtStart = LiveDataTestUtil.getValue(viewModel.loading)
@@ -392,7 +392,7 @@ class UsersViewModelTest {
         )
 
         // When users are requested
-        viewModel.getUsers(search, UsersType.Search)
+        viewModel.getUsers(search, UserType.Search)
 
         // Then loading and error events should be emitted
         val loadingEventAtStart = LiveDataTestUtil.getValue(viewModel.loading)
@@ -426,7 +426,7 @@ class UsersViewModelTest {
         )
 
         // When users are requested
-        viewModel.getUsers(search, UsersType.Search)
+        viewModel.getUsers(search, UserType.Search)
 
         // Then loading and error events should be emitted
         val loadingEventAtStart = LiveDataTestUtil.getValue(viewModel.loading)

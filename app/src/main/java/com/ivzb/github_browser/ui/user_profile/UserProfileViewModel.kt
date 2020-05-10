@@ -8,7 +8,7 @@ import com.ivzb.github_browser.domain.Result
 import com.ivzb.github_browser.domain.successOr
 import com.ivzb.github_browser.domain.user.GetCurrentUserUseCase
 import com.ivzb.github_browser.domain.user.GetUserUseCase
-import com.ivzb.github_browser.model.ui.User
+import com.ivzb.github_browser.model.user.User
 import com.ivzb.github_browser.util.map
 import javax.inject.Inject
 

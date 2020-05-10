@@ -1,6 +1,6 @@
 package com.ivzb.github_browser.data.user
 
-import com.ivzb.github_browser.model.ui.User
+import com.ivzb.github_browser.model.user.User
 import com.ivzb.github_browser.util.NetworkUtils
 import retrofit2.Retrofit
 import javax.inject.Inject

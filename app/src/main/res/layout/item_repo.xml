@@ -7,7 +7,7 @@
 
         <variable
             name="repo"
-            type="com.ivzb.github_browser.model.ui.Repo" />
+            type="com.ivzb.github_browser.model.repo.Repo" />
     </data>
 
     <androidx.cardview.widget.CardView

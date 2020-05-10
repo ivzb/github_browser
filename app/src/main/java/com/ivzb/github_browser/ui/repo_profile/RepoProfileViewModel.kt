@@ -7,7 +7,7 @@ import com.ivzb.github_browser.domain.Event
 import com.ivzb.github_browser.domain.Result
 import com.ivzb.github_browser.domain.repo.GetRepoUseCase
 import com.ivzb.github_browser.domain.successOr
-import com.ivzb.github_browser.model.ui.Repo
+import com.ivzb.github_browser.model.repo.Repo
 import com.ivzb.github_browser.util.map
 import javax.inject.Inject
 

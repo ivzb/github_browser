@@ -3,7 +3,7 @@ package com.ivzb.github_browser.domain.repo
 import com.ivzb.github_browser.data.repo.RepoRepository
 import com.ivzb.github_browser.domain.MediatorUseCase
 import com.ivzb.github_browser.domain.Result
-import com.ivzb.github_browser.model.ui.Repo
+import com.ivzb.github_browser.model.repo.Repo
 import javax.inject.Inject
 
 open class ObserveOwnReposUseCase @Inject constructor(

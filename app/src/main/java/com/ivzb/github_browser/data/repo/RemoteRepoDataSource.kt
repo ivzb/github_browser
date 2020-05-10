@@ -1,6 +1,6 @@
 package com.ivzb.github_browser.data.repo
 
-import com.ivzb.github_browser.model.ui.Repo
+import com.ivzb.github_browser.model.repo.Repo
 import com.ivzb.github_browser.util.NetworkUtils
 import retrofit2.Retrofit
 import javax.inject.Inject

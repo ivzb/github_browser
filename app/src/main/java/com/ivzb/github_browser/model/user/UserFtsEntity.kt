@@ -1,10 +1,10 @@
-package com.ivzb.github_browser.model.db
+package com.ivzb.github_browser.model.user
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.Fts4
 import androidx.room.PrimaryKey
-import com.ivzb.github_browser.model.ui.User
+import com.ivzb.github_browser.model.user.User
 
 /**
  * This class represents [User] data for searching with FTS (full-text search).

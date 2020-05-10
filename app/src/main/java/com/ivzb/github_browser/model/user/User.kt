@@ -1,4 +1,4 @@
-package com.ivzb.github_browser.model.ui
+package com.ivzb.github_browser.model.user
 
 data class User(
     val id: Long,

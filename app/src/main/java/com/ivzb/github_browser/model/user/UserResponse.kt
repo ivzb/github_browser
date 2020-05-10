@@ -1,7 +1,7 @@
-package com.ivzb.github_browser.model.network
+package com.ivzb.github_browser.model.user
 
 import com.google.gson.annotations.SerializedName
-import com.ivzb.github_browser.model.ui.User
+import com.ivzb.github_browser.model.user.User
 
 data class UserResponse(
 

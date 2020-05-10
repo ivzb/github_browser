@@ -1,4 +1,4 @@
-package com.ivzb.github_browser.model.network
+package com.ivzb.github_browser.model.search
 
 import com.google.gson.annotations.SerializedName
 

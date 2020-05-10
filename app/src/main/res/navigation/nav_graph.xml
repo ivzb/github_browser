@@ -38,7 +38,7 @@
 
         <argument
             android:name="type"
-            app:argType="com.ivzb.github_browser.ui.users.UsersType" />
+            app:argType="com.ivzb.github_browser.model.user.UserType" />
 
         <action
             android:id="@+id/to_user_profile"
@@ -72,7 +72,7 @@
 
         <argument
             android:name="type"
-            app:argType="com.ivzb.github_browser.ui.repos.ReposType" />
+            app:argType="com.ivzb.github_browser.model.repo.RepoType" />
 
         <action
             android:id="@+id/to_repo_profile"

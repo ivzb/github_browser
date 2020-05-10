@@ -1,10 +1,10 @@
-package com.ivzb.github_browser.model.db
+package com.ivzb.github_browser.model.repo
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.Fts4
 import androidx.room.PrimaryKey
-import com.ivzb.github_browser.model.ui.Repo
+import com.ivzb.github_browser.model.repo.Repo
 
 /**
  * This class represents [Repo] data for searching with FTS (full-text search).

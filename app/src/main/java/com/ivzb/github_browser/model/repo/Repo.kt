@@ -1,6 +1,4 @@
-package com.ivzb.github_browser.model.ui
-
-import com.ivzb.github_browser.model.db.RepoFtsEntity
+package com.ivzb.github_browser.model.repo
 
 data class Repo(
     val id: Long,

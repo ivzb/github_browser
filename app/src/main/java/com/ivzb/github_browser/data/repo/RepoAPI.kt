@@ -1,7 +1,7 @@
 package com.ivzb.github_browser.data.repo
 
-import com.ivzb.github_browser.model.network.RepoResponse
-import com.ivzb.github_browser.model.network.SearchResponse
+import com.ivzb.github_browser.model.repo.RepoResponse
+import com.ivzb.github_browser.model.search.SearchResponse
 import retrofit2.Call
 import retrofit2.http.*
 

@@ -3,16 +3,15 @@ package com.ivzb.github_browser.ui.search
 import android.os.Bundle
 import android.view.*
 import android.widget.SearchView
-import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.ivzb.github_browser.R
 import com.ivzb.github_browser.databinding.FragmentSearchBinding
 import com.ivzb.github_browser.domain.EventObserver
-import com.ivzb.github_browser.ui.repos.ReposType
+import com.ivzb.github_browser.model.repo.RepoType
 import com.ivzb.github_browser.ui.search.SearchFragmentDirections.Companion.toRepos
 import com.ivzb.github_browser.ui.search.SearchFragmentDirections.Companion.toUsers
-import com.ivzb.github_browser.ui.users.UsersType
+import com.ivzb.github_browser.model.user.UserType
 import com.ivzb.github_browser.util.*
 import dagger.android.support.DaggerFragment
 import javax.inject.Inject
@@ -76,8 +75,8 @@ class SearchFragment : DaggerFragment() {
     }
 
     private fun openRepositories(search: String) =
-        findNavController().navigate(toRepos(search, ReposType.Search))
+        findNavController().navigate(toRepos(search, RepoType.Search))
 
     private fun openUsers(search: String) =
-        findNavController().navigate(toUsers(search, UsersType.Search))
+        findNavController().navigate(toUsers(search, UserType.Search))
 }

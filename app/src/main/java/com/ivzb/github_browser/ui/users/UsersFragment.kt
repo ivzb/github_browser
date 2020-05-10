@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.ivzb.github_browser.R
 import com.ivzb.github_browser.databinding.FragmentUsersBinding
 import com.ivzb.github_browser.domain.EventObserver
-import com.ivzb.github_browser.model.ui.User
+import com.ivzb.github_browser.model.user.User
 import com.ivzb.github_browser.ui.*
 import com.ivzb.github_browser.ui.users.UsersFragmentDirections.Companion.toUserProfile
 import com.ivzb.github_browser.util.*

@@ -6,7 +6,7 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.ivzb.github_browser.R
 import com.ivzb.github_browser.databinding.ItemRepoBinding
-import com.ivzb.github_browser.model.ui.Repo
+import com.ivzb.github_browser.model.repo.Repo
 import com.ivzb.github_browser.ui.ItemViewBinder
 import com.ivzb.github_browser.ui.QueryMatcher
 

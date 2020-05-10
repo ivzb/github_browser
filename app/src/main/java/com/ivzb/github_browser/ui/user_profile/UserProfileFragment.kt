@@ -4,17 +4,15 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
-import com.ivzb.github_browser.R
 import com.ivzb.github_browser.databinding.FragmentUserProfileBinding
 import com.ivzb.github_browser.domain.EventObserver
-import com.ivzb.github_browser.ui.repos.ReposType
+import com.ivzb.github_browser.model.repo.RepoType
 import com.ivzb.github_browser.ui.user_profile.UserProfileFragmentDirections.Companion.toRepos
 import com.ivzb.github_browser.ui.user_profile.UserProfileFragmentDirections.Companion.toUsers
-import com.ivzb.github_browser.ui.users.UsersType
+import com.ivzb.github_browser.model.user.UserType
 import com.ivzb.github_browser.util.checkAllMatched
 import com.ivzb.github_browser.util.provideViewModel
 import com.ivzb.github_browser.util.showErrorMessage
@@ -70,14 +68,14 @@ class UserProfileFragment : DaggerFragment() {
     }
 
     private fun openRepositories(user: String) =
-        findNavController().navigate(toRepos(user, ReposType.Own))
+        findNavController().navigate(toRepos(user, RepoType.Own))
 
     private fun openStarred(user: String) =
-        findNavController().navigate(toRepos(user, ReposType.Starred))
+        findNavController().navigate(toRepos(user, RepoType.Starred))
 
     private fun openFollowing(user: String) =
-        findNavController().navigate(toUsers(user, UsersType.Following))
+        findNavController().navigate(toUsers(user, UserType.Following))
 
     private fun openFollowers(user: String) =
-        findNavController().navigate(toUsers(user, UsersType.Followers))
+        findNavController().navigate(toUsers(user, UserType.Followers))
 }

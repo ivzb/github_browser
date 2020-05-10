@@ -2,7 +2,7 @@ package com.ivzb.github_browser.data.user
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
-import com.ivzb.github_browser.model.db.UserFtsEntity
+import com.ivzb.github_browser.model.user.UserFtsEntity
 
 /**
  * The Data Access Object for the [UserFtsEntity] class.

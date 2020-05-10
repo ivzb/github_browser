@@ -3,6 +3,7 @@ package com.ivzb.github_browser.ui.repos
 import android.os.Bundle
 import android.view.*
 import android.widget.SearchView
+import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -10,7 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.ivzb.github_browser.R
 import com.ivzb.github_browser.databinding.FragmentReposBinding
 import com.ivzb.github_browser.domain.EventObserver
-import com.ivzb.github_browser.model.ui.Repo
+import com.ivzb.github_browser.model.repo.Repo
 import com.ivzb.github_browser.ui.*
 import com.ivzb.github_browser.ui.repos.ReposFragmentDirections.Companion.toRepoProfile
 import com.ivzb.github_browser.util.*

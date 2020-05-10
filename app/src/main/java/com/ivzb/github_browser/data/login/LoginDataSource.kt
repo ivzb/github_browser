@@ -1,6 +1,6 @@
 package com.ivzb.github_browser.data.login
 
-import com.ivzb.github_browser.model.ui.AccessToken
+import com.ivzb.github_browser.model.access_token.AccessToken
 
 interface LoginDataSource {
 

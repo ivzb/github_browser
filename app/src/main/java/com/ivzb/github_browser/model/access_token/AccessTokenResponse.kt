@@ -1,7 +1,7 @@
-package com.ivzb.github_browser.model.network
+package com.ivzb.github_browser.model.access_token
 
 import com.google.gson.annotations.SerializedName
-import com.ivzb.github_browser.model.ui.AccessToken
+import com.ivzb.github_browser.model.access_token.AccessToken
 
 data class AccessTokenResponse(
 

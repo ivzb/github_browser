@@ -1,6 +1,6 @@
 package com.ivzb.github_browser.data.repo
 
-import com.ivzb.github_browser.model.ui.Repo
+import com.ivzb.github_browser.model.repo.Repo
 
 interface RepoDataSource {
 

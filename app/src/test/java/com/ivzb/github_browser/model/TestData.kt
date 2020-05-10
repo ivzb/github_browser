@@ -1,9 +1,9 @@
 package com.ivzb.github_browser.model
 
 import com.ivzb.github_browser.domain.login.AccessTokenParameters
-import com.ivzb.github_browser.model.ui.AccessToken
-import com.ivzb.github_browser.model.ui.Repo
-import com.ivzb.github_browser.model.ui.User
+import com.ivzb.github_browser.model.access_token.AccessToken
+import com.ivzb.github_browser.model.repo.Repo
+import com.ivzb.github_browser.model.user.User
 import com.ivzb.github_browser.ui.Empty
 import com.ivzb.github_browser.ui.NoConnection
 

@@ -1,7 +1,7 @@
 package com.ivzb.github_browser.data.login
 
 import com.ivzb.github_browser.BuildConfig
-import com.ivzb.github_browser.model.network.AccessTokenResponse
+import com.ivzb.github_browser.model.access_token.AccessTokenResponse
 import retrofit2.Call
 import retrofit2.http.*
 

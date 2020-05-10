@@ -10,7 +10,8 @@ import com.ivzb.github_browser.domain.user.GetContributorsUseCase
 import com.ivzb.github_browser.domain.user.GetFollowersUseCase
 import com.ivzb.github_browser.domain.user.GetFollowingUseCase
 import com.ivzb.github_browser.domain.user.GetSearchUsersUseCase
-import com.ivzb.github_browser.model.ui.User
+import com.ivzb.github_browser.model.user.User
+import com.ivzb.github_browser.model.user.UserType
 import com.ivzb.github_browser.ui.Empty
 import com.ivzb.github_browser.ui.NoConnection
 import com.ivzb.github_browser.util.checkAllMatched
@@ -44,14 +45,14 @@ class UsersViewModel @Inject constructor(
         }
     }
 
-    fun getUsers(user: String, type: UsersType) {
+    fun getUsers(user: String, type: UserType) {
         loading.postValue(Event(true))
 
         when (type) {
-            UsersType.Following -> getFollowingUseCase(user, getUsersResult)
-            UsersType.Followers -> getFollowersUseCase(user, getUsersResult)
-            UsersType.Contributors -> getContributorsUseCase(user, getUsersResult)
-            UsersType.Search -> getSearchUsersUseCase(user, getUsersResult)
+            UserType.Following -> getFollowingUseCase(user, getUsersResult)
+            UserType.Followers -> getFollowersUseCase(user, getUsersResult)
+            UserType.Contributors -> getContributorsUseCase(user, getUsersResult)
+            UserType.Search -> getSearchUsersUseCase(user, getUsersResult)
         }.checkAllMatched
     }
 

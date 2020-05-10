@@ -14,7 +14,7 @@
 
         <variable
             name="type"
-            type="com.ivzb.github_browser.ui.users.UsersType" />
+            type="com.ivzb.github_browser.model.user.UserType" />
     </data>
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout

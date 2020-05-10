@@ -2,7 +2,7 @@ package com.ivzb.github_browser.data.repo
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
-import com.ivzb.github_browser.model.db.RepoFtsEntity
+import com.ivzb.github_browser.model.repo.RepoFtsEntity
 
 /**
  * The Data Access Object for the [RepoFtsEntity] class.

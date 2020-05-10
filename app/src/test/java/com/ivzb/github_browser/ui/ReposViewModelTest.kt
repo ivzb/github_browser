@@ -6,7 +6,7 @@ import com.ivzb.github_browser.domain.repo.GetOwnReposUseCase
 import com.ivzb.github_browser.domain.repo.GetSearchReposUseCase
 import com.ivzb.github_browser.domain.repo.GetStarredReposUseCase
 import com.ivzb.github_browser.model.TestData
-import com.ivzb.github_browser.ui.repos.ReposType
+import com.ivzb.github_browser.model.repo.RepoType
 import com.ivzb.github_browser.ui.repos.ReposViewModel
 import com.ivzb.github_browser.util.LiveDataTestUtil
 import com.ivzb.github_browser.util.SyncTaskExecutorRule
@@ -45,7 +45,7 @@ class ReposViewModelTest {
         val viewModel = ReposViewModel(getOwnReposUseCase, getStarredReposUseCase, getSearchReposUseCase)
 
         // When repos are requested
-        viewModel.getRepos(user, ReposType.Own)
+        viewModel.getRepos(user, RepoType.Own)
 
         // Then event should be emitted
         val loadingEventAtStart = LiveDataTestUtil.getValue(viewModel.loading)
@@ -73,7 +73,7 @@ class ReposViewModelTest {
         val viewModel = ReposViewModel(getOwnReposUseCase, getStarredReposUseCase, getSearchReposUseCase)
 
         // When repos are requested
-        viewModel.getRepos(user, ReposType.Own)
+        viewModel.getRepos(user, RepoType.Own)
 
         // Then event should be emitted
         val loadingEventAtStart = LiveDataTestUtil.getValue(viewModel.loading)
@@ -101,7 +101,7 @@ class ReposViewModelTest {
         val viewModel = ReposViewModel(getOwnReposUseCase, getStarredReposUseCase, getSearchReposUseCase)
 
         // When repos are requested
-        viewModel.getRepos(user, ReposType.Own)
+        viewModel.getRepos(user, RepoType.Own)
 
         // Then loading and error events should be emitted
         val loadingEventAtStart = LiveDataTestUtil.getValue(viewModel.loading)
@@ -129,7 +129,7 @@ class ReposViewModelTest {
         val viewModel = ReposViewModel(getOwnReposUseCase, getStarredReposUseCase, getSearchReposUseCase)
 
         // When repos are requested
-        viewModel.getRepos(user, ReposType.Starred)
+        viewModel.getRepos(user, RepoType.Starred)
 
         // Then event should be emitted
         val loadingEventAtStart = LiveDataTestUtil.getValue(viewModel.loading)
@@ -157,7 +157,7 @@ class ReposViewModelTest {
         val viewModel = ReposViewModel(getOwnReposUseCase, getStarredReposUseCase, getSearchReposUseCase)
 
         // When repos are requested
-        viewModel.getRepos(user, ReposType.Starred)
+        viewModel.getRepos(user, RepoType.Starred)
 
         // Then event should be emitted
         val loadingEventAtStart = LiveDataTestUtil.getValue(viewModel.loading)
@@ -185,7 +185,7 @@ class ReposViewModelTest {
         val viewModel = ReposViewModel(getOwnReposUseCase, getStarredReposUseCase, getSearchReposUseCase)
 
         // When repos are requested
-        viewModel.getRepos(user, ReposType.Starred)
+        viewModel.getRepos(user, RepoType.Starred)
 
         // Then loading and error events should be emitted
         val loadingEventAtStart = LiveDataTestUtil.getValue(viewModel.loading)
@@ -213,7 +213,7 @@ class ReposViewModelTest {
         val viewModel = ReposViewModel(getOwnReposUseCase, getStarredReposUseCase, getSearchReposUseCase)
 
         // When repos are requested
-        viewModel.getRepos(search, ReposType.Search)
+        viewModel.getRepos(search, RepoType.Search)
 
         // Then event should be emitted
         val loadingEventAtStart = LiveDataTestUtil.getValue(viewModel.loading)
@@ -241,7 +241,7 @@ class ReposViewModelTest {
         val viewModel = ReposViewModel(getOwnReposUseCase, getStarredReposUseCase, getSearchReposUseCase)
 
         // When repos are requested
-        viewModel.getRepos(search, ReposType.Search)
+        viewModel.getRepos(search, RepoType.Search)
 
         // Then event should be emitted
         val loadingEventAtStart = LiveDataTestUtil.getValue(viewModel.loading)
@@ -269,7 +269,7 @@ class ReposViewModelTest {
         val viewModel = ReposViewModel(getOwnReposUseCase, getStarredReposUseCase, getSearchReposUseCase)
 
         // When repos are requested
-        viewModel.getRepos(search, ReposType.Search)
+        viewModel.getRepos(search, RepoType.Search)
 
         // Then loading and error events should be emitted
         val loadingEventAtStart = LiveDataTestUtil.getValue(viewModel.loading)

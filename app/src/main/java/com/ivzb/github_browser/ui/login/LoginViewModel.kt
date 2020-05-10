@@ -9,7 +9,7 @@ import com.ivzb.github_browser.domain.login.AccessTokenParameters
 import com.ivzb.github_browser.domain.login.GetAccessTokenUseCase
 import com.ivzb.github_browser.domain.login.SaveAccessTokenUseCase
 import com.ivzb.github_browser.domain.successOr
-import com.ivzb.github_browser.model.ui.AccessToken
+import com.ivzb.github_browser.model.access_token.AccessToken
 import com.ivzb.github_browser.util.map
 import javax.inject.Inject
 

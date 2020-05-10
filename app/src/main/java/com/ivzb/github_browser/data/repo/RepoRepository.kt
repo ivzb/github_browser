@@ -2,7 +2,7 @@ package com.ivzb.github_browser.data.repo
 
 import androidx.lifecycle.LiveData
 import com.ivzb.github_browser.data.AppDatabase
-import com.ivzb.github_browser.model.ui.Repo
+import com.ivzb.github_browser.model.repo.Repo
 import com.ivzb.github_browser.util.map
 import javax.inject.Inject
 import javax.inject.Singleton

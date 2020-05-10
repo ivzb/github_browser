@@ -1,7 +1,7 @@
-package com.ivzb.github_browser.model.network
+package com.ivzb.github_browser.model.repo
 
 import com.google.gson.annotations.SerializedName
-import com.ivzb.github_browser.model.ui.Repo
+import com.ivzb.github_browser.model.repo.Repo
 
 data class RepoResponse(
 
