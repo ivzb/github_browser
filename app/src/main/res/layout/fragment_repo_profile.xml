@@ -14,190 +14,195 @@
             type="com.ivzb.github_browser.model.repo.Repo" />
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <ProgressBar
-            android:id="@+id/pb_loading"
-            android:layout_width="@dimen/loading_size"
-            android:layout_height="@dimen/loading_size"
-            app:goneUnless="@{ viewModel.loading.peekContent() }"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-        <TextView
-            android:id="@+id/tv_error"
-            style="@style/TextAppearance.AppCompat.Headline"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="@{ viewModel.error.peekContent() }"
-            app:goneUnless="@{ viewModel.error != null }"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            <ProgressBar
+                android:id="@+id/pb_loading"
+                android:layout_width="@dimen/loading_size"
+                android:layout_height="@dimen/loading_size"
+                app:goneUnless="@{ viewModel.loading.peekContent() }"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:id="@+id/tv_name"
-            style="@style/TextAppearance.AppCompat.Display1"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/card_margin"
-            android:text="@{ repo.name }"
-            android:textStyle="bold"
-            app:goneUnless="@{ repo != null }"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:text="Retrofit" />
+            <TextView
+                android:id="@+id/tv_error"
+                style="@style/TextAppearance.AppCompat.Headline"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@{ viewModel.error.peekContent() }"
+                app:goneUnless="@{ viewModel.error != null }"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:id="@+id/tv_description"
-            style="@style/TextAppearance.AppCompat.Body1"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/card_margin"
-            android:text="@{ repo.description }"
-            app:goneUnless="@{ repo != null &amp;&amp; !repo.description.empty }"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_name"
-            tools:text="Type-safe HTTP client for Android and Java by Square, Inc." />
+            <TextView
+                android:id="@+id/tv_name"
+                style="@style/TextAppearance.AppCompat.Display1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/card_margin"
+                android:text="@{ repo.name }"
+                android:textStyle="bold"
+                app:goneUnless="@{ repo != null }"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="Retrofit" />
 
-        <ImageView
-            android:id="@+id/ic_stars"
-            android:layout_width="@dimen/icon_size"
-            android:layout_height="@dimen/icon_size"
-            android:layout_margin="@dimen/card_margin"
-            android:contentDescription="@string/stars"
-            android:src="@drawable/ic_star"
-            app:goneUnless="@{ repo != null }"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_description" />
+            <TextView
+                android:id="@+id/tv_description"
+                style="@style/TextAppearance.AppCompat.Body1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/card_margin"
+                android:text="@{ repo.description }"
+                app:goneUnless="@{ repo != null &amp;&amp; !repo.description.empty }"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_name"
+                tools:text="Type-safe HTTP client for Android and Java by Square, Inc." />
 
-        <TextView
-            android:id="@+id/tv_stars"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/item_margin"
-            android:layout_marginTop="@dimen/card_margin"
-            android:text="@{ String.format(@string/stars_count, repo.starsCount) }"
-            android:textAlignment="viewStart"
-            android:textAppearance="?textAppearanceListItem"
-            app:goneUnless="@{ repo != null }"
-            app:layout_constraintBottom_toBottomOf="@+id/ic_stars"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/ic_stars"
-            app:layout_constraintTop_toBottomOf="@+id/tv_description"
-            tools:text="5 watchers" />
+            <ImageView
+                android:id="@+id/ic_stars"
+                android:layout_width="@dimen/icon_size"
+                android:layout_height="@dimen/icon_size"
+                android:layout_margin="@dimen/card_margin"
+                android:contentDescription="@string/stars"
+                android:src="@drawable/ic_star"
+                app:goneUnless="@{ repo != null }"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_description" />
 
-        <ImageView
-            android:id="@+id/ic_watchers"
-            android:layout_width="@dimen/icon_size"
-            android:layout_height="@dimen/icon_size"
-            android:layout_margin="@dimen/card_margin"
-            android:contentDescription="@string/watchers"
-            android:src="@drawable/ic_watcher"
-            app:goneUnless="@{ repo != null }"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_stars" />
+            <TextView
+                android:id="@+id/tv_stars"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/item_margin"
+                android:layout_marginTop="@dimen/card_margin"
+                android:text="@{ String.format(@string/stars_count, repo.starsCount) }"
+                android:textAlignment="viewStart"
+                android:textAppearance="?textAppearanceListItem"
+                app:goneUnless="@{ repo != null }"
+                app:layout_constraintBottom_toBottomOf="@+id/ic_stars"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/ic_stars"
+                app:layout_constraintTop_toBottomOf="@+id/tv_description"
+                tools:text="5 watchers" />
 
-        <TextView
-            android:id="@+id/tv_watchers"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/item_margin"
-            android:layout_marginTop="@dimen/card_margin"
-            android:text="@{ String.format(@string/watchers_count, repo.watchersCount) }"
-            android:textAlignment="viewStart"
-            android:textAppearance="?textAppearanceListItem"
-            app:goneUnless="@{ repo != null }"
-            app:layout_constraintBottom_toBottomOf="@+id/ic_watchers"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/ic_watchers"
-            app:layout_constraintTop_toBottomOf="@+id/tv_stars"
-            tools:text="5 watchers" />
+            <ImageView
+                android:id="@+id/ic_watchers"
+                android:layout_width="@dimen/icon_size"
+                android:layout_height="@dimen/icon_size"
+                android:layout_margin="@dimen/card_margin"
+                android:contentDescription="@string/watchers"
+                android:src="@drawable/ic_watcher"
+                app:goneUnless="@{ repo != null }"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_stars" />
 
-        <ImageView
-            android:id="@+id/ic_forks"
-            android:layout_width="@dimen/icon_size"
-            android:layout_height="@dimen/icon_size"
-            android:layout_margin="@dimen/card_margin"
-            android:contentDescription="@string/forks"
-            android:src="@drawable/ic_fork"
-            app:goneUnless="@{ repo != null }"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_watchers" />
+            <TextView
+                android:id="@+id/tv_watchers"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/item_margin"
+                android:layout_marginTop="@dimen/card_margin"
+                android:text="@{ String.format(@string/watchers_count, repo.watchersCount) }"
+                android:textAlignment="viewStart"
+                android:textAppearance="?textAppearanceListItem"
+                app:goneUnless="@{ repo != null }"
+                app:layout_constraintBottom_toBottomOf="@+id/ic_watchers"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/ic_watchers"
+                app:layout_constraintTop_toBottomOf="@+id/tv_stars"
+                tools:text="5 watchers" />
 
-        <TextView
-            android:id="@+id/tv_forks"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/item_margin"
-            android:layout_marginTop="@dimen/card_margin"
-            android:text="@{ String.format(@string/forks_count, repo.forksCount) }"
-            android:textAlignment="viewStart"
-            android:textAppearance="?textAppearanceListItem"
-            app:goneUnless="@{ repo != null }"
-            app:layout_constraintBottom_toBottomOf="@+id/ic_forks"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/ic_forks"
-            app:layout_constraintTop_toBottomOf="@+id/tv_watchers"
-            tools:text="3 forks" />
+            <ImageView
+                android:id="@+id/ic_forks"
+                android:layout_width="@dimen/icon_size"
+                android:layout_height="@dimen/icon_size"
+                android:layout_margin="@dimen/card_margin"
+                android:contentDescription="@string/forks"
+                android:src="@drawable/ic_fork"
+                app:goneUnless="@{ repo != null }"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_watchers" />
 
-        <Button
-            android:id="@+id/btn_star"
-            style="@style/Widget.AppCompat.Button.Colored"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/card_margin"
-            android:onClick="@{ () -> viewModel.star(repo) }"
-            android:text="@string/star"
-            app:goneUnless="@{ repo != null }"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_forks" />
+            <TextView
+                android:id="@+id/tv_forks"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/item_margin"
+                android:layout_marginTop="@dimen/card_margin"
+                android:text="@{ String.format(@string/forks_count, repo.forksCount) }"
+                android:textAlignment="viewStart"
+                android:textAppearance="?textAppearanceListItem"
+                app:goneUnless="@{ repo != null }"
+                app:layout_constraintBottom_toBottomOf="@+id/ic_forks"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/ic_forks"
+                app:layout_constraintTop_toBottomOf="@+id/tv_watchers"
+                tools:text="3 forks" />
 
-        <Button
-            android:id="@+id/btn_unstar"
-            style="@style/Widget.AppCompat.Button.Colored"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/card_margin"
-            android:onClick="@{ () -> viewModel.unstar(repo) }"
-            android:text="@string/unstar"
-            app:goneUnless="@{ repo != null }"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/btn_star" />
+            <Button
+                android:id="@+id/btn_star"
+                style="@style/Widget.AppCompat.Button.Colored"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/card_margin"
+                android:onClick="@{ () -> viewModel.star(repo) }"
+                android:text="@string/star"
+                app:goneUnless="@{ repo != null }"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_forks" />
 
-        <Button
-            android:id="@+id/btn_contributors"
-            style="@style/Widget.AppCompat.Button.Colored"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/card_margin"
-            android:onClick="@{ () -> viewModel.contributorsClick(repo.fullName) }"
-            android:text="@string/contributors"
-            app:goneUnless="@{ repo != null }"
-            app:layout_constraintEnd_toStartOf="@+id/btn_owner"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/btn_unstar" />
+            <Button
+                android:id="@+id/btn_unstar"
+                style="@style/Widget.AppCompat.Button.Colored"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/card_margin"
+                android:onClick="@{ () -> viewModel.unstar(repo) }"
+                android:text="@string/unstar"
+                app:goneUnless="@{ repo != null }"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/btn_star" />
 
-        <Button
-            android:id="@+id/btn_owner"
-            style="@style/Widget.AppCompat.Button.Colored"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/card_margin"
-            android:onClick="@{ () -> viewModel.ownerClick(repo.owner) }"
-            android:text="@string/owner"
-            app:goneUnless="@{ repo != null }"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/btn_contributors"
-            app:layout_constraintTop_toBottomOf="@+id/btn_unstar" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            <Button
+                android:id="@+id/btn_contributors"
+                style="@style/Widget.AppCompat.Button.Colored"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/card_margin"
+                android:onClick="@{ () -> viewModel.contributorsClick(repo.fullName) }"
+                android:text="@string/contributors"
+                app:goneUnless="@{ repo != null }"
+                app:layout_constraintEnd_toStartOf="@+id/btn_owner"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/btn_unstar" />
+
+            <Button
+                android:id="@+id/btn_owner"
+                style="@style/Widget.AppCompat.Button.Colored"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/card_margin"
+                android:onClick="@{ () -> viewModel.ownerClick(repo.owner) }"
+                android:text="@string/owner"
+                app:goneUnless="@{ repo != null }"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/btn_contributors"
+                app:layout_constraintTop_toBottomOf="@+id/btn_unstar" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
 </layout>

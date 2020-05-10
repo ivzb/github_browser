@@ -14,178 +14,183 @@
             type="com.ivzb.github_browser.model.user.User" />
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <ProgressBar
-            android:id="@+id/pb_loading"
-            android:layout_width="@dimen/loading_size"
-            android:layout_height="@dimen/loading_size"
-            app:goneUnless="@{ viewModel.loading.peekContent() }"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-        <TextView
-            android:id="@+id/tv_error"
-            style="@style/TextAppearance.AppCompat.Headline"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="@{ viewModel.error.peekContent() }"
-            app:goneUnless="@{ viewModel.error != null }"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            <ProgressBar
+                android:id="@+id/pb_loading"
+                android:layout_width="@dimen/loading_size"
+                android:layout_height="@dimen/loading_size"
+                app:goneUnless="@{ viewModel.loading.peekContent() }"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-        <ImageView
-            android:id="@+id/iv_avatar"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/card_margin"
-            android:contentDescription="@string/avatar"
-            app:imageUrl="@{ user.avatarUrl }"
-            app:layout_constraintEnd_toStartOf="@+id/guideline_vertical"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            <TextView
+                android:id="@+id/tv_error"
+                style="@style/TextAppearance.AppCompat.Headline"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@{ viewModel.error.peekContent() }"
+                app:goneUnless="@{ viewModel.error != null }"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:id="@+id/tv_login"
-            style="@style/TextAppearance.AppCompat.Display1"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="@{ user.login }"
-            android:textStyle="bold"
-            app:goneUnless="@{ user != null }"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/guideline_vertical"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:text="ivzb" />
+            <ImageView
+                android:id="@+id/iv_avatar"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/card_margin"
+                android:contentDescription="@string/avatar"
+                app:imageUrl="@{ user.avatarUrl }"
+                app:layout_constraintEnd_toStartOf="@+id/guideline_vertical"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:id="@+id/tv_name"
-            style="@style/TextAppearance.AppCompat.Body1"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/item_margin"
-            android:text="@{ user.name }"
-            app:goneUnless="@{ user != null &amp;&amp; !user.name.empty }"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/guideline_vertical"
-            app:layout_constraintTop_toBottomOf="@+id/tv_login"
-            tools:text="Ivan Zahariev" />
+            <TextView
+                android:id="@+id/tv_login"
+                style="@style/TextAppearance.AppCompat.Display1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@{ user.login }"
+                android:textStyle="bold"
+                app:goneUnless="@{ user != null }"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/guideline_vertical"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="ivzb" />
 
-        <ImageView
-            android:id="@+id/iv_follows"
-            android:layout_width="@dimen/icon_size"
-            android:layout_height="@dimen/icon_size"
-            android:layout_marginTop="@dimen/item_margin"
-            android:contentDescription="@string/followers"
-            android:src="@drawable/ic_users"
-            app:goneUnless="@{ user != null }"
-            app:layout_constraintStart_toEndOf="@+id/guideline_vertical"
-            app:layout_constraintTop_toBottomOf="@+id/tv_name" />
+            <TextView
+                android:id="@+id/tv_name"
+                style="@style/TextAppearance.AppCompat.Body1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/item_margin"
+                android:text="@{ user.name }"
+                app:goneUnless="@{ user != null &amp;&amp; !user.name.empty }"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/guideline_vertical"
+                app:layout_constraintTop_toBottomOf="@+id/tv_login"
+                tools:text="Ivan Zahariev" />
 
-        <TextView
-            android:id="@+id/tv_follow_info"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/item_margin"
-            android:layout_marginTop="@dimen/item_margin"
-            android:text="@{ String.format(@string/follow_info, user.following, user.followers)}"
-            android:textColor="@color/colorPrimaryDark"
-            app:goneUnless="@{ user != null }"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/iv_follows"
-            app:layout_constraintTop_toBottomOf="@+id/tv_name"
-            tools:text="15 followers" />
+            <ImageView
+                android:id="@+id/iv_follows"
+                android:layout_width="@dimen/icon_size"
+                android:layout_height="@dimen/icon_size"
+                android:layout_marginTop="@dimen/item_margin"
+                android:contentDescription="@string/followers"
+                android:src="@drawable/ic_users"
+                app:goneUnless="@{ user != null }"
+                app:layout_constraintStart_toEndOf="@+id/guideline_vertical"
+                app:layout_constraintTop_toBottomOf="@+id/tv_name" />
 
-        <TextView
-            android:id="@+id/tv_repositories"
-            style="@style/TextAppearance.AppCompat.Title"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/card_margin"
-            android:text="@string/repositories"
-            app:goneUnless="@{ user != null }"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/iv_avatar" />
+            <TextView
+                android:id="@+id/tv_follow_info"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/item_margin"
+                android:layout_marginTop="@dimen/item_margin"
+                android:text="@{ String.format(@string/follow_info, user.following, user.followers)}"
+                android:textColor="@color/colorPrimaryDark"
+                app:goneUnless="@{ user != null }"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/iv_follows"
+                app:layout_constraintTop_toBottomOf="@+id/tv_name"
+                tools:text="15 followers" />
 
-        <Button
-            android:id="@+id/btn_own_repositories"
-            style="@style/Widget.AppCompat.Button.Colored"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/item_margin"
-            android:onClick="@{ () -> viewModel.ownReposClick(user.login) }"
-            android:text="@string/own"
-            app:goneUnless="@{ user != null }"
-            app:layout_constraintEnd_toStartOf="@+id/btn_starred_repositories"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_repositories" />
+            <TextView
+                android:id="@+id/tv_repositories"
+                style="@style/TextAppearance.AppCompat.Title"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/card_margin"
+                android:text="@string/repositories"
+                app:goneUnless="@{ user != null }"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/iv_avatar" />
 
-        <Button
-            android:id="@+id/btn_starred_repositories"
-            style="@style/Widget.AppCompat.Button.Colored"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/item_margin"
-            android:onClick="@{ () -> viewModel.starredReposClick(user.login) }"
-            android:text="@string/starred"
-            app:goneUnless="@{ user != null }"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/btn_own_repositories"
-            app:layout_constraintTop_toBottomOf="@+id/tv_repositories" />
+            <Button
+                android:id="@+id/btn_own_repositories"
+                style="@style/Widget.AppCompat.Button.Colored"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/item_margin"
+                android:onClick="@{ () -> viewModel.ownReposClick(user.login) }"
+                android:text="@string/own"
+                app:goneUnless="@{ user != null }"
+                app:layout_constraintEnd_toStartOf="@+id/btn_starred_repositories"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_repositories" />
 
-        <TextView
-            android:id="@+id/tv_follow"
-            style="@style/TextAppearance.AppCompat.Title"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/card_margin"
-            android:text="@string/follow"
-            app:goneUnless="@{ user != null }"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/btn_own_repositories" />
+            <Button
+                android:id="@+id/btn_starred_repositories"
+                style="@style/Widget.AppCompat.Button.Colored"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/item_margin"
+                android:onClick="@{ () -> viewModel.starredReposClick(user.login) }"
+                android:text="@string/starred"
+                app:goneUnless="@{ user != null }"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/btn_own_repositories"
+                app:layout_constraintTop_toBottomOf="@+id/tv_repositories" />
 
-        <Button
-            android:id="@+id/btn_following"
-            style="@style/Widget.AppCompat.Button.Colored"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/item_margin"
-            android:onClick="@{ () -> viewModel.followingClick(user.login) }"
-            android:text="@{ String.format(@string/following_count, user.following) }"
-            app:goneUnless="@{ user != null }"
-            app:layout_constraintEnd_toStartOf="@+id/btn_followers"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_follow"
-            tools:text="Following (13)" />
+            <TextView
+                android:id="@+id/tv_follow"
+                style="@style/TextAppearance.AppCompat.Title"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/card_margin"
+                android:text="@string/follow"
+                app:goneUnless="@{ user != null }"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/btn_own_repositories" />
 
-        <Button
-            android:id="@+id/btn_followers"
-            style="@style/Widget.AppCompat.Button.Colored"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/item_margin"
-            android:onClick="@{ () -> viewModel.followersClick(user.login) }"
-            android:text="@{ String.format(@string/followers_count, user.followers) }"
-            app:goneUnless="@{ user != null }"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/btn_following"
-            app:layout_constraintTop_toBottomOf="@+id/tv_follow"
-            tools:text="Followers (0)" />
+            <Button
+                android:id="@+id/btn_following"
+                style="@style/Widget.AppCompat.Button.Colored"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/item_margin"
+                android:onClick="@{ () -> viewModel.followingClick(user.login) }"
+                android:text="@{ String.format(@string/following_count, user.following) }"
+                app:goneUnless="@{ user != null }"
+                app:layout_constraintEnd_toStartOf="@+id/btn_followers"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_follow"
+                tools:text="Following (13)" />
 
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guideline_vertical"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.33" />
+            <Button
+                android:id="@+id/btn_followers"
+                style="@style/Widget.AppCompat.Button.Colored"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/item_margin"
+                android:onClick="@{ () -> viewModel.followersClick(user.login) }"
+                android:text="@{ String.format(@string/followers_count, user.followers) }"
+                app:goneUnless="@{ user != null }"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/btn_following"
+                app:layout_constraintTop_toBottomOf="@+id/tv_follow"
+                tools:text="Followers (0)" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline_vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.33" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
 </layout>
