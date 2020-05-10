@@ -9,10 +9,9 @@ import com.ivzb.github_browser.data.login.LoginDataSource
 import com.ivzb.github_browser.data.login.RemoteLoginDataSource
 import com.ivzb.github_browser.data.preference.PreferenceStorage
 import com.ivzb.github_browser.data.repo.RemoteRepoDataSource
-import com.ivzb.github_browser.data.repo.RepoDataSource
 import com.ivzb.github_browser.data.repo.RepoRemoteDataSource
 import com.ivzb.github_browser.data.user.RemoteUserDataSource
-import com.ivzb.github_browser.data.user.UserDataSource
+import com.ivzb.github_browser.data.user.UserRemoteDataSource
 import com.ivzb.github_browser.util.NetworkUtils
 import dagger.Module
 import dagger.Provides
@@ -66,7 +65,7 @@ class DataModule {
     fun provideUserRemoteDataSource(
         networkUtils: NetworkUtils,
         retrofit: Retrofit
-    ): UserDataSource = RemoteUserDataSource(networkUtils, retrofit)
+    ): UserRemoteDataSource = RemoteUserDataSource(networkUtils, retrofit)
 
     @Singleton
     @Provides

@@ -2,10 +2,7 @@ package com.ivzb.github_browser.ui
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.ivzb.github_browser.data.user.UserRepository
-import com.ivzb.github_browser.domain.user.GetContributorsUseCase
-import com.ivzb.github_browser.domain.user.GetFollowersUseCase
-import com.ivzb.github_browser.domain.user.GetFollowingUseCase
-import com.ivzb.github_browser.domain.user.GetSearchUsersUseCase
+import com.ivzb.github_browser.domain.user.*
 import com.ivzb.github_browser.model.TestData
 import com.ivzb.github_browser.model.user.UserType
 import com.ivzb.github_browser.ui.users.UsersViewModel
@@ -32,408 +29,90 @@ class UsersViewModelTest {
     var syncTaskExecutorRule = SyncTaskExecutorRule()
 
     @Test
-    fun getFollowers_succeeds() {
+    fun getUsers_succeeds() {
         // Given a ViewModel
         val user = TestData.user.login
+        val type = UserType.Following
 
         val userRepository = mock<UserRepository> {
-            on { getFollowers(user) }.thenReturn(TestData.users)
+            on { observeUsers(eq(user), eq(type)) }.thenReturn(TestData.liveDataOf(TestData.users))
         }
-        val getFollowingUseCase = GetFollowingUseCase(userRepository)
-        val getFollowersUseCase = GetFollowersUseCase(userRepository)
-        val getContributorsUseCase = GetContributorsUseCase(userRepository)
-        val getSearchUsersUseCase = GetSearchUsersUseCase(userRepository)
+        val observeUsersUseCase = ObserveUsersUseCase(userRepository)
+        val fetchUsersUseCase = FetchUsersUseCase(userRepository)
 
-        val viewModel = UsersViewModel(
-            getFollowingUseCase,
-            getFollowersUseCase,
-            getContributorsUseCase,
-            getSearchUsersUseCase
-        )
+        val viewModel = UsersViewModel(observeUsersUseCase, fetchUsersUseCase)
 
         // When users are requested
-        viewModel.getUsers(user, UserType.Followers)
+        viewModel.getUsers(user, type)
 
-        // Then event should be emitted
+        // Then event should be emitted and users fetched
         val loadingEventAtStart = LiveDataTestUtil.getValue(viewModel.loading)
         assertThat(loadingEventAtStart?.getContentIfNotHandled(), `is`(CoreMatchers.equalTo(true)))
 
         val users = LiveDataTestUtil.getValue(viewModel.users)
-        assertThat(users, `is`(CoreMatchers.equalTo(TestData.users as List<Any>)))
+        assertThat(users?.getContentIfNotHandled(), `is`(CoreMatchers.equalTo(TestData.users as List<Any>)))
+
+        verify(userRepository).fetchUsers(eq(user), eq(type))
 
         val loadingEventAtEnd = LiveDataTestUtil.getValue(viewModel.loading)
         assertThat(loadingEventAtEnd?.getContentIfNotHandled(), `is`(CoreMatchers.equalTo(false)))
     }
 
     @Test
-    fun getFollowers_empty() {
+    fun getUsers_empty() {
         // Given a ViewModel
         val user = TestData.user.login
+        val type = UserType.Following
 
         val userRepository = mock<UserRepository> {
-            on { getFollowers(user) }.thenReturn(listOf())
+            on { observeUsers(eq(user), eq(type)) }.thenReturn(TestData.liveDataOf(listOf()))
         }
-        val getFollowingUseCase = GetFollowingUseCase(userRepository)
-        val getFollowersUseCase = GetFollowersUseCase(userRepository)
-        val getContributorsUseCase = GetContributorsUseCase(userRepository)
-        val getSearchUsersUseCase = GetSearchUsersUseCase(userRepository)
+        val observeUsersUseCase = ObserveUsersUseCase(userRepository)
+        val fetchUsersUseCase = FetchUsersUseCase(userRepository)
 
-        val viewModel = UsersViewModel(
-            getFollowingUseCase,
-            getFollowersUseCase,
-            getContributorsUseCase,
-            getSearchUsersUseCase
-        )
+        val viewModel = UsersViewModel(observeUsersUseCase, fetchUsersUseCase)
 
         // When users are requested
-        viewModel.getUsers(user, UserType.Followers)
+        viewModel.getUsers(user, type)
 
         // Then loading and error events should be emitted
         val loadingEventAtStart = LiveDataTestUtil.getValue(viewModel.loading)
         assertThat(loadingEventAtStart?.getContentIfNotHandled(), `is`(CoreMatchers.equalTo(true)))
 
         val users = LiveDataTestUtil.getValue(viewModel.users)
-        assertThat(users, `is`(CoreMatchers.equalTo(TestData.empty as List<Any>)))
+        assertThat(users?.getContentIfNotHandled(), `is`(CoreMatchers.equalTo(TestData.empty as List<Any>)))
+
+        verify(userRepository).fetchUsers(eq(user), eq(type))
 
         val loadingEventAtEnd = LiveDataTestUtil.getValue(viewModel.loading)
         assertThat(loadingEventAtEnd?.getContentIfNotHandled(), `is`(CoreMatchers.equalTo(false)))
     }
 
     @Test
-    fun getFollowers_fails() {
+    fun getUsers_fails() {
         // Given a ViewModel
         val user = TestData.user.login
+        val type = UserType.Following
 
         val userRepository = mock<UserRepository> {
-            on { getFollowers(user) }.thenReturn(null)
+            on { observeUsers(eq(user), eq(type)) }.thenReturn(TestData.liveDataOf(null))
         }
-        val getFollowingUseCase = GetFollowingUseCase(userRepository)
-        val getFollowersUseCase = GetFollowersUseCase(userRepository)
-        val getContributorsUseCase = GetContributorsUseCase(userRepository)
-        val getSearchUsersUseCase = GetSearchUsersUseCase(userRepository)
+        val observeUsersUseCase = ObserveUsersUseCase(userRepository)
+        val fetchUsersUseCase = FetchUsersUseCase(userRepository)
 
-        val viewModel = UsersViewModel(
-            getFollowingUseCase,
-            getFollowersUseCase,
-            getContributorsUseCase,
-            getSearchUsersUseCase
-        )
+        val viewModel = UsersViewModel(observeUsersUseCase, fetchUsersUseCase)
 
         // When users are requested
-        viewModel.getUsers(user, UserType.Followers)
+        viewModel.getUsers(user, type)
 
         // Then loading and error events should be emitted
         val loadingEventAtStart = LiveDataTestUtil.getValue(viewModel.loading)
         assertThat(loadingEventAtStart?.getContentIfNotHandled(), `is`(CoreMatchers.equalTo(true)))
 
         val users = LiveDataTestUtil.getValue(viewModel.users)
-        assertThat(users, `is`(CoreMatchers.equalTo(TestData.noConnection as List<Any>)))
+        assertThat(users?.getContentIfNotHandled(), `is`(CoreMatchers.equalTo(TestData.noConnection as List<Any>)))
 
-        val loadingEventAtEnd = LiveDataTestUtil.getValue(viewModel.loading)
-        assertThat(loadingEventAtEnd?.getContentIfNotHandled(), `is`(CoreMatchers.equalTo(false)))
-    }
-
-    @Test
-    fun getFollowing_succeeds() {
-        // Given a ViewModel
-        val user = TestData.user.login
-
-        val userRepository = mock<UserRepository> {
-            on { getFollowing(user) }.thenReturn(TestData.users)
-        }
-        val getFollowingUseCase = GetFollowingUseCase(userRepository)
-        val getFollowersUseCase = GetFollowersUseCase(userRepository)
-        val getContributorsUseCase = GetContributorsUseCase(userRepository)
-        val getSearchUsersUseCase = GetSearchUsersUseCase(userRepository)
-
-        val viewModel = UsersViewModel(
-            getFollowingUseCase,
-            getFollowersUseCase,
-            getContributorsUseCase,
-            getSearchUsersUseCase
-        )
-
-        // When users are requested
-        viewModel.getUsers(user, UserType.Following)
-
-        // Then event should be emitted
-        val loadingEventAtStart = LiveDataTestUtil.getValue(viewModel.loading)
-        assertThat(loadingEventAtStart?.getContentIfNotHandled(), `is`(CoreMatchers.equalTo(true)))
-
-        val users = LiveDataTestUtil.getValue(viewModel.users)
-        assertThat(users, `is`(CoreMatchers.equalTo(TestData.users as List<Any>)))
-
-        val loadingEventAtEnd = LiveDataTestUtil.getValue(viewModel.loading)
-        assertThat(loadingEventAtEnd?.getContentIfNotHandled(), `is`(CoreMatchers.equalTo(false)))
-    }
-
-    @Test
-    fun getFollowing_empty() {
-        // Given a ViewModel
-        val user = TestData.user.login
-
-        val userRepository = mock<UserRepository> {
-            on { getFollowing(user) }.thenReturn(listOf())
-        }
-        val getFollowingUseCase = GetFollowingUseCase(userRepository)
-        val getFollowersUseCase = GetFollowersUseCase(userRepository)
-        val getContributorsUseCase = GetContributorsUseCase(userRepository)
-        val getSearchUsersUseCase = GetSearchUsersUseCase(userRepository)
-
-        val viewModel = UsersViewModel(
-            getFollowingUseCase,
-            getFollowersUseCase,
-            getContributorsUseCase,
-            getSearchUsersUseCase
-        )
-
-        // When users are requested
-        viewModel.getUsers(user, UserType.Following)
-
-        // Then loading and error events should be emitted
-        val loadingEventAtStart = LiveDataTestUtil.getValue(viewModel.loading)
-        assertThat(loadingEventAtStart?.getContentIfNotHandled(), `is`(CoreMatchers.equalTo(true)))
-
-        val users = LiveDataTestUtil.getValue(viewModel.users)
-        assertThat(users, `is`(CoreMatchers.equalTo(TestData.empty as List<Any>)))
-
-        val loadingEventAtEnd = LiveDataTestUtil.getValue(viewModel.loading)
-        assertThat(loadingEventAtEnd?.getContentIfNotHandled(), `is`(CoreMatchers.equalTo(false)))
-    }
-
-    @Test
-    fun getFollowing_fails() {
-        // Given a ViewModel
-        val user = TestData.user.login
-
-        val userRepository = mock<UserRepository> {
-            on { getFollowing(user) }.thenReturn(null)
-        }
-        val getFollowingUseCase = GetFollowingUseCase(userRepository)
-        val getFollowersUseCase = GetFollowersUseCase(userRepository)
-        val getContributorsUseCase = GetContributorsUseCase(userRepository)
-        val getSearchUsersUseCase = GetSearchUsersUseCase(userRepository)
-
-        val viewModel = UsersViewModel(
-            getFollowingUseCase,
-            getFollowersUseCase,
-            getContributorsUseCase,
-            getSearchUsersUseCase
-        )
-
-        // When users are requested
-        viewModel.getUsers(user, UserType.Following)
-
-        // Then loading and error events should be emitted
-        val loadingEventAtStart = LiveDataTestUtil.getValue(viewModel.loading)
-        assertThat(loadingEventAtStart?.getContentIfNotHandled(), `is`(CoreMatchers.equalTo(true)))
-
-        val users = LiveDataTestUtil.getValue(viewModel.users)
-        assertThat(users, `is`(CoreMatchers.equalTo(TestData.noConnection as List<Any>)))
-
-        val loadingEventAtEnd = LiveDataTestUtil.getValue(viewModel.loading)
-        assertThat(loadingEventAtEnd?.getContentIfNotHandled(), `is`(CoreMatchers.equalTo(false)))
-    }
-
-    @Test
-    fun getContributors_succeeds() {
-        // Given a ViewModel
-        val user = TestData.user.login
-
-        val userRepository = mock<UserRepository> {
-            on { getContributors(user) }.thenReturn(TestData.users)
-        }
-        val getFollowingUseCase = GetFollowingUseCase(userRepository)
-        val getFollowersUseCase = GetFollowersUseCase(userRepository)
-        val getContributorsUseCase = GetContributorsUseCase(userRepository)
-        val getSearchUsersUseCase = GetSearchUsersUseCase(userRepository)
-
-        val viewModel = UsersViewModel(
-            getFollowingUseCase,
-            getFollowersUseCase,
-            getContributorsUseCase,
-            getSearchUsersUseCase
-        )
-
-        // When users are requested
-        viewModel.getUsers(user, UserType.Contributors)
-
-        // Then event should be emitted
-        val loadingEventAtStart = LiveDataTestUtil.getValue(viewModel.loading)
-        assertThat(loadingEventAtStart?.getContentIfNotHandled(), `is`(CoreMatchers.equalTo(true)))
-
-        val users = LiveDataTestUtil.getValue(viewModel.users)
-        assertThat(users, `is`(CoreMatchers.equalTo(TestData.users as List<Any>)))
-
-        val loadingEventAtEnd = LiveDataTestUtil.getValue(viewModel.loading)
-        assertThat(loadingEventAtEnd?.getContentIfNotHandled(), `is`(CoreMatchers.equalTo(false)))
-    }
-
-    @Test
-    fun getContributors_empty() {
-        // Given a ViewModel
-        val user = TestData.user.login
-
-        val userRepository = mock<UserRepository> {
-            on { getContributors(user) }.thenReturn(listOf())
-        }
-        val getFollowingUseCase = GetFollowingUseCase(userRepository)
-        val getFollowersUseCase = GetFollowersUseCase(userRepository)
-        val getContributorsUseCase = GetContributorsUseCase(userRepository)
-        val getSearchUsersUseCase = GetSearchUsersUseCase(userRepository)
-
-        val viewModel = UsersViewModel(
-            getFollowingUseCase,
-            getFollowersUseCase,
-            getContributorsUseCase,
-            getSearchUsersUseCase
-        )
-
-        // When users are requested
-        viewModel.getUsers(user, UserType.Contributors)
-
-        // Then loading and error events should be emitted
-        val loadingEventAtStart = LiveDataTestUtil.getValue(viewModel.loading)
-        assertThat(loadingEventAtStart?.getContentIfNotHandled(), `is`(CoreMatchers.equalTo(true)))
-
-        val users = LiveDataTestUtil.getValue(viewModel.users)
-        assertThat(users, `is`(CoreMatchers.equalTo(TestData.empty as List<Any>)))
-
-        val loadingEventAtEnd = LiveDataTestUtil.getValue(viewModel.loading)
-        assertThat(loadingEventAtEnd?.getContentIfNotHandled(), `is`(CoreMatchers.equalTo(false)))
-    }
-
-    @Test
-    fun getContributors_fails() {
-        // Given a ViewModel
-        val user = TestData.user.login
-
-        val userRepository = mock<UserRepository> {
-            on { getContributors(user) }.thenReturn(null)
-        }
-        val getFollowingUseCase = GetFollowingUseCase(userRepository)
-        val getFollowersUseCase = GetFollowersUseCase(userRepository)
-        val getContributorsUseCase = GetContributorsUseCase(userRepository)
-        val getSearchUsersUseCase = GetSearchUsersUseCase(userRepository)
-
-        val viewModel = UsersViewModel(
-            getFollowingUseCase,
-            getFollowersUseCase,
-            getContributorsUseCase,
-            getSearchUsersUseCase
-        )
-
-        // When users are requested
-        viewModel.getUsers(user, UserType.Contributors)
-
-        // Then loading and error events should be emitted
-        val loadingEventAtStart = LiveDataTestUtil.getValue(viewModel.loading)
-        assertThat(loadingEventAtStart?.getContentIfNotHandled(), `is`(CoreMatchers.equalTo(true)))
-
-        val users = LiveDataTestUtil.getValue(viewModel.users)
-        assertThat(users, `is`(CoreMatchers.equalTo(TestData.noConnection as List<Any>)))
-
-        val loadingEventAtEnd = LiveDataTestUtil.getValue(viewModel.loading)
-        assertThat(loadingEventAtEnd?.getContentIfNotHandled(), `is`(CoreMatchers.equalTo(false)))
-    }
-
-    @Test
-    fun getSearchUseres_succeeds() {
-        // Given a ViewModel
-        val search = TestData.search
-
-        val userRepository = mock<UserRepository> {
-            on { getSearchUsers(search) }.thenReturn(TestData.users)
-        }
-        val getFollowingUseCase = GetFollowingUseCase(userRepository)
-        val getFollowersUseCase = GetFollowersUseCase(userRepository)
-        val getContributorsUseCase = GetContributorsUseCase(userRepository)
-        val getSearchUsersUseCase = GetSearchUsersUseCase(userRepository)
-
-        val viewModel = UsersViewModel(
-            getFollowingUseCase,
-            getFollowersUseCase,
-            getContributorsUseCase,
-            getSearchUsersUseCase
-        )
-
-        // When users are requested
-        viewModel.getUsers(search, UserType.Search)
-
-        // Then event should be emitted
-        val loadingEventAtStart = LiveDataTestUtil.getValue(viewModel.loading)
-        assertThat(loadingEventAtStart?.getContentIfNotHandled(), `is`(CoreMatchers.equalTo(true)))
-
-        val users = LiveDataTestUtil.getValue(viewModel.users)
-        assertThat(users, `is`(CoreMatchers.equalTo(TestData.users as List<Any>)))
-
-        val loadingEventAtEnd = LiveDataTestUtil.getValue(viewModel.loading)
-        assertThat(loadingEventAtEnd?.getContentIfNotHandled(), `is`(CoreMatchers.equalTo(false)))
-    }
-
-    @Test
-    fun getSearch_empty() {
-        // Given a ViewModel
-        val search = TestData.search
-
-        val userRepository = mock<UserRepository> {
-            on { getSearchUsers(search) }.thenReturn(listOf())
-        }
-        val getFollowingUseCase = GetFollowingUseCase(userRepository)
-        val getFollowersUseCase = GetFollowersUseCase(userRepository)
-        val getContributorsUseCase = GetContributorsUseCase(userRepository)
-        val getSearchUsersUseCase = GetSearchUsersUseCase(userRepository)
-
-        val viewModel = UsersViewModel(
-            getFollowingUseCase,
-            getFollowersUseCase,
-            getContributorsUseCase,
-            getSearchUsersUseCase
-        )
-
-        // When users are requested
-        viewModel.getUsers(search, UserType.Search)
-
-        // Then loading and error events should be emitted
-        val loadingEventAtStart = LiveDataTestUtil.getValue(viewModel.loading)
-        assertThat(loadingEventAtStart?.getContentIfNotHandled(), `is`(CoreMatchers.equalTo(true)))
-
-        val users = LiveDataTestUtil.getValue(viewModel.users)
-        assertThat(users, `is`(CoreMatchers.equalTo(TestData.empty as List<Any>)))
-
-        val loadingEventAtEnd = LiveDataTestUtil.getValue(viewModel.loading)
-        assertThat(loadingEventAtEnd?.getContentIfNotHandled(), `is`(CoreMatchers.equalTo(false)))
-    }
-
-    @Test
-    fun getSearch_fails() {
-        // Given a ViewModel
-        val search = TestData.search
-
-        val userRepository = mock<UserRepository> {
-            on { getSearchUsers(search) }.thenReturn(null)
-        }
-        val getFollowingUseCase = GetFollowingUseCase(userRepository)
-        val getFollowersUseCase = GetFollowersUseCase(userRepository)
-        val getContributorsUseCase = GetContributorsUseCase(userRepository)
-        val getSearchUsersUseCase = GetSearchUsersUseCase(userRepository)
-
-        val viewModel = UsersViewModel(
-            getFollowingUseCase,
-            getFollowersUseCase,
-            getContributorsUseCase,
-            getSearchUsersUseCase
-        )
-
-        // When users are requested
-        viewModel.getUsers(search, UserType.Search)
-
-        // Then loading and error events should be emitted
-        val loadingEventAtStart = LiveDataTestUtil.getValue(viewModel.loading)
-        assertThat(loadingEventAtStart?.getContentIfNotHandled(), `is`(CoreMatchers.equalTo(true)))
-
-        val users = LiveDataTestUtil.getValue(viewModel.users)
-        assertThat(users, `is`(CoreMatchers.equalTo(TestData.noConnection as List<Any>)))
+        verify(userRepository).fetchUsers(eq(user), eq(type))
 
         val loadingEventAtEnd = LiveDataTestUtil.getValue(viewModel.loading)
         assertThat(loadingEventAtEnd?.getContentIfNotHandled(), `is`(CoreMatchers.equalTo(false)))
@@ -443,17 +122,10 @@ class UsersViewModelTest {
     fun clickUser_emitsEvent() {
         // Given a ViewModel
         val userRepository = mock<UserRepository>()
-        val getFollowingUseCase = GetFollowingUseCase(userRepository)
-        val getFollowersUseCase = GetFollowersUseCase(userRepository)
-        val getContributorsUseCase = GetContributorsUseCase(userRepository)
-        val getSearchUsersUseCase = GetSearchUsersUseCase(userRepository)
+        val observeUsersUseCase = ObserveUsersUseCase(userRepository)
+        val fetchUsersUseCase = FetchUsersUseCase(userRepository)
 
-        val viewModel = UsersViewModel(
-            getFollowingUseCase,
-            getFollowersUseCase,
-            getContributorsUseCase,
-            getSearchUsersUseCase
-        )
+        val viewModel = UsersViewModel(observeUsersUseCase, fetchUsersUseCase)
 
         // When user is clicked
         viewModel.click(TestData.user)
@@ -461,5 +133,45 @@ class UsersViewModelTest {
         // Then event should be emitted
         val clickEvent = LiveDataTestUtil.getValue(viewModel.click)
         assertThat(clickEvent?.getContentIfNotHandled(), `is`(CoreMatchers.equalTo(TestData.user)))
+    }
+
+    @Test
+    fun searchUser_emitsEvent() {
+        // Given a ViewModel
+        val userRepository = mock<UserRepository>()
+        val observeUsersUseCase = ObserveUsersUseCase(userRepository)
+        val fetchUsersUseCase = FetchUsersUseCase(userRepository)
+
+        val viewModel = UsersViewModel(observeUsersUseCase, fetchUsersUseCase)
+
+        // When user is searched
+        viewModel.search(TestData.search)
+
+        // Then event should be emitted
+        val searchEvent = LiveDataTestUtil.getValue(viewModel.searchQuery)
+        assertThat(
+            searchEvent?.getContentIfNotHandled(),
+            `is`(CoreMatchers.equalTo(TestData.search))
+        )
+    }
+
+    @Test
+    fun searchNullUser_emitsEvent() {
+        // Given a ViewModel
+        val userRepository = mock<UserRepository>()
+        val observeUsersUseCase = ObserveUsersUseCase(userRepository)
+        val fetchUsersUseCase = FetchUsersUseCase(userRepository)
+
+        val viewModel = UsersViewModel(observeUsersUseCase, fetchUsersUseCase)
+
+        // When user is searched
+        viewModel.search(null)
+
+        // Then event should be emitted
+        val searchEvent = LiveDataTestUtil.getValue(viewModel.searchQuery)
+        assertThat(
+            searchEvent?.getContentIfNotHandled(),
+            `is`(CoreMatchers.equalTo(""))
+        )
     }
 }

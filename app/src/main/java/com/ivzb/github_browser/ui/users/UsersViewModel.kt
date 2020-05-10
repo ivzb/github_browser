@@ -6,10 +6,7 @@ import androidx.lifecycle.ViewModel
 import com.ivzb.github_browser.domain.Event
 import com.ivzb.github_browser.domain.Result
 import com.ivzb.github_browser.domain.successOr
-import com.ivzb.github_browser.domain.user.GetContributorsUseCase
-import com.ivzb.github_browser.domain.user.GetFollowersUseCase
-import com.ivzb.github_browser.domain.user.GetFollowingUseCase
-import com.ivzb.github_browser.domain.user.GetSearchUsersUseCase
+import com.ivzb.github_browser.domain.user.*
 import com.ivzb.github_browser.model.user.User
 import com.ivzb.github_browser.model.user.UserType
 import com.ivzb.github_browser.ui.Empty
@@ -19,48 +16,42 @@ import com.ivzb.github_browser.util.map
 import javax.inject.Inject
 
 class UsersViewModel @Inject constructor(
-    private val getFollowingUseCase: GetFollowingUseCase,
-    private val getFollowersUseCase: GetFollowersUseCase,
-    private val getContributorsUseCase: GetContributorsUseCase,
-    private val getSearchUsersUseCase: GetSearchUsersUseCase
+    private val observeUsersUseCase: ObserveUsersUseCase,
+    private val fetchUsersUseCase: FetchUsersUseCase
 ) : ViewModel() {
 
     val loading = MutableLiveData<Event<Boolean>>()
     val click = MutableLiveData<Event<User>>()
-    val users: LiveData<List<Any>>
-    val searchQuery = MutableLiveData<String>()
-
-    private val getUsersResult = MutableLiveData<Result<List<User>?>>()
+    val users: LiveData<Event<List<Any>>>
+    val searchQuery = MutableLiveData<Event<String>>()
 
     init {
-        users = getUsersResult.map {
+        users = observeUsersUseCase.observe().map {
             loading.postValue(Event(false))
 
             val result = it.successOr(listOf(NoConnection)) ?: listOf(Empty)
 
-            when {
-                result.isEmpty() -> listOf(Empty)
-                else -> result
-            }
+            Event(
+                when {
+                    result.isEmpty() -> listOf(Empty)
+                    else -> result
+                }
+            )
         }
     }
 
     fun getUsers(user: String, type: UserType) {
         loading.postValue(Event(true))
 
-        when (type) {
-            UserType.Following -> getFollowingUseCase(user, getUsersResult)
-            UserType.Followers -> getFollowersUseCase(user, getUsersResult)
-            UserType.Contributors -> getContributorsUseCase(user, getUsersResult)
-            UserType.Search -> getSearchUsersUseCase(user, getUsersResult)
-        }.checkAllMatched
+        Pair(user, type).run {
+            observeUsersUseCase.execute(this)
+            fetchUsersUseCase(this)
+        }
     }
 
-    fun click(user: User) {
+    fun click(user: User) =
         click.postValue(Event(user))
-    }
 
-    fun search(query: String?) {
-        searchQuery.postValue(query ?: "")
-    }
+    fun search(query: String?) =
+        searchQuery.postValue(Event(query ?: ""))
 }

@@ -9,4 +9,18 @@ data class User(
     val followers: Int,
     val following: Int,
     val contributions: Int
-)
+) {
+
+    fun asUserFtsEntity(user: String, type: String) = UserFtsEntity(
+        id = this.id,
+        user = user,
+        type = type,
+        login = this.login,
+        name = this.name,
+        avatarUrl = this.avatarUrl,
+        repos = this.repos,
+        followers = this.followers,
+        following = this.following,
+        contributions = this.contributions
+    )
+}

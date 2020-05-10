@@ -20,6 +20,12 @@ data class UserFtsEntity(
     @ColumnInfo(name = "rowid")
     val id: Long,
 
+    @ColumnInfo(name = "user")
+    val user: String,
+
+    @ColumnInfo(name = "type")
+    val type: String,
+
     @ColumnInfo(name = "login")
     val login: String,
 

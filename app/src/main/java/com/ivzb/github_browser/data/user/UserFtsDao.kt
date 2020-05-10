@@ -12,12 +12,13 @@ interface UserFtsDao {
 
     @Query(
         """
-        SELECT rowid, login, name, avatar_url, repos, followers, following, contributions 
+        SELECT rowid, user, type, login, name, avatar_url, repos, followers, following, contributions 
         FROM userFts 
+        WHERE user = :user and type = :type
         ORDER BY followers DESC
         """
     )
-    fun observeAll(): LiveData<List<UserFtsEntity>>
+    fun observeAll(user: String, type: String): LiveData<List<UserFtsEntity>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertAll(users: List<UserFtsEntity>)

@@ -144,7 +144,7 @@ class ReposViewModelTest {
 
         val viewModel = ReposViewModel(observeReposUseCase, fetchReposUseCase)
 
-        // When repo is clicked
+        // When repo is searched
         viewModel.search(TestData.search)
 
         // Then event should be emitted
@@ -164,7 +164,7 @@ class ReposViewModelTest {
 
         val viewModel = ReposViewModel(observeReposUseCase, fetchReposUseCase)
 
-        // When repo is clicked
+        // When repo is searched
         viewModel.search(null)
 
         // Then event should be emitted

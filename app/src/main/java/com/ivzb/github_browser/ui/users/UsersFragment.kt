@@ -41,7 +41,7 @@ class UsersFragment : DaggerFragment() {
             lifecycleOwner = viewLifecycleOwner
         }
 
-        usersViewModel.users.observe(viewLifecycleOwner, Observer {
+        usersViewModel.users.observe(viewLifecycleOwner, EventObserver {
             showUsers(binding.rvUsers, it)
         })
 
@@ -51,7 +51,7 @@ class UsersFragment : DaggerFragment() {
             clearSearch(searchItem)
         })
 
-        usersViewModel.searchQuery.observe(viewLifecycleOwner, Observer {
+        usersViewModel.searchQuery.observe(viewLifecycleOwner, EventObserver {
             filterUsers(it)
         })
 
