@@ -1,6 +1,8 @@
 package com.ivzb.github_browser.di
 
+import android.content.Context
 import com.ivzb.github_browser.BuildConfig
+import com.ivzb.github_browser.data.AppDatabase
 import com.ivzb.github_browser.data.AuthorizationInterceptor
 import com.ivzb.github_browser.data.login.LoginDataSource
 import com.ivzb.github_browser.data.login.RemoteLoginDataSource
@@ -20,6 +22,10 @@ import javax.inject.Singleton
 
 @Module
 class DataModule {
+
+    @Singleton
+    @Provides
+    fun providesAppDatabase(context: Context): AppDatabase = AppDatabase.buildDatabase(context)
 
     @Singleton
     @Provides

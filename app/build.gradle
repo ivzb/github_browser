@@ -80,8 +80,17 @@ dependencies {
     kapt "androidx.lifecycle:lifecycle-compiler:$rootProject.lifecycleVersion"
     implementation "androidx.activity:activity-ktx:$rootProject.activityVersion"
     implementation "androidx.fragment:fragment-ktx:$rootProject.fragmentVersion"
+
+    // Navigation
     implementation "androidx.navigation:navigation-fragment-ktx:$navigationVersion"
     implementation "androidx.navigation:navigation-ui-ktx:$navigationVersion"
+
+    // Room
+    implementation "androidx.room:room-ktx:$rootProject.roomVersion"
+    implementation "androidx.room:room-runtime:$rootProject.roomVersion"
+    kapt "androidx.room:room-compiler:$rootProject.roomVersion"
+    testImplementation "androidx.room:room-ktx:$rootProject.roomVersion"
+    testImplementation "androidx.room:room-runtime:$rootProject.roomVersion"
 
     // Security
     implementation "androidx.security:security-crypto:$securityVersion"
