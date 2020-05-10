@@ -8,6 +8,10 @@
         <variable
             name="viewModel"
             type="com.ivzb.github_browser.ui.repo_profile.RepoProfileViewModel" />
+
+        <variable
+            name="repo"
+            type="com.ivzb.github_browser.model.repo.Repo" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -42,9 +46,9 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/card_margin"
-            android:text="@{ viewModel.repo.name }"
+            android:text="@{ repo.name }"
             android:textStyle="bold"
-            app:goneUnless="@{viewModel.repo != null}"
+            app:goneUnless="@{ repo != null }"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -56,8 +60,8 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/card_margin"
-            android:text="@{ viewModel.repo.description }"
-            app:goneUnless="@{ viewModel.repo != null &amp;&amp; !viewModel.repo.description.empty }"
+            android:text="@{ repo.description }"
+            app:goneUnless="@{ repo != null &amp;&amp; !repo.description.empty }"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_name"
@@ -70,7 +74,7 @@
             android:layout_margin="@dimen/card_margin"
             android:contentDescription="@string/stars"
             android:src="@drawable/ic_star"
-            app:goneUnless="@{ viewModel.repo != null }"
+            app:goneUnless="@{ repo != null }"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_description" />
 
@@ -80,10 +84,10 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/item_margin"
             android:layout_marginTop="@dimen/card_margin"
-            android:text="@{String.format(@string/stars_count, viewModel.repo.starsCount)}"
+            android:text="@{ String.format(@string/stars_count, repo.starsCount) }"
             android:textAlignment="viewStart"
             android:textAppearance="?textAppearanceListItem"
-            app:goneUnless="@{ viewModel.repo != null }"
+            app:goneUnless="@{ repo != null }"
             app:layout_constraintBottom_toBottomOf="@+id/ic_stars"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/ic_stars"
@@ -97,7 +101,7 @@
             android:layout_margin="@dimen/card_margin"
             android:contentDescription="@string/watchers"
             android:src="@drawable/ic_watcher"
-            app:goneUnless="@{ viewModel.repo != null }"
+            app:goneUnless="@{ repo != null }"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_stars" />
 
@@ -107,10 +111,10 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/item_margin"
             android:layout_marginTop="@dimen/card_margin"
-            android:text="@{String.format(@string/watchers_count, viewModel.repo.watchersCount)}"
+            android:text="@{ String.format(@string/watchers_count, repo.watchersCount) }"
             android:textAlignment="viewStart"
             android:textAppearance="?textAppearanceListItem"
-            app:goneUnless="@{ viewModel.repo != null }"
+            app:goneUnless="@{ repo != null }"
             app:layout_constraintBottom_toBottomOf="@+id/ic_watchers"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/ic_watchers"
@@ -124,7 +128,7 @@
             android:layout_margin="@dimen/card_margin"
             android:contentDescription="@string/forks"
             android:src="@drawable/ic_fork"
-            app:goneUnless="@{ viewModel.repo != null }"
+            app:goneUnless="@{ repo != null }"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_watchers" />
 
@@ -134,10 +138,10 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/item_margin"
             android:layout_marginTop="@dimen/card_margin"
-            android:text="@{String.format(@string/forks_count, viewModel.repo.forksCount)}"
+            android:text="@{ String.format(@string/forks_count, repo.forksCount) }"
             android:textAlignment="viewStart"
             android:textAppearance="?textAppearanceListItem"
-            app:goneUnless="@{ viewModel.repo != null }"
+            app:goneUnless="@{ repo != null }"
             app:layout_constraintBottom_toBottomOf="@+id/ic_forks"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/ic_forks"
@@ -150,9 +154,9 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/card_margin"
-            android:onClick="@{ () -> viewModel.star(viewModel.repo) }"
+            android:onClick="@{ () -> viewModel.star(repo) }"
             android:text="@string/star"
-            app:goneUnless="@{ viewModel.repo != null }"
+            app:goneUnless="@{ repo != null }"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_forks" />
@@ -163,9 +167,9 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/card_margin"
-            android:onClick="@{ () -> viewModel.unstar(viewModel.repo) }"
+            android:onClick="@{ () -> viewModel.unstar(repo) }"
             android:text="@string/unstar"
-            app:goneUnless="@{ viewModel.repo != null }"
+            app:goneUnless="@{ repo != null }"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/btn_star" />
@@ -176,9 +180,9 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/card_margin"
-            android:onClick="@{ () -> viewModel.contributorsClick(viewModel.repo.fullName) }"
+            android:onClick="@{ () -> viewModel.contributorsClick(repo.fullName) }"
             android:text="@string/contributors"
-            app:goneUnless="@{viewModel.repo != null}"
+            app:goneUnless="@{ repo != null }"
             app:layout_constraintEnd_toStartOf="@+id/btn_owner"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/btn_unstar" />
@@ -189,9 +193,9 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/card_margin"
-            android:onClick="@{ () -> viewModel.ownerClick(viewModel.repo.owner) }"
+            android:onClick="@{ () -> viewModel.ownerClick(repo.owner) }"
             android:text="@string/owner"
-            app:goneUnless="@{viewModel.repo != null}"
+            app:goneUnless="@{ repo != null }"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/btn_contributors"
             app:layout_constraintTop_toBottomOf="@+id/btn_unstar" />

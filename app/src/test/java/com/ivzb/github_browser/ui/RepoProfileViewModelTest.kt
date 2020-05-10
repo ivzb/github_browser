@@ -2,7 +2,8 @@ package com.ivzb.github_browser.ui
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.ivzb.github_browser.data.repo.RepoRepository
-import com.ivzb.github_browser.domain.repo.GetRepoUseCase
+import com.ivzb.github_browser.domain.repo.FetchRepoUseCase
+import com.ivzb.github_browser.domain.repo.ObserveRepoUseCase
 import com.ivzb.github_browser.model.TestData
 import com.ivzb.github_browser.ui.repo_profile.RepoProfileEvent
 import com.ivzb.github_browser.ui.repo_profile.RepoProfileViewModel
@@ -36,21 +37,24 @@ class RepoProfileViewModelTest {
         val repoName = TestData.repo.fullName
 
         val repoRepository = mock<RepoRepository> {
-            on { getRepo(eq(repoName)) }.thenReturn(TestData.repo)
+            on { observeRepo(eq(repoName)) }.thenReturn(TestData.liveDataOf(TestData.repo))
         }
-        val getRepoUseCase = GetRepoUseCase(repoRepository)
+        val observeRepoUseCase = ObserveRepoUseCase(repoRepository)
+        val fetchRepoUseCase = FetchRepoUseCase(repoRepository)
 
-        val viewModel = RepoProfileViewModel(getRepoUseCase)
+        val viewModel = RepoProfileViewModel(observeRepoUseCase, fetchRepoUseCase)
 
         // When repo is requested
         viewModel.getRepo(repoName)
 
-        // Then event should be emitted
+        // Then event should be emitted and repo fetched
         val loadingEventAtStart = LiveDataTestUtil.getValue(viewModel.loading)
         assertThat(loadingEventAtStart?.getContentIfNotHandled(), `is`(CoreMatchers.equalTo(true)))
 
         val repo = LiveDataTestUtil.getValue(viewModel.repo)
-        assertThat(repo, `is`(CoreMatchers.equalTo(TestData.repo)))
+        assertThat(repo?.getContentIfNotHandled(), `is`(CoreMatchers.equalTo(TestData.repo)))
+
+        verify(repoRepository).fetchRepo(eq(repoName))
 
         val loadingEventAtEnd = LiveDataTestUtil.getValue(viewModel.loading)
         assertThat(loadingEventAtEnd?.getContentIfNotHandled(), `is`(CoreMatchers.equalTo(false)))
@@ -62,11 +66,12 @@ class RepoProfileViewModelTest {
         val repoName = TestData.repo.fullName
 
         val repoRepository = mock<RepoRepository> {
-            on { getRepo(eq(repoName)) }.thenReturn(null)
+            on { observeRepo(eq(repoName)) }.thenReturn(TestData.liveDataOf(null))
         }
-        val getCurrentRepoUseCase = GetRepoUseCase(repoRepository)
+        val observeRepoUseCase = ObserveRepoUseCase(repoRepository)
+        val fetchRepoUseCase = FetchRepoUseCase(repoRepository)
 
-        val viewModel = RepoProfileViewModel(getCurrentRepoUseCase)
+        val viewModel = RepoProfileViewModel(observeRepoUseCase, fetchRepoUseCase)
 
         // When current repo is requested
         viewModel.getRepo(repoName)
@@ -76,7 +81,9 @@ class RepoProfileViewModelTest {
         assertThat(loadingEventAtStart?.getContentIfNotHandled(), `is`(CoreMatchers.equalTo(true)))
 
         val repo = LiveDataTestUtil.getValue(viewModel.repo)
-        assertTrue(repo == null)
+        assertTrue(repo?.getContentIfNotHandled() == null)
+
+        verify(repoRepository).fetchRepo(eq(repoName))
 
         val errorEvent = LiveDataTestUtil.getValue(viewModel.error)
         assertThat(
@@ -92,9 +99,10 @@ class RepoProfileViewModelTest {
     fun contributorsClick_emitsEvent() {
         // Given a ViewModel
         val repoRepository = mock<RepoRepository>()
-        val getRepoUseCase = GetRepoUseCase(repoRepository)
+        val observeRepoUseCase = ObserveRepoUseCase(repoRepository)
+        val fetchRepoUseCase = FetchRepoUseCase(repoRepository)
 
-        val viewModel = RepoProfileViewModel(getRepoUseCase)
+        val viewModel = RepoProfileViewModel(observeRepoUseCase, fetchRepoUseCase)
 
         // When login is clicked
         viewModel.contributorsClick(TestData.repo.fullName)
@@ -111,9 +119,10 @@ class RepoProfileViewModelTest {
     fun ownerClick_emitsEvent() {
         // Given a ViewModel
         val repoRepository = mock<RepoRepository>()
-        val getRepoUseCase = GetRepoUseCase(repoRepository)
+        val observeRepoUseCase = ObserveRepoUseCase(repoRepository)
+        val fetchRepoUseCase = FetchRepoUseCase(repoRepository)
 
-        val viewModel = RepoProfileViewModel(getRepoUseCase)
+        val viewModel = RepoProfileViewModel(observeRepoUseCase, fetchRepoUseCase)
 
         // When login is clicked
         viewModel.ownerClick(TestData.repo.owner)

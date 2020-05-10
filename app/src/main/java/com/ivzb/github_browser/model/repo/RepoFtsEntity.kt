@@ -20,10 +20,10 @@ data class RepoFtsEntity(
     val id: Long,
 
     @ColumnInfo(name = "user")
-    val user: String,
+    val user: String?,
 
     @ColumnInfo(name = "type")
-    val type: String,
+    val type: String?,
 
     @ColumnInfo(name = "name")
     val name: String,

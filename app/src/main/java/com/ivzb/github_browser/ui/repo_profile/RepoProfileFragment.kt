@@ -38,12 +38,13 @@ class RepoProfileFragment : DaggerFragment() {
                 lifecycleOwner = viewLifecycleOwner
             }
 
-        repoProfileViewModel.repo.observe(viewLifecycleOwner, Observer { repo ->
+        repoProfileViewModel.repo.observe(viewLifecycleOwner, EventObserver { repo ->
             repo?.let { updateTitle("${repo.name} repo") }
+            binding.repo = repo
         })
 
-        repoProfileViewModel.error.observe(viewLifecycleOwner, Observer {
-            it?.let { showErrorMessage(it.peekContent()) }
+        repoProfileViewModel.error.observe(viewLifecycleOwner, EventObserver {
+            showErrorMessage(it)
         })
 
         repoProfileViewModel.repoProfileEvent.observe(viewLifecycleOwner, EventObserver{

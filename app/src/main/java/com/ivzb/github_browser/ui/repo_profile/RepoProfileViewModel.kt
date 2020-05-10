@@ -4,41 +4,45 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.ivzb.github_browser.domain.Event
-import com.ivzb.github_browser.domain.Result
-import com.ivzb.github_browser.domain.repo.GetRepoUseCase
+import com.ivzb.github_browser.domain.repo.FetchRepoUseCase
+import com.ivzb.github_browser.domain.repo.ObserveRepoUseCase
 import com.ivzb.github_browser.domain.successOr
 import com.ivzb.github_browser.model.repo.Repo
 import com.ivzb.github_browser.util.map
 import javax.inject.Inject
 
 class RepoProfileViewModel @Inject constructor(
-    private val getRepoUseCase: GetRepoUseCase
-): ViewModel() {
+    private val observeRepoUseCase: ObserveRepoUseCase,
+    private val fetchRepoUseCase: FetchRepoUseCase
+) : ViewModel() {
 
     val loading = MutableLiveData<Event<Boolean>>()
     val error = MutableLiveData<Event<String>>()
-    val repo: LiveData<Repo?>
+    val repo: LiveData<Event<Repo?>>
     val repoProfileEvent: MutableLiveData<Event<Pair<RepoProfileEvent, String>>> = MutableLiveData()
 
-    private val getRepoResult = MutableLiveData<Result<Repo?>>()
-
     init {
-        repo = getRepoResult.map {
+        repo = observeRepoUseCase.observe().map {
             loading.postValue(Event(false))
 
-            it.successOr(null).also { repo ->
-                error.postValue(when (repo) {
-                    null -> Event(COULD_NOT_GET_REPO)
-                    else -> null
-                })
-            }
+            Event(
+                it.successOr(null).also { repo ->
+                    error.postValue(
+                        when (repo) {
+                            null -> Event(COULD_NOT_GET_REPO)
+                            else -> null
+                        }
+                    )
+                }
+            )
         }
     }
 
     fun getRepo(repo: String) {
         loading.postValue(Event(true))
 
-        getRepoUseCase(repo, getRepoResult)
+        observeRepoUseCase.execute(repo)
+        fetchRepoUseCase(repo)
     }
 
     fun star(repo: Repo) {

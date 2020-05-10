@@ -17,6 +17,20 @@ open class RepoRepository @Inject constructor(
     private val database: DatabaseDataSource
 ) : RepoDataSource, RepoRemoteDataSource by remoteDataSource {
 
+    override fun fetchRepo(repo: String) {
+        remoteDataSource.getRepo(repo)?.let {
+            it.asRepoFtsEntity().let { repo ->
+                database.repoFtsDao().insert(repo)
+            }
+        }
+    }
+
+    override fun observeRepo(repo: String): LiveData<Repo> =
+        database
+            .repoFtsDao()
+            .observe(repo)
+            .map { it.asRepo() }
+
     override fun fetchRepos(user: String, type: RepoType) {
         remoteDataSource.getRepos(user, type)?.let { repos ->
             val repoFtsEntities = repos.map { it.asRepoFtsEntity(user, type.name) }
