@@ -14,7 +14,6 @@ import com.ivzb.github_browser.ui.user_profile.UserProfileFragmentDirections.Com
 import com.ivzb.github_browser.model.user.UserType
 import com.ivzb.github_browser.util.checkAllMatched
 import com.ivzb.github_browser.util.provideViewModel
-import com.ivzb.github_browser.util.showErrorMessage
 import com.ivzb.github_browser.util.updateTitle
 import dagger.android.support.DaggerFragment
 import javax.inject.Inject
@@ -43,8 +42,12 @@ class UserProfileFragment : DaggerFragment() {
             binding.user = user
         })
 
+        userProfileViewModel.loading.observe(viewLifecycleOwner, EventObserver {
+            binding.loading = it
+        })
+
         userProfileViewModel.error.observe(viewLifecycleOwner, EventObserver {
-            showErrorMessage(it)
+            binding.error = it
         })
 
         userProfileViewModel.userProfileEvent.observe(viewLifecycleOwner, EventObserver {

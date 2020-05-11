@@ -39,7 +39,7 @@ class LogoutViewModelTest {
 
         // Then logout event should be emitted and access token clearer
         val logoutEvent = LiveDataTestUtil.getValue(viewModel.logout)
-        assertThat(logoutEvent?.peekContent(), `is`(CoreMatchers.equalTo(true)))
+        assertThat(logoutEvent?.getContentIfNotHandled(), `is`(CoreMatchers.equalTo(true)))
 
         verify(prefs).accessToken = null
     }

@@ -55,6 +55,10 @@ class UsersFragment : DaggerFragment() {
             filterUsers(it)
         })
 
+        usersViewModel.loading.observe(viewLifecycleOwner, EventObserver {
+            binding.loading = it
+        })
+
         setHasOptionsMenu(true)
 
         requireArguments().apply {

@@ -30,9 +30,6 @@ fun Fragment.updateTitle(@StringRes title: Int) {
     updateTitle(getString(title))
 }
 
-fun Fragment.showErrorMessage(message: String) =
-    Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
-
 fun Fragment.createSearchMenu(
     menu: Menu,
     menuInflater: MenuInflater,

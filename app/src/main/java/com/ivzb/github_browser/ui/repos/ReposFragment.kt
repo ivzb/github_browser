@@ -55,6 +55,10 @@ class ReposFragment : DaggerFragment() {
             filterRepos(it)
         })
 
+        reposViewModel.loading.observe(viewLifecycleOwner, EventObserver {
+            binding.loading = it
+        })
+
         setHasOptionsMenu(true)
 
         requireArguments().apply {

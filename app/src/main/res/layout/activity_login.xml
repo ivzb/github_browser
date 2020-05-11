@@ -7,6 +7,10 @@
         <variable
             name="viewModel"
             type="com.ivzb.github_browser.ui.login.LoginViewModel" />
+
+        <variable
+            name="loading"
+            type="Boolean" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -20,7 +24,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/login_margin"
-            android:enabled="@{!viewModel.loading.peekContent()}"
+            android:enabled="@{ !loading }"
             android:onClick="@{ () -> viewModel.doLogin() }"
             android:text="@string/login"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -33,7 +37,7 @@
             android:id="@+id/pb_loading"
             android:layout_width="@dimen/loading_size"
             android:layout_height="@dimen/loading_size"
-            app:goneUnless="@{ viewModel.loading.peekContent() }"
+            app:goneUnless="@{ loading }"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

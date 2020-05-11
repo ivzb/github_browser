@@ -30,7 +30,7 @@ class LoginActivity : DaggerAppCompatActivity() {
 
         loginViewModel = provideViewModel(viewModelFactory)
 
-        DataBindingUtil.setContentView<ActivityLoginBinding>(this, R.layout.activity_login).apply {
+        val binding = DataBindingUtil.setContentView<ActivityLoginBinding>(this, R.layout.activity_login).apply {
             viewModel = loginViewModel
             lifecycleOwner = this@LoginActivity
         }
@@ -45,8 +45,12 @@ class LoginActivity : DaggerAppCompatActivity() {
             }
         })
 
-        loginViewModel.errorMessage.observe(this, Observer {
-            showErrorMessage(it.peekContent())
+        loginViewModel.loading.observe(this, EventObserver {
+            binding.loading = it
+        })
+
+        loginViewModel.errorMessage.observe(this, EventObserver {
+            showErrorMessage(it)
         })
     }
 
@@ -76,9 +80,8 @@ class LoginActivity : DaggerAppCompatActivity() {
         finish()
     }
 
-    private fun showErrorMessage(message: String) {
+    private fun showErrorMessage(message: String) =
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
-    }
 
     companion object {
 

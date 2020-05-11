@@ -16,6 +16,14 @@
         <variable
             name="user"
             type="com.ivzb.github_browser.model.user.User" />
+
+        <variable
+            name="loading"
+            type="Boolean" />
+
+        <variable
+            name="error"
+            type="String" />
     </data>
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -23,7 +31,7 @@
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         app:onRefreshListener="@{ () -> viewModel.getUser(name) }"
-        app:refreshing="@{ viewModel.loading.peekContent() }">
+        app:refreshing="@{ loading }">
 
         <ScrollView
             android:layout_width="match_parent"
@@ -40,8 +48,8 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="@dimen/item_margin"
                     android:gravity="center"
-                    android:text="@{ viewModel.error.peekContent() }"
-                    app:goneUnless="@{ viewModel.error != null &amp;&amp; user == null }"
+                    android:text="@{ error }"
+                    app:goneUnless="@{ error != null &amp;&amp; user == null }"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
