@@ -13,7 +13,7 @@ interface RepoFtsDao {
 
     @Query(
         """
-        SELECT rowid, user, type, name, full_name, description, owner, is_fork, stars_count, watchers_count, forks_count, language
+        SELECT rowid, name, full_name, description, owner, is_fork, stars_count, watchers_count, forks_count, language
         FROM repoFts 
         WHERE full_name = :repo
         LIMIT 1
@@ -26,14 +26,12 @@ interface RepoFtsDao {
 
     @Query(
         """
-        SELECT rowid, user, type, name, full_name, description, owner, is_fork, stars_count, watchers_count, forks_count, language
+        SELECT rowid, name, full_name, description, owner, is_fork, stars_count, watchers_count, forks_count, language
         FROM repoFts 
-        WHERE user = :user AND type = :type
+        INNER JOIN repoTypeFts rt ON rowid = rt.repoid
+        WHERE rt.user = :user AND rt.typeid = :typeId
         ORDER BY stars_count DESC
         """
     )
-    fun observeAll(user: String, type: String): LiveData<List<RepoFtsEntity>>
-
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertAll(repos: List<RepoFtsEntity>)
+    fun observeAll(user: String, typeId: Int): LiveData<List<RepoFtsEntity>>
 }

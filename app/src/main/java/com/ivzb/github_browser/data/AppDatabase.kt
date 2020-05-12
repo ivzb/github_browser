@@ -4,9 +4,8 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.ivzb.github_browser.data.repo.RepoFtsDao
-import com.ivzb.github_browser.data.user.UserFtsDao
 import com.ivzb.github_browser.model.repo.RepoFtsEntity
+import com.ivzb.github_browser.model.repo.RepoTypeFtsEntity
 import com.ivzb.github_browser.model.user.UserFtsEntity
 
 /**
@@ -15,7 +14,8 @@ import com.ivzb.github_browser.model.user.UserFtsEntity
 @Database(
     entities = [
         UserFtsEntity::class,
-        RepoFtsEntity::class
+        RepoFtsEntity::class,
+        RepoTypeFtsEntity::class
     ],
     version = 1,
     exportSchema = false

@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import com.ivzb.github_browser.data.DatabaseDataSource
 import com.ivzb.github_browser.model.repo.Repo
 import com.ivzb.github_browser.model.repo.RepoType
+import com.ivzb.github_browser.model.repo.RepoTypeFtsEntity
 import com.ivzb.github_browser.util.map
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -37,8 +38,12 @@ open class RepoRepository @Inject constructor(
 
     override fun fetchRepos(user: String, type: RepoType): Boolean {
         remoteDataSource.getRepos(user, type)?.let { repos ->
-            val repoFtsEntities = repos.map { it.asRepoFtsEntity(user, type.name) }
-            database.repoFtsDao().insertAll(repoFtsEntities)
+            repos
+                .map { it.asRepoFtsEntity() }
+                .forEach {
+                    database.repoFtsDao().insert(it)
+                    database.repoTypeFtsDao().insert(RepoTypeFtsEntity(it.id, type.ordinal, user))
+                }
 
             return true
         }
@@ -49,7 +54,7 @@ open class RepoRepository @Inject constructor(
     override fun observeRepos(user: String, type: RepoType): LiveData<List<Repo>> =
         database
             .repoFtsDao()
-            .observeAll(user, type.name)
+            .observeAll(user, type.ordinal)
             .map {
                 it.toSet().map { repo -> repo.asRepo() }
             }

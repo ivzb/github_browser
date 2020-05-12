@@ -13,10 +13,8 @@ data class Repo(
     val language: String
 ) {
 
-    fun asRepoFtsEntity(user: String? = null, type: String? = null) = RepoFtsEntity(
+    fun asRepoFtsEntity() = RepoFtsEntity(
         id = this.id,
-        user = user,
-        type = type,
         name = this.name,
         fullName = this.fullName,
         description = this.description,

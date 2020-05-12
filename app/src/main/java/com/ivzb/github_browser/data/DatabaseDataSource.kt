@@ -1,6 +1,7 @@
 package com.ivzb.github_browser.data
 
 import com.ivzb.github_browser.data.repo.RepoFtsDao
+import com.ivzb.github_browser.data.repo_type.RepoTypeFtsDao
 import com.ivzb.github_browser.data.user.UserFtsDao
 
 interface DatabaseDataSource {
@@ -8,4 +9,6 @@ interface DatabaseDataSource {
     fun userFtsDao(): UserFtsDao
 
     fun repoFtsDao(): RepoFtsDao
+
+    fun repoTypeFtsDao(): RepoTypeFtsDao
 }
