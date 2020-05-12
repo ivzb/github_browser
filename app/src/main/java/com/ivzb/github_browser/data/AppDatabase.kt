@@ -7,6 +7,7 @@ import androidx.room.RoomDatabase
 import com.ivzb.github_browser.model.repo.RepoFtsEntity
 import com.ivzb.github_browser.model.repo.RepoTypeFtsEntity
 import com.ivzb.github_browser.model.user.UserFtsEntity
+import com.ivzb.github_browser.model.user.UserTypeFtsEntity
 
 /**
  * The [Room] database for this app.
@@ -14,10 +15,11 @@ import com.ivzb.github_browser.model.user.UserFtsEntity
 @Database(
     entities = [
         UserFtsEntity::class,
+        UserTypeFtsEntity::class,
         RepoFtsEntity::class,
         RepoTypeFtsEntity::class
     ],
-    version = 1,
+    version = 2,
     exportSchema = false
 )
 abstract class AppDatabase : RoomDatabase(), DatabaseDataSource {

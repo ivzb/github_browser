@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import com.ivzb.github_browser.data.DatabaseDataSource
 import com.ivzb.github_browser.model.user.User
 import com.ivzb.github_browser.model.user.UserType
+import com.ivzb.github_browser.model.user.UserTypeFtsEntity
 import com.ivzb.github_browser.util.map
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -19,8 +20,12 @@ open class UserRepository @Inject constructor(
 
     override fun fetchUser(user: String?): Boolean {
         remoteDataSource.getUser(user)?.let {
-            it.asUserFtsEntity(user).let { user ->
-                database.userFtsDao().insert(user)
+            it.asUserFtsEntity().let { entity ->
+                database.userFtsDao().insert(entity)
+
+                if (user == null) {
+                    database.userTypeFtsDao().insert(UserTypeFtsEntity(it.id, CURRENT_USER_TYPE_ID, CURRENT_USER_NAME))
+                }
             }
 
             return true
@@ -32,13 +37,17 @@ open class UserRepository @Inject constructor(
     override fun observeUser(user: String?): LiveData<User?> =
         database
             .userFtsDao()
-            .observe(user)
+            .observe(user ?: CURRENT_USER_NAME)
             .map { it?.asUser() }
 
     override fun fetchUsers(user: String, type: UserType): Boolean {
         remoteDataSource.getUsers(user, type)?.let { users ->
-            val userFtsEntities = users.map { it.asUserFtsEntity(user, type.name) }
-            database.userFtsDao().insertAll(userFtsEntities)
+            users
+                .map { it.asUserFtsEntity() }
+                .forEach {
+                    database.userFtsDao().insert(it)
+                    database.userTypeFtsDao().insert(UserTypeFtsEntity(it.id, type.ordinal, user))
+                }
 
             return true
         }
@@ -49,8 +58,13 @@ open class UserRepository @Inject constructor(
     override fun observeUsers(user: String, type: UserType): LiveData<List<User>> =
         database
             .userFtsDao()
-            .observeAll(user, type.name)
+            .observeAll(user, type.ordinal)
             .map {
                 it.toSet().map { user -> user.asUser() }
             }
+
+    companion object {
+        private const val CURRENT_USER_NAME = ""
+        private const val CURRENT_USER_TYPE_ID = -1
+    }
 }

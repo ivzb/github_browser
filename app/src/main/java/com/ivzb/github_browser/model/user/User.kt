@@ -11,10 +11,8 @@ data class User(
     val contributions: Int
 ) {
 
-    fun asUserFtsEntity(user: String? = null, type: String? = null) = UserFtsEntity(
+    fun asUserFtsEntity() = UserFtsEntity(
         id = this.id,
-        user = user,
-        type = type,
         login = this.login,
         name = this.name,
         avatarUrl = this.avatarUrl,

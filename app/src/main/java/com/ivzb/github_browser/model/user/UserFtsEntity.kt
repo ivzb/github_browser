@@ -13,18 +13,11 @@ import com.ivzb.github_browser.model.user.User
  * properties without requiring changing the column name.
  */
 @Entity(tableName = "userFts")
-@Fts4
 data class UserFtsEntity(
 
     @PrimaryKey(autoGenerate = false)
     @ColumnInfo(name = "rowid")
     val id: Long,
-
-    @ColumnInfo(name = "user")
-    val user: String?,
-
-    @ColumnInfo(name = "type")
-    val type: String?,
 
     @ColumnInfo(name = "login")
     val login: String,

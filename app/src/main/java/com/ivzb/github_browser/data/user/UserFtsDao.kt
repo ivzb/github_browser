@@ -12,9 +12,10 @@ interface UserFtsDao {
 
     @Query(
         """
-        SELECT rowid, user, type, login, name, avatar_url, repos, followers, following, contributions 
+        SELECT rowid, login, name, avatar_url, repos, followers, following, contributions 
         FROM userFts 
-        WHERE (user IS NULL AND type IS NULL AND :user IS NULL) OR (login = :user AND :user IS NOT NULL)
+        INNER JOIN userTypeFts ut ON rowid = ut.userid
+        WHERE ut.user = :user OR login = :user
         LIMIT 1
         """
     )
@@ -25,14 +26,12 @@ interface UserFtsDao {
 
     @Query(
         """
-        SELECT rowid, user, type, login, name, avatar_url, repos, followers, following, contributions 
+        SELECT rowid, login, name, avatar_url, repos, followers, following, contributions 
         FROM userFts 
-        WHERE user = :user and type = :type
+        INNER JOIN userTypeFts ut ON rowid = ut.userid
+        WHERE ut.user = :user and ut.typeid = :typeId
         ORDER BY followers DESC
         """
     )
-    fun observeAll(user: String, type: String): LiveData<List<UserFtsEntity>>
-
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertAll(users: List<UserFtsEntity>)
+    fun observeAll(user: String, typeId: Int): LiveData<List<UserFtsEntity>>
 }
